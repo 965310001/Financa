@@ -101,7 +101,7 @@ public class RxConstant {
      * 个人添加
      * 正则：验证码
      */
-    public static final String REGEX_VCODE = "^\\d{4}$";
+    public static final String REGEX_VCODE = "^\\d{4,7}$";
     /**
      * 正则：身份证号码15位
      */

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".activity.LoginActivity">
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/dp_92"
+        android:background="@drawable/shape_bg_logo"
+        android:gravity="center"
+        android:text="logo"
+        android:textColor="#ffffffff"
+        android:textSize="28sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="AI财富大师"
+        android:textColor="#ff333333"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_40"
+        android:text="一键登录 加速获客"
+        android:textColor="#ff777777"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:layout_margin="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/shape_bg_login"
+        android:gravity="center"
+        android:onClick="onClick">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:src="@mipmap/icon_weixin" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="微信登录"
+            android:textColor="#ffffffff"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_protocol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:text="登录表示同意《用户协议》《隐私政策》"
+        android:textColor="#ff777777"
+        android:textSize="14sp" />
+</LinearLayout>

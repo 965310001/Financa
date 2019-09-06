@@ -12,6 +12,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
+        <activity
+            android:name=".activity.WebActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".activity.EditCompanyActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".activity.SendCodeActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait"
+            tools:ignore="DuplicateActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

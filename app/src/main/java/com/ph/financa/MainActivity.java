@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.ph.financa.activity.LoginActivity;
 import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.com.commoncore.base.BaseActivity;
+import tech.com.commoncore.utils.FastUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -60,6 +62,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+
+        /*测试*/
+        FastUtil.startActivity(mContext, LoginActivity.class);
+
+
         navigationBar = findViewById(R.id.navigationBar);
 
         addFragments();

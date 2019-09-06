@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.SendCodeActivity">
+
+    <include layout="@layout/layout_title_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_31"
+        android:text="手机号码验证"
+        android:textColor="#ff333333"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_16"
+        android:background="@drawable/shape_bg_send_code"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp_11"
+            android:src="@drawable/icon" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_phone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入手机号"
+            android:paddingLeft="@dimen/dp_12"
+            android:textSize="@dimen/textSize_16" />
+
+        <TextView
+            android:id="@+id/tv_send_code"
+            android:layout_width="72dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="@dimen/dp_11"
+            android:onClick="onClick"
+            android:text="获取验证码"
+            android:textColor="#ffcccccc"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@drawable/shape_bg_send_code"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp_11"
+            android:src="@drawable/icon" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="请输入验证码"
+            android:paddingLeft="@dimen/dp_12"
+            android:textSize="@dimen/textSize_16" />
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="72dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="@dimen/dp_11"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:text="60s"
+            android:textColor="#ff333333"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_code_err"
+        android:layout_width="86dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="@dimen/dp_58"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="验证码错误！"
+        android:textColor="#FF3B30"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/shape_bg_login"
+        android:onClick="onClick"
+        android:text="下一步"
+        android:textColor="#ffffffff"
+        android:textSize="18sp" />
+
+</LinearLayout>

@@ -1,8 +1,6 @@
 package com.ph.financa.fragments;
 
-
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.just.agentweb.AgentWeb;
@@ -12,24 +10,12 @@ import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 
 /**
- * 首页
+ * 分享
  */
+public class ShareFragment extends BaseFragment {
 
-public class HomeFragment extends BaseFragment {
-
-    private String URL = String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5);
+    private String URL = String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.SHARE);
     private AgentWeb mAgentWeb;
-
-    @Override
-    public void loadData() {
-        super.loadData();
-        mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent((ViewGroup) mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator()
-                .createAgentWeb()
-                .ready()
-                .go(URL);
-    }
 
     @Override
     public void onPause() {
@@ -49,10 +35,18 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public int getContentLayout() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_share;
     }
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        mAgentWeb = AgentWeb.with(this)
+                .setAgentWebParent((FrameLayout) mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
+                .useDefaultIndicator()
+                .createAgentWeb()
+                .ready()
+                .go(URL);
     }
+
+
 }

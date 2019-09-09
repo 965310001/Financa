@@ -2,6 +2,7 @@ package com.ph.financa.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -25,6 +26,8 @@ public class WebActivity extends BaseTitleActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("title")) {
             mTitleBar.setTitleMainText(intent.getStringExtra("title"));
+        } else {
+            mTitleBar.setVisibility(View.GONE);
         }
 
         if (intent.hasExtra("url")) {

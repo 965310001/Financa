@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
+        <activity android:name=".activity.SettingActivity"></activity>
         <activity
             android:name=".activity.WebActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
@@ -36,6 +37,19 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wx7faa69a8d98bfb10" />
             </intent-filter>
         </activity>
     </application>

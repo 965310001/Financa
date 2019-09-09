@@ -8,13 +8,13 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.ph.financa.MainActivity;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.BaseTResp2;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
-import tech.com.commoncore.utils.RegUtils;
 import tech.com.commoncore.utils.ToastUtil;
 
 /**
@@ -49,14 +49,14 @@ public class EditCompanyActivity extends BaseActivity {
 
     private void doGet() {
         ViseHttp.POST(ApiConstant.EDIT_COMPANY)
-                .addParam("", getCompany())
-                .request(new ACallback<Object>() {
+                .addParam("companyName", getCompany())
+                .request(new ACallback<BaseTResp2>() {
                     @Override
-                    public void onSuccess(Object data) {
-                        if (true) {
+                    public void onSuccess(BaseTResp2 data) {
+                        if (data.isSuccess()) {
                             goMainActivity();
                         } else {
-                            ToastUtil.show("网络不好。。。");
+                            ToastUtil.show(data.getMsg());
                         }
                     }
 

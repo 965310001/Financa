@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
-import com.ph.financa.activity.LoginActivity;
 import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
@@ -29,17 +28,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.com.commoncore.base.BaseActivity;
-import tech.com.commoncore.utils.FastUtil;
 
+/**
+ * 首页
+ */
 public class MainActivity extends BaseActivity {
 
     private EasyNavigationBar navigationBar;
 
     private String[] tabText = {"首页", "谁看了我", "", "客户", "我的"};
+
     //未选中icon
-    private int[] normalIcon = {R.mipmap.index, R.mipmap.find, R.mipmap.add_image, R.mipmap.message, R.mipmap.me};
+    private int[] normalIcon = {R.mipmap.ic_home_normal, R.mipmap.ic_see_normal, R.mipmap.ic_add_image, R.mipmap.ic_customer_normal, R.mipmap.ic_me_normal};
     //选中时icon
-    private int[] selectIcon = {R.mipmap.index1, R.mipmap.find1, R.mipmap.add_image, R.mipmap.message1, R.mipmap.me1};
+    private int[] selectIcon = {R.mipmap.ic_home_selected, R.mipmap.ic_see_selected, R.mipmap.ic_add_image, R.mipmap.ic_customer_selected, R.mipmap.ic_me_selected};
 
     private List<Fragment> fragments = new ArrayList<>();
 
@@ -64,7 +66,7 @@ public class MainActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
 
         /*测试*/
-        FastUtil.startActivity(mContext, LoginActivity.class);
+//        FastUtil.startActivity(mContext, MainActivity.class);
 
 
         navigationBar = findViewById(R.id.navigationBar);
@@ -78,7 +80,6 @@ public class MainActivity extends BaseActivity {
                 .fragmentManager(getSupportFragmentManager())
                 .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(100)
-
                 .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
                     @Override
                     public boolean onTabClickEvent(View view, int position) {
@@ -211,7 +212,7 @@ public class MainActivity extends BaseActivity {
                     //圆形扩展的动画
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                         int x = NavigationUtil.getScreenWidth(mContext) / 2;
-                        int y = (int) (NavigationUtil.getScreenHeith(mContext) - NavigationUtil.dip2px(mContext, 25));
+                        int y = (NavigationUtil.getScreenHeith(mContext) - NavigationUtil.dip2px(mContext, 25));
                         Animator animator = ViewAnimationUtils.createCircularReveal(navigationBar.getAddViewLayout(), x,
                                 y, 0, navigationBar.getAddViewLayout().getHeight());
                         animator.addListener(new AnimatorListenerAdapter() {
@@ -235,5 +236,4 @@ public class MainActivity extends BaseActivity {
         });
 
     }
-
 }

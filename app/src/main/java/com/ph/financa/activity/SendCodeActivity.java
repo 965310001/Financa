@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.aries.ui.view.title.TitleBarView;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.BaseTResp2;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
@@ -97,17 +98,18 @@ public class SendCodeActivity extends BaseTitleActivity {
 
         String phone = getPhone();
         String code = getCode();
-        ViseHttp.POST(ApiConstant.VERIFICATION_CODE).addParam("phone", phone)
+        ViseHttp.POST(ApiConstant.VERIFICATION_CODE)
+                .addParam("phone", phone)
                 .addParam("code", code)
-                .request(new ACallback<Object>() {
+                .request(new ACallback<BaseTResp2>() {
                     @Override
-                    public void onSuccess(Object data) {
+                    public void onSuccess(BaseTResp2 data) {
                         hideLoading();
-                        if (true) {
-                            Log.i(TAG, "onSuccess: 发送成功，");
+                        if (data.isSuccess()) {
                             FastUtil.startActivity(mContext, EditCompanyActivity.class);
-                        } else if (true) {/*验证码失败*/
+                        } else if (data.getCode() == 500) {/*验证码失败*/
                             hideErrCode(false);
+                            ToastUtil.show(data.getMsg());
                         } else {
                             Log.i(TAG, "onSuccess: 执行下一步失败");
                         }

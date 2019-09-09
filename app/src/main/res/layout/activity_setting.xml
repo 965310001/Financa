@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.SettingActivity">
+
+    <include layout="@layout/layout_title_bar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:background="@color/white"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:text="反馈"
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_16"
+            app:srcCompat="@mipmap/ic_chevron" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dp_62"
+        android:background="@drawable/shape_bg_line" />
+
+    <RelativeLayout
+        android:id="@+id/rl_version"
+
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:background="@color/white"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:text="当前版本"
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="93dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_43"
+            android:text="130****5427"
+            android:textColor="#ff999999"
+            android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_16"
+            app:srcCompat="@mipmap/ic_chevron" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dp_62"
+        android:background="@drawable/shape_bg_line" />
+
+    <RelativeLayout
+        android:id="@+id/rl_change_phone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:text="更换手机号"
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="93dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_43"
+            android:text="130****5427"
+            android:textColor="#ff999999"
+            android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_16"
+            android:background="@mipmap/ic_chevron" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_quit"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="@dimen/dp_16"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="退出登录"
+        android:textColor="#FF3B30"
+        android:textSize="17sp" />
+</LinearLayout>

@@ -3,7 +3,6 @@ package com.ph.financa.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.just.agentweb.AgentWeb;
@@ -18,7 +17,6 @@ import tech.com.commoncore.utils.Utils;
 /**
  * 首页
  */
-
 public class HomeFragment extends BaseFragment {
 
     private String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
@@ -54,10 +52,18 @@ public class HomeFragment extends BaseFragment {
     public void initView(Bundle savedInstanceState) {
         Log.i(TAG, "initView: " + URL);
         mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent((ViewGroup) mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
+                .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
                 .createAgentWeb()
                 .ready()
                 .go(URL);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
     }
 }

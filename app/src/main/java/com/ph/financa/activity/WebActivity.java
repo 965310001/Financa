@@ -3,7 +3,6 @@ package com.ph.financa.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.aries.ui.view.title.TitleBarView;
@@ -11,6 +10,7 @@ import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 
 import tech.com.commoncore.base.BaseTitleActivity;
+import tech.com.commoncore.utils.DisplayUtil;
 
 public class WebActivity extends BaseTitleActivity {
 
@@ -28,6 +28,7 @@ public class WebActivity extends BaseTitleActivity {
             mTitleBar.setTitleMainText(intent.getStringExtra("title"));
         } else {
             mTitleBar.setVisibility(View.GONE);
+            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
         }
 
         if (intent.hasExtra("url")) {
@@ -39,7 +40,7 @@ public class WebActivity extends BaseTitleActivity {
     public void loadData() {
         super.loadData();
         mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent((ViewGroup) findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
+                .setAgentWebParent(findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
                 .createAgentWeb()
                 .ready()
@@ -62,6 +63,13 @@ public class WebActivity extends BaseTitleActivity {
         super.onResume();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
+    }
 
     @Override
     public int getContentLayout() {

@@ -41,7 +41,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
         }
         final CommonTabLayout mMainTab = mContentView.findViewById(R.id.tab_main);
         mFragments = getFragments();
-        final ViewPager mViewPager = mContentView.findViewById(R.id.view_pager);
+        final ViewPager mViewPager = mContentView.findViewById(R.id.vp_see);
         MyPagerAdapter mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(mFragments.size());
@@ -72,9 +72,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
 
             }
         });
-        mMainTab.setTabData(mTabEntities, getActivity(), R.id.fl, getFragments());
-
-
+        mMainTab.setTabData(mTabEntities, getActivity(), R.id.fl_see, getFragments());
     }
 
     @Override

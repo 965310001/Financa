@@ -80,13 +80,13 @@
     <!--app:tl_underline_height="1dp" />-->
 
     <FrameLayout
-        android:id="@+id/fl"
+        android:id="@+id/fl_see"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+        android:id="@+id/vp_see"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

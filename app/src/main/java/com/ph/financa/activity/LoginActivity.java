@@ -43,8 +43,6 @@ import tech.com.commoncore.utils.ToastUtil;
  */
 public class LoginActivity extends BaseActivity {
 
-    /*private IWXAPI mApi;*/
-
     @Override
     public void initView(Bundle savedInstanceState) {
         final SpannableStringBuilder style = new SpannableStringBuilder("登录表示同意《用户协议》《隐私政策》");
@@ -178,11 +176,15 @@ public class LoginActivity extends BaseActivity {
                                         if (null != bean) {
                                             saveUser(data.data);
                                         }
-                                        loginEaseMob(String.valueOf(data.data.getId()), "");
+//                                        loginEaseMob(String.valueOf(data.data.getId()), "");
                                         Log.i(TAG, "onSuccess: " + data);
+
+
                                         if (data.getCode() == 40102002) {
+                                            SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
                                             FastUtil.startActivity(mContext, SendCodeActivity.class);
                                         } else if (data.isSuccess()) {
+                                            SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
                                             FastUtil.startActivity(mContext, MainActivity.class);
                                         } else {
                                             ToastUtil.show(data.getMsg());
@@ -198,7 +200,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-
+                        ToastUtil.show(errMsg);
                     }
                 });
     }

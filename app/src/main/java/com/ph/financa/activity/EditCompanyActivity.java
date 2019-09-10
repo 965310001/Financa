@@ -6,13 +6,14 @@ import android.view.View;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.aries.ui.view.title.TitleBarView;
 import com.ph.financa.MainActivity;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
-import tech.com.commoncore.base.BaseActivity;
+import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.ToastUtil;
@@ -20,7 +21,7 @@ import tech.com.commoncore.utils.ToastUtil;
 /**
  * 填写你的公司、机构名称
  */
-public class EditCompanyActivity extends BaseActivity {
+public class EditCompanyActivity extends BaseTitleActivity {
 
     private AppCompatEditText mEtCompany;
 
@@ -77,10 +78,15 @@ public class EditCompanyActivity extends BaseActivity {
 
     private boolean checkCompany() {
         String company = mEtCompany.getText().toString().trim();
-        if (!TextUtils.isEmpty(company)) {
-            ToastUtil.show("请填写正确的验证码");
+        if (TextUtils.isEmpty(company)) {
+            ToastUtil.show("请填写正确的公司/机构名称");
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void setTitleBar(TitleBarView titleBar) {
+
     }
 }

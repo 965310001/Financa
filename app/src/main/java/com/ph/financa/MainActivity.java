@@ -2,8 +2,6 @@ package com.ph.financa;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,13 +15,12 @@ import androidx.fragment.app.Fragment;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
-import com.ph.financa.activity.LoginActivity;
 import com.ph.financa.activity.WriteArticleActivity;
+import com.ph.financa.dialog.AddDialog;
 import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
 import com.ph.financa.fragments.SeeFragment;
-import com.ph.financa.view.KickBackAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +51,8 @@ public class MainActivity extends BaseActivity {
     private LinearLayout menuLayout;
     private View cancelImageView;
     private Handler mHandler = new Handler();
+    private AddDialog mAddDialog;
+    /*private MoreDialog moreDialog;*/
 
     public EasyNavigationBar getNavigationBar() {
         return navigationBar;
@@ -68,7 +67,7 @@ public class MainActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
 
         /*测试*/
-        FastUtil.startActivity(mContext, LoginActivity.class);
+        /*FastUtil.startActivity(mContext, LoginActivity.class);*/
 
         navigationBar = findViewById(R.id.navigationBar);
 
@@ -91,7 +90,24 @@ public class MainActivity extends BaseActivity {
 //                            return true;
                     } else if (position == 2) {
                         //跳转页面（全民K歌）   或者   弹出菜单（微博）
-                        showMunu();
+                        /*showMunu();*/
+                        mAddDialog = AddDialog.show(getSupportFragmentManager(), "", new AddDialog.OnClickIndex() {
+                            @Override
+                            public void onIndex(int index) {
+                                switch (index) {
+                                    case 0:
+                                        mAddDialog.dismiss();
+                                        FastUtil.startActivity(mContext, WriteArticleActivity.class);
+                                        break;
+                                    case 1:
+                                        // TODO: 2019/9/10 粘贴文章链接
+                                        break;
+                                    case 2:
+                                        mAddDialog.dismiss();
+                                        break;
+                                }
+                            }
+                        });
                     }
                     return false;
                 })
@@ -103,7 +119,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private View createView() {
-        ViewGroup view = (ViewGroup) View.inflate(mContext, R.layout.layout_add_view, null);
+        ViewGroup view = (ViewGroup) View.inflate(mContext, R.layout.dialog_add, null);
         view.findViewById(R.id.tv_cancel).setOnClickListener(view13 -> closeAnimation());
 
         view.findViewById(R.id.ll_edit).setOnClickListener(view1 -> {
@@ -112,6 +128,22 @@ public class MainActivity extends BaseActivity {
         view.findViewById(R.id.ll_share_link).setOnClickListener(view12 -> {
             // TODO: 2019/9/10 粘贴文章链接
         });
+//        moreDialog = MoreDialog.show(getSupportFragmentManager(), "", new MoreDialog.OnClickIndex() {
+//            @Override
+//            public void onIndex(int index) {
+//                switch (index) {
+//                    case 0:
+//                        FastUtil.startActivity(mContext, WriteArticleActivity.class);
+//                        break;
+//                    case 1:
+//                        // TODO: 2019/9/10 粘贴文章链接
+//                        break;
+//                    case 2:
+//                        moreDialog.dismiss();
+//                        break;
+//                }
+//            }
+//        });
         return view;
     }
 
@@ -147,7 +179,7 @@ public class MainActivity extends BaseActivity {
      * 关闭window动画
      */
     private void closeAnimation() {
-        mHandler.post(() -> cancelImageView.animate().rotation(0).setDuration(400));
+//        mHandler.post(() -> cancelImageView.animate().rotation(0).setDuration(400));
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
@@ -185,19 +217,19 @@ public class MainActivity extends BaseActivity {
 //            }
 //        });
         //菜单项弹出动画
-        for (int i = 0; i < menuLayout.getChildCount(); i++) {
-            final View child = menuLayout.getChildAt(i);
-            child.setVisibility(View.INVISIBLE);
-            mHandler.postDelayed(() -> {
-                child.setVisibility(View.VISIBLE);
-                ValueAnimator fadeAnim = ObjectAnimator.ofFloat(child, "translationY", 600, 0);
-                fadeAnim.setDuration(500);
-                KickBackAnimator kickAnimator = new KickBackAnimator();
-                kickAnimator.setDuration(500);
-                fadeAnim.setEvaluator(kickAnimator);
-                fadeAnim.start();
-            }, i * 50 + 100);
-        }
+//        for (int i = 0; i < menuLayout.getChildCount(); i++) {
+//            final View child = menuLayout.getChildAt(i);
+//            child.setVisibility(View.INVISIBLE);
+//            mHandler.postDelayed(() -> {
+//                child.setVisibility(View.VISIBLE);
+//                ValueAnimator fadeAnim = ObjectAnimator.ofFloat(child, "translationY", 600, 0);
+//                fadeAnim.setDuration(500);
+//                KickBackAnimator kickAnimator = new KickBackAnimator();
+//                kickAnimator.setDuration(500);
+//                fadeAnim.setEvaluator(kickAnimator);
+//                fadeAnim.start();
+//            }, i * 50 + 100);
+//        }
     }
 
     private void startAnimation() {

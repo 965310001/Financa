@@ -2,10 +2,12 @@ package com.ph.financa.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ph.financa.R;
+import com.ph.financa.activity.CustomerActivity;
 import com.ph.financa.activity.SettingActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.constant.Constant;
@@ -53,16 +55,13 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mTvProducts = mContentView.findViewById(R.id.tv_products);
         mTvShare = mContentView.findViewById(R.id.tv_share);
         mTvMessage = mContentView.findViewById(R.id.tv_message);
-    }
 
-    @Override
-    public void loadData() {
-        super.loadData();
-
+        Log.i(TAG, "loadData: " + SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
         setData(SPHelper.getStringSF(mContext, Constant.USERNAME, "")
                 , SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, ""),
                 SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
     }
+
 
     private void setData(String name, String companyName, String head) {
         if (!TextUtils.isEmpty(name)) {
@@ -106,7 +105,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.ll_card:
                 // TODO: 2019/9/9 我的名片
-                goActivity(null, null);
+                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.MY_CARD));
+                goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_collection:
                 // TODO: 2019/9/9 我的收藏
@@ -120,15 +120,17 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.ll_share:
                 // TODO: 2019/9/9 历史分享
-                goActivity(null, null);
+                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.HISTORYARTICLE));
+                goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_message:
                 // TODO: 2019/9/9 消息通知
-                goActivity(null, null);
+                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.MESSAGE_NOTICE));
+                goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_service:
                 // TODO: 2019/9/9 我的客服
-                goActivity(null, null);
+                goActivity(CustomerActivity.class, null);
                 break;
             case R.id.ll_setting:
                 // TODO: 2019/9/9 设置

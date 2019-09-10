@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.aries.ui.view.title.TitleBarView;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
+import com.ph.financa.constant.Constant;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
@@ -17,6 +18,7 @@ import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.RegUtils;
+import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 
 /**
@@ -89,7 +91,6 @@ public class SendCodeActivity extends BaseTitleActivity {
     }
 
     private void countdownTime() {
-
     }
 
     /*执行下一步*/
@@ -106,12 +107,14 @@ public class SendCodeActivity extends BaseTitleActivity {
                     public void onSuccess(BaseTResp2 data) {
                         hideLoading();
                         if (data.isSuccess()) {
+                            SPHelper.setStringSF(mContext, Constant.USERPHONE, phone);
                             FastUtil.startActivity(mContext, EditCompanyActivity.class);
                         } else if (data.getCode() == 500) {/*验证码失败*/
                             hideErrCode(false);
                             ToastUtil.show(data.getMsg());
                         } else {
                             Log.i(TAG, "onSuccess: 执行下一步失败");
+                            ToastUtil.show(data.getMsg());
                         }
                     }
 

@@ -2,6 +2,9 @@ package com.ph.financa.constant;
 
 public interface Constant {
 
+    /*是否登录*/
+    String ISLOGIN = "LOGIN";
+
     /*用户Id*/
     String USERID = "USERID";
 

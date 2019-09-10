@@ -57,7 +57,7 @@ public class ApiConstant {
     /*文章详情*/
     public static final String article = "h5/article/:id";
     /*文章编辑*/
-    public static final String edit = "edit/:id";
+    public static final String edit = "edit/";
     /*插入产品*/
     public static final String insert = "insert";
     /*文章详情----微信访问：*/
@@ -65,7 +65,7 @@ public class ApiConstant {
     /*添加文章*/
     public static final String addArticle = "add-article";
     /*历史分享文章*/
-    public static final String historyArticle = "history-article";
+    public static final String HISTORYARTICLE = "history-article";
 
 
     /*谁看了我*/
@@ -90,11 +90,11 @@ public class ApiConstant {
     /*消息通知*/
     public static final String message = "h5/message";
     /*公告通知*/
-    public static final String message_notice = "h5/message-notice";
+    public static final String MESSAGE_NOTICE = "h5/message-notice";
     /*消息详情*/
     public static final String message_detail = "h5/message-detail";
     /*个人名片*/
-    public static final String my_card = "h5/my-card";
+    public static final String MY_CARD = "h5/my-card";
     /*微信名片*/
     public static final String wx_my_card = "h5/wx-my-card";
     /*编辑名片*/

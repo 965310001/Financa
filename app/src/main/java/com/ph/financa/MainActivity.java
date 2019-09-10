@@ -6,12 +6,11 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -19,6 +18,7 @@ import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.ph.financa.activity.LoginActivity;
+import com.ph.financa.activity.WriteArticleActivity;
 import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
@@ -84,67 +84,70 @@ public class MainActivity extends BaseActivity {
                 .fragmentManager(getSupportFragmentManager())
                 .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(100)
-                .onTabClickListener(new EasyNavigationBar.OnTabClickListener() {
-                    @Override
-                    public boolean onTabClickEvent(View view, int position) {
-                        if (position == 4) {
-                            /*Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();*/
-                            //return true则拦截事件、不进行页面切换
+                .onTabClickListener((view, position) -> {
+                    if (position == 4) {
+                        /*Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();*/
+                        //return true则拦截事件、不进行页面切换
 //                            return true;
-                        } else if (position == 2) {
-                            //跳转页面（全民K歌）   或者   弹出菜单（微博）
-                            showMunu();
-                        }
-                        return false;
+                    } else if (position == 2) {
+                        //跳转页面（全民K歌）   或者   弹出菜单（微博）
+                        showMunu();
                     }
+                    return false;
                 })
                 .mode(EasyNavigationBar.MODE_ADD)
                 .anim(Anim.ZoomIn)
                 .build();
 
-        navigationBar.setAddViewLayout(createWeiboView());
+        navigationBar.setAddViewLayout(createView());
     }
 
-    //仿微博弹出菜单
-    private View createWeiboView() {
+    private View createView() {
         ViewGroup view = (ViewGroup) View.inflate(mContext, R.layout.layout_add_view, null);
-        menuLayout = view.findViewById(R.id.icon_group);
-        cancelImageView = view.findViewById(R.id.cancel_iv);
-        cancelImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeAnimation();
-            }
+        view.findViewById(R.id.tv_cancel).setOnClickListener(view13 -> closeAnimation());
+
+        view.findViewById(R.id.ll_edit).setOnClickListener(view1 -> {
+            FastUtil.startActivity(mContext, WriteArticleActivity.class);
         });
-        for (int i = 0; i < 4; i++) {
-            View itemView = View.inflate(mContext, R.layout.item_icon, null);
-            ImageView menuImage = itemView.findViewById(R.id.menu_icon_iv);
-            TextView menuText = itemView.findViewById(R.id.menu_text_tv);
-
-            menuImage.setImageResource(menuIconItems[i]);
-            menuText.setText(menuTextItems[i]);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.weight = 1;
-            itemView.setLayoutParams(params);
-            itemView.setVisibility(View.GONE);
-            menuLayout.addView(itemView);
-        }
+        view.findViewById(R.id.ll_share_link).setOnClickListener(view12 -> {
+            // TODO: 2019/9/10 粘贴文章链接
+        });
         return view;
     }
 
+    //仿微博弹出菜单
+//    private View createWeiboView() {
+//        ViewGroup view = (ViewGroup) View.inflate(mContext, R.layout.layout_add_view, null);
+//        menuLayout = view.findViewById(R.id.icon_group);
+//        cancelImageView = view.findViewById(R.id.cancel_iv);
+//        cancelImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                closeAnimation();
+//            }
+//        });
+//        for (int i = 0; i < 4; i++) {
+//            View itemView = View.inflate(mContext, R.layout.item_icon, null);
+//            ImageView menuImage = itemView.findViewById(R.id.menu_icon_iv);
+//            TextView menuText = itemView.findViewById(R.id.menu_text_tv);
+//
+//            menuImage.setImageResource(menuIconItems[i]);
+//            menuText.setText(menuTextItems[i]);
+//
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//            params.weight = 1;
+//            itemView.setLayoutParams(params);
+//            itemView.setVisibility(View.GONE);
+//            menuLayout.addView(itemView);
+//        }
+//        return view;
+//    }
 
     /**
      * 关闭window动画
      */
     private void closeAnimation() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                cancelImageView.animate().rotation(0).setDuration(400);
-            }
-        });
-
+        mHandler.post(() -> cancelImageView.animate().rotation(0).setDuration(400));
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
@@ -168,69 +171,61 @@ public class MainActivity extends BaseActivity {
                 animator.start();
             }
         } catch (Exception e) {
+            Log.i(TAG, "closeAnimation: " + e.toString());
         }
     }
 
-
     private void showMunu() {
         startAnimation();
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                //＋ 旋转动画
-                cancelImageView.animate().rotation(90).setDuration(400);
-            }
-        });
+//        mHandler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                //＋ 旋转动画
+//                cancelImageView.animate().rotation(90).setDuration(400);
+//            }
+//        });
         //菜单项弹出动画
         for (int i = 0; i < menuLayout.getChildCount(); i++) {
             final View child = menuLayout.getChildAt(i);
             child.setVisibility(View.INVISIBLE);
-            mHandler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    child.setVisibility(View.VISIBLE);
-                    ValueAnimator fadeAnim = ObjectAnimator.ofFloat(child, "translationY", 600, 0);
-                    fadeAnim.setDuration(500);
-                    KickBackAnimator kickAnimator = new KickBackAnimator();
-                    kickAnimator.setDuration(500);
-                    fadeAnim.setEvaluator(kickAnimator);
-                    fadeAnim.start();
-                }
+            mHandler.postDelayed(() -> {
+                child.setVisibility(View.VISIBLE);
+                ValueAnimator fadeAnim = ObjectAnimator.ofFloat(child, "translationY", 600, 0);
+                fadeAnim.setDuration(500);
+                KickBackAnimator kickAnimator = new KickBackAnimator();
+                kickAnimator.setDuration(500);
+                fadeAnim.setEvaluator(kickAnimator);
+                fadeAnim.start();
             }, i * 50 + 100);
         }
     }
 
     private void startAnimation() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //圆形扩展的动画
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                        int x = NavigationUtil.getScreenWidth(mContext) / 2;
-                        int y = (NavigationUtil.getScreenHeith(mContext) - NavigationUtil.dip2px(mContext, 25));
-                        Animator animator = ViewAnimationUtils.createCircularReveal(navigationBar.getAddViewLayout(), x,
-                                y, 0, navigationBar.getAddViewLayout().getHeight());
-                        animator.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-                                navigationBar.getAddViewLayout().setVisibility(View.VISIBLE);
-                            }
+        mHandler.post(() -> {
+            try {
+                //圆形扩展的动画
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    int x = NavigationUtil.getScreenWidth(mContext) / 2;
+                    int y = (NavigationUtil.getScreenHeith(mContext) - NavigationUtil.dip2px(mContext, 25));
+                    Animator animator = ViewAnimationUtils.createCircularReveal(navigationBar.getAddViewLayout(), x,
+                            y, 0, navigationBar.getAddViewLayout().getHeight());
+                    animator.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            navigationBar.getAddViewLayout().setVisibility(View.VISIBLE);
+                        }
 
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                //							layout.setVisibility(View.VISIBLE);
-                            }
-                        });
-                        animator.setDuration(300);
-                        animator.start();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            //							layout.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    animator.setDuration(300);
+                    animator.start();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
-
     }
 }

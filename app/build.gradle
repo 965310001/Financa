@@ -3,6 +3,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
+
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "com.ph.financa"
         minSdkVersion 16
@@ -12,6 +15,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true     //第一步
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
     signingConfigs {
         config {
@@ -45,12 +52,18 @@ dependencies {
 
     implementation project(":easynavigation")
     implementation project(":commoncore")
+    implementation project(":easeui")
 
     implementation 'com.lzy.net:okserver:2.0.5'
     implementation 'com.lzy.net:okrx:1.0.2'
     implementation 'com.lzy.net:okgo:3.0.4'
 
-
     /*微信*/
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+
+
+    // Google firebase cloud messaging
+    implementation 'com.google.android.gms:play-services-base:11.4.0'
+    implementation 'com.google.firebase:firebase-messaging:11.4.0'
+    api 'com.hyphenate:hyphenate-sdk:3.6.1'
 }

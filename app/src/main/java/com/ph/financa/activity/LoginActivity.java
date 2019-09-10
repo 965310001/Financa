@@ -2,6 +2,7 @@ package com.ph.financa.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.ph.financa.MainActivity;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
@@ -175,6 +178,7 @@ public class LoginActivity extends BaseActivity {
                                         if (null != bean) {
                                             saveUser(data.data);
                                         }
+                                        loginEaseMob(String.valueOf(data.data.getId()), "");
                                         Log.i(TAG, "onSuccess: " + data);
                                         if (data.getCode() == 40102002) {
                                             FastUtil.startActivity(mContext, SendCodeActivity.class);
@@ -197,7 +201,34 @@ public class LoginActivity extends BaseActivity {
 
                     }
                 });
+    }
 
+    /*登录环信*/
+    private void loginEaseMob(String id, String password) {
+        new Thread(() ->
+                EMClient.getInstance().login(id, password, new EMCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        Looper.prepare();
+                        showLoading();
+                        Log.i(TAG, "onSuccess: 环信登录成功");
+                        EMClient.getInstance().chatManager().loadAllConversations();
+                        EMClient.getInstance().groupManager().loadAllGroups();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        showLoading();
+                        ToastUtil.show(s);
+                        Log.i(TAG, "环信登录失败:" + s + i);
+                    }
+
+                    @Override
+                    public void onProgress(int i, String s) {
+                        Log.i(TAG, "onProgress: 正在请求 : " + s);
+                    }
+                })
+        ).start();
     }
 
     /*保存用户信息*/

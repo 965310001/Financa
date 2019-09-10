@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aries.ui.view.title.TitleBarView;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
@@ -77,26 +79,49 @@ public class SettingActivity extends BaseTitleActivity {
     }
 
     private void quitUser() {
-//        HashMap<String, String> headers = new HashMap<>();
+        showLoading();
         ViseHttp.POST(String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.LOGINOUT))
-//                .addHeaders(headers)
                 .request(new ACallback<BaseTResp2>() {
                     @Override
                     public void onSuccess(BaseTResp2 data) {
                         if (data.isSuccess()) {
-                            SPHelper.clearShareprefrence(mContext);
-                            FastUtil.startActivity(mContext, LoginActivity.class);
+                            logoutEaseMob();
                         } else {
+                            hideLoading();
                             ToastUtil.show(data.getMsg());
                         }
                     }
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-
+                        hideLoading();
+                        ToastUtil.show(errMsg);
                     }
                 });
 
+    }
+
+    /*退出环信*/
+    private void logoutEaseMob() {
+        EMClient.getInstance().logout(true, new EMCallBack() {
+
+            @Override
+            public void onSuccess() {
+                hideLoading();
+                SPHelper.clearShareprefrence(mContext);
+                FastUtil.startActivity(mContext, LoginActivity.class);
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                hideLoading();
+                ToastUtil.show(message);
+            }
+        });
     }
 
 }

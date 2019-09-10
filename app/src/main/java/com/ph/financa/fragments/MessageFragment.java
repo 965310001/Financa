@@ -20,4 +20,10 @@ public class MessageFragment extends BaseFragment {
     public void initView(Bundle savedInstanceState) {
 
     }
+
+    @Override
+    public void loadData() {
+        super.loadData();
+
+    }
 }

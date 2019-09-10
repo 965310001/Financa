@@ -33,4 +33,8 @@ public interface Constant {
     /*支付宝APPID*/
     CharSequence AI_APP_ID = "2019050964432158";
 
+
+    /*环信*/
+    String EASEMOB_APPKEY = "";/*需要初始化清单文件*/
+
 }

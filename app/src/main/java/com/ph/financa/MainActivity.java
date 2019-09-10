@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.ph.financa.activity.LoginActivity;
 import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.com.commoncore.base.BaseActivity;
+import tech.com.commoncore.utils.FastUtil;
 
 /**
  * 首页
@@ -66,12 +68,14 @@ public class MainActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
 
         /*测试*/
-//        FastUtil.startActivity(mContext, MainActivity.class);
-
+        FastUtil.startActivity(mContext, LoginActivity.class);
 
         navigationBar = findViewById(R.id.navigationBar);
 
-        addFragments();
+        fragments.add(new HomeFragment());
+        fragments.add(new SeeFragment());
+        fragments.add(new CustomerFragment());
+        fragments.add(new MeFragment());
 
         navigationBar.titleItems(tabText)
                 .normalIconItems(normalIcon)
@@ -99,13 +103,6 @@ public class MainActivity extends BaseActivity {
                 .build();
 
         navigationBar.setAddViewLayout(createWeiboView());
-    }
-
-    private void addFragments() {
-        fragments.add(new HomeFragment());
-        fragments.add(new SeeFragment());
-        fragments.add(new CustomerFragment());
-        fragments.add(new MeFragment());
     }
 
     //仿微博弹出菜单

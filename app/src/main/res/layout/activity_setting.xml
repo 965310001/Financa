@@ -37,7 +37,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_62"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
         android:background="@drawable/shape_bg_line" />
 
     <RelativeLayout
@@ -64,6 +65,7 @@
             android:layout_height="22dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_43"
+            android:gravity="right"
             android:text="130****5427"
             android:textColor="#ff999999"
             android:textSize="16sp" />
@@ -79,7 +81,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_62"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
         android:background="@drawable/shape_bg_line" />
 
     <RelativeLayout
@@ -105,6 +108,7 @@
             android:layout_height="22dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_43"
+            android:gravity="right"
             android:text="130****5427"
             android:textColor="#ff999999"
             android:textSize="16sp" />
@@ -117,14 +121,24 @@
             android:background="@mipmap/ic_chevron" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_16"
+        android:background="@drawable/shape_bg_line" />
+
     <TextView
         android:id="@+id/tv_quit"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:layout_marginTop="@dimen/dp_16"
         android:gravity="center"
         android:onClick="onClick"
         android:text="退出登录"
         android:textColor="#FF3B30"
         android:textSize="17sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_bg_line" />
+
 </LinearLayout>

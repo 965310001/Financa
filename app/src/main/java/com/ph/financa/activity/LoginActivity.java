@@ -9,17 +9,23 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ph.financa.MainActivity;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.BaseTResp2;
+import com.ph.financa.activity.bean.UserBean;
+import com.ph.financa.activity.bean.WXAccessTokenBean;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.wxapi.pay.JPayListener;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
-import java.io.Serializable;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,13 +96,14 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void loginWeixin() {
+        Log.i(TAG, "loginWeixin: ");
         WeiXinBaoStrategy weiXinBaoStrategy = WeiXinBaoStrategy.getInstance(mContext);
         weiXinBaoStrategy.login(Constant.WECHATAPPKEY, new JPayListener() {
             @Override
             public void onPaySuccess() {
                 String code = SPHelper.getStringSF(mContext, Constant.WEIXINCODE, "");
                 if (!TextUtils.isEmpty(code)) {
-                    getWXUserInfo(code);
+                    getAccessToken(code);
                     SPHelper.setStringSF(mContext, Constant.WEIXINCODE, "");
                 }
             }
@@ -115,52 +122,26 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
-
-
     }
 
-    private void getWXUserInfo(String code) {
+    private void getAccessToken(String code) {
         Map<String, String> params = new HashMap();
         params.put("appid", Constant.WEIXIN_APP_ID);
         params.put("secret", Constant.WECHATAPPSECRET);
         params.put("code", code);
         params.put("grant_type", "authorization_code");
-
-        ViseHttp.GET("https://api.weixin.qq.com/sns/oauth2/access_token")
+        Log.i(TAG, "getWXUserInfo: ");
+        ViseHttp.GET("sns/oauth2/access_token")
+                .baseUrl("https://api.weixin.qq.com/")
                 .addParams(params)
                 .request(new ACallback<WXAccessTokenBean>() {
                     @Override
                     public void onSuccess(WXAccessTokenBean data) {
-
-                        HashMap<String, String> globalHeaders = new HashMap<>();
-                        globalHeaders.put("openId", SPHelper.getStringSF(mContext, Constant.WXOPENID));
-                        globalHeaders.put("userId", SPHelper.getStringSF(mContext, Constant.USERID));
-                        ViseHttp.CONFIG().globalHeaders(globalHeaders);
-
-                        SPHelper.setStringSF(mContext, Constant.WXOPENID, "");
-
-                        Map<String, String> params = new HashMap<>();
-                        params.put("nickname", "");
-                        params.put("headImgUrl", "");
-                        params.put("country", "");
-                        params.put("province", "");
-                        params.put("city", "");
-                        params.put("openId", "");
-                        ViseHttp.POST(ApiConstant.LOGIN)
-                                .addParams(params).request(new ACallback<Object>() {
-                            @Override
-                            public void onSuccess(Object data) {
-                                saveUser(data);
-                                if (true) {
-                                    FastUtil.startActivity(mContext, SendCodeActivity.class);
-                                }
-                            }
-
-                            @Override
-                            public void onFail(int errCode, String errMsg) {
-                                ToastUtil.show(errMsg);
-                            }
-                        });
+                        if (TextUtils.isEmpty(data.getAccess_token()) || TextUtils.isEmpty(data.getOpenid())) {
+                            ToastUtil.show(data.getErrmsg());
+                        } else {
+                            getWXUserInfo(data.getAccess_token(), data.getOpenid());
+                        }
                     }
 
                     @Override
@@ -170,18 +151,71 @@ public class LoginActivity extends BaseActivity {
                 });
     }
 
+    private void getWXUserInfo(String token, final String openid) {
+        ViseHttp.GET("sns/userinfo").baseUrl("https://api.weixin.qq.com/")
+                .addParam("access_token", token)
+                .addParam("openid", openid)
+                .request(new ACallback<WXAccessTokenBean>() {
+                    @Override
+                    public void onSuccess(WXAccessTokenBean data) {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("nickname", data.getNickname());
+                        params.put("headImgUrl", data.getHeadimgurl());
+                        params.put("country", data.getCountry());
+                        params.put("province", data.getProvince());
+                        params.put("city", data.getCity());
+                        params.put("openId", data.getOpenid());
+                        JSONObject jsonObject = new JSONObject(params);
+                        ViseHttp.POST(ApiConstant.LOGIN)
+                                .setJson(jsonObject)
+                                .request(new ACallback<BaseTResp2<UserBean>>() {
+                                    @Override
+                                    public void onSuccess(BaseTResp2<UserBean> data) {
+                                        UserBean bean = data.data;
+                                        if (null != bean) {
+                                            saveUser(data.data);
+                                        }
+                                        Log.i(TAG, "onSuccess: " + data);
+                                        if (data.getCode() == 40102002) {
+                                            FastUtil.startActivity(mContext, SendCodeActivity.class);
+                                        } else if (data.isSuccess()) {
+                                            FastUtil.startActivity(mContext, MainActivity.class);
+                                        } else {
+                                            ToastUtil.show(data.getMsg());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFail(int errCode, String errMsg) {
+                                        ToastUtil.show(errMsg);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+
+                    }
+                });
+
+    }
+
     /*保存用户信息*/
-    private void saveUser(Object data) {
-        SPHelper.setStringSF(mContext, Constant.USERNAME, data.toString());
-        SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.toString());
-        SPHelper.setStringSF(mContext, Constant.USERHEAD, data.toString());
-        SPHelper.setStringSF(mContext, Constant.USERID, data.toString());
+    private void saveUser(UserBean data) {
+        if (null != data) {
+            String openId = data.getOpenId();
+            HashMap<String, String> globalHeaders = new HashMap<>();
+            globalHeaders.put("openId", openId);
+            globalHeaders.put("userId", String.valueOf(data.getId()));
+            ViseHttp.CONFIG().globalHeaders(globalHeaders);
+            SPHelper.setStringSF(mContext, Constant.WXOPENID, openId);
+
+            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
+            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
+            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
+            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
+        }
     }
-
-    class WXAccessTokenBean implements Serializable {
-
-    }
-
 
     @Override
     public int getContentLayout() {

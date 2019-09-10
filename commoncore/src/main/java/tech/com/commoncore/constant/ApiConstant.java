@@ -72,11 +72,11 @@ public class ApiConstant {
     /*分享*/
     public static final String SHARE = "h5/share";
     /*转发*/
-    public static final String FORWARD = "http://wealth.phscitech.com/h5/forward";
+    public static final String FORWARD = "h5/forward";
     /*转发详情*/
 //    public static final String SHARE ="http://wealth.phscitech.com/h5/forward-detail";
     /*访客*/
-    public static final String VISIT = "http://wealth.phscitech.com/h5/visit";
+    public static final String VISIT = "h5/visit";
     /*访客画像*/
 //    public static final String SHARE ="http://wealth.phscitech.com/h5/visit-picture";
     /*浏览详情*/

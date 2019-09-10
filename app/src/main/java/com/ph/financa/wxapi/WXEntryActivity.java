@@ -130,6 +130,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 result = R.string.errcode_success;
                 if (resp.getType() == RETURN_MSG_TYPE_LOGIN) {
                     String code = ((SendAuth.Resp) resp).code;
+                    Log.i(TAG, "onResp: code:"+code);
                     SPHelper.setStringSF(getApplicationContext(), Constant.WEIXINCODE, code);
                 }
                 break;

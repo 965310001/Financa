@@ -41,6 +41,12 @@
         </activity>
 
         <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="net.sourceforge.simcpux"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="true"

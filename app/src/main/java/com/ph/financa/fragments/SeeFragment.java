@@ -20,7 +20,6 @@ import tech.com.commoncore.base.BaseFragment;
 /**
  * 谁看了我
  */
-
 public class SeeFragment extends BaseFragment implements View.OnClickListener {
 
     private String[] titles = {"分享", "转发", "访客", "留言"};
@@ -45,6 +44,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
         final ViewPager mViewPager = mContentView.findViewById(R.id.view_pager);
         MyPagerAdapter mAdapter = new MyPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(mFragments.size());
         mMainTab.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {

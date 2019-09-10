@@ -435,8 +435,8 @@ public class EasyNavigationBar extends LinearLayout {
 
     private void setViewPagerAdapter() {
         adapter = new ViewPagerAdapter(fragmentManager, fragmentList);
-        mViewPager.setAdapter(adapter);
-        mViewPager.setOffscreenPageLimit(10);
+        mViewPager.setOffscreenPageLimit(fragmentList.size());
+        mViewPager.setCurrentItem(0);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -453,6 +453,7 @@ public class EasyNavigationBar extends LinearLayout {
 
             }
         });
+        mViewPager.setAdapter(adapter);
     }
 
     //构建中间带按钮的navigation

@@ -25,19 +25,19 @@ public class InsertBean implements Serializable {
 
     private long id;
     private long createTime;
-    private int userId;
+    private long userId;
     private String orderNo;
     private long serviceId;
     private String amount;
     private String payAmount;
-    private Object payTime;
+//    private Object payTime;
     private int payType;
     private int status;
-    private Object serviceStartTime;
-    private Object serviceEndTime;
-    private int createUserId;
-    private int updateUserId;
-    private String updateTime;
+//    private String serviceStartTime;
+//    private Object serviceEndTime;
+//    private int createUserId;
+//    private int updateUserId;
+//    private String updateTime;
 
     public long getId() {
         return id;
@@ -55,11 +55,11 @@ public class InsertBean implements Serializable {
         this.createTime = createTime;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -95,13 +95,13 @@ public class InsertBean implements Serializable {
         this.payAmount = payAmount;
     }
 
-    public Object getPayTime() {
-        return payTime;
-    }
-
-    public void setPayTime(Object payTime) {
-        this.payTime = payTime;
-    }
+//    public Object getPayTime() {
+//        return payTime;
+//    }
+//
+//    public void setPayTime(Object payTime) {
+//        this.payTime = payTime;
+//    }
 
     public int getPayType() {
         return payType;
@@ -119,43 +119,43 @@ public class InsertBean implements Serializable {
         this.status = status;
     }
 
-    public Object getServiceStartTime() {
-        return serviceStartTime;
-    }
-
-    public void setServiceStartTime(Object serviceStartTime) {
-        this.serviceStartTime = serviceStartTime;
-    }
-
-    public Object getServiceEndTime() {
-        return serviceEndTime;
-    }
-
-    public void setServiceEndTime(Object serviceEndTime) {
-        this.serviceEndTime = serviceEndTime;
-    }
-
-    public int getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(int createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public int getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(int updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
+//    public Object getServiceStartTime() {
+//        return serviceStartTime;
+//    }
+//
+//    public void setServiceStartTime(Object serviceStartTime) {
+//        this.serviceStartTime = serviceStartTime;
+//    }
+//
+//    public Object getServiceEndTime() {
+//        return serviceEndTime;
+//    }
+//
+//    public void setServiceEndTime(Object serviceEndTime) {
+//        this.serviceEndTime = serviceEndTime;
+//    }
+//
+//    public int getCreateUserId() {
+//        return createUserId;
+//    }
+//
+//    public void setCreateUserId(int createUserId) {
+//        this.createUserId = createUserId;
+//    }
+//
+//    public int getUpdateUserId() {
+//        return updateUserId;
+//    }
+//
+//    public void setUpdateUserId(int updateUserId) {
+//        this.updateUserId = updateUserId;
+//    }
+//
+//    public String getUpdateTime() {
+//        return updateTime;
+//    }
+//
+//    public void setUpdateTime(String updateTime) {
+//        this.updateTime = updateTime;
+//    }
 }

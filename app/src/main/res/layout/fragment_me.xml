@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="52dp"
+            android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_61"
@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/tv_company_name"
-            android:layout_width="57dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginLeft="@dimen/dp_16"
             android:text="公司名称"

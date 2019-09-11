@@ -2,25 +2,84 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item>
+    <!--<item android:width="343dp" android:height="240dp">-->
+    <!--<shape android:shape="rectangle">-->
+    <!--<solid android:color="#ffffffff" />-->
+    <!--<corners android:radius="8dp" />-->
+    <!--<item name="android:shadowColor">#26000000</item>-->
+    <!--<item name="android:shadowDx">0</item>-->
+    <!--<item name="android:shadowDy">2</item>-->
+    <!--</shape>-->
+    <!--</item>-->
+
+    <item
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp">
         <shape android:shape="rectangle">
-            <solid android:color="#ffffffff" />
-            <corners android:radius="8dp" />
-            <item name="android:shadowColor">#26000000</item>
-            <item name="android:shadowDx">0</item>
-            <item name="android:shadowDy">2</item>
+
+            <!--
+            Android:angle 渐变角度，0从左到右，90表示从下到上，数值为45的整数倍，默认为0；
+            Android:type  渐变的样式 liner线性渐变 radial环形渐变 sweep
+           渐变颜色 0F000000 -> 4A9c9ca0
+            -->
+            <gradient
+                android:angle="270"
+                android:centerColor="#4A9c9ca0"
+                android:centerX="50%"
+                android:centerY="50%"
+                android:endColor="#4A9c9ca0"
+                android:startColor="#0F000000"
+                android:type="linear" />
+
+            <corners
+                android:bottomLeftRadius="8dp"
+                android:bottomRightRadius="8dp"
+                android:topLeftRadius="8dp"
+                android:topRightRadius="8dp" />
         </shape>
     </item>
+    <!-- 背景部分的Item图像定义 -->
+    <!-- 形象的表达：bottom代表背景部分在上边缘超出阴影的高度，right代表背景部分在左边超出阴影的宽度（相对应的offset） -->
+    <item
+        android:bottom="3dp"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="1dp">
+        <shape android:shape="rectangle">
+
+            <gradient
+                android:angle="0"
+                android:endColor="#FFf"
+                android:startColor="#FFf" />
+
+            <corners
+                android:bottomLeftRadius="@dimen/dp_8"
+                android:bottomRightRadius="@dimen/dp_8"
+                android:topLeftRadius="@dimen/dp_8"
+                android:topRightRadius="@dimen/dp_8" />
+        </shape>
+    </item>
+    <!--<item>-->
+    <!--<shape android:shape="rectangle">-->
+    <!--<solid android:color="#ffffffff" />-->
+    <!--<corners android:radius="8dp" />-->
+    <!--<item name="android:shadowColor">#26000000</item>-->
+    <!--<item name="android:shadowDx">0</item>-->
+    <!--<item name="android:shadowDy">2</item>-->
+    <!--</shape>-->
+    <!--</item>-->
     <!--<item-->
-        <!--android:bottom="2.66dp"-->
-        <!--android:right="2.66dp">-->
-        <!--<shape>-->
-            <!--<solid android:color="#ffffff" />-->
-            <!--&lt;!&ndash; 描边 &ndash;&gt;-->
-            <!--<stroke-->
-                <!--android:width="0.33dp"-->
-                <!--android:color="#dedede" />-->
-        <!--</shape>-->
+    <!--android:bottom="2.66dp"-->
+    <!--android:right="2.66dp">-->
+    <!--<shape>-->
+    <!--<solid android:color="#ffffff" />-->
+    <!--&lt;!&ndash; 描边 &ndash;&gt;-->
+    <!--<stroke-->
+    <!--android:width="0.33dp"-->
+    <!--android:color="#dedede" />-->
+    <!--</shape>-->
     <!--</item>-->
 
 </layer-list>

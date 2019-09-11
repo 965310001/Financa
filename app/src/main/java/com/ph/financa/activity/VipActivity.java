@@ -14,6 +14,7 @@ import com.aries.ui.view.title.TitleBarView;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.InsertBean;
+import com.ph.financa.activity.bean.PayBean;
 import com.ph.financa.activity.bean.SelectBean;
 import com.ph.financa.activity.bean.VipBean;
 import com.ph.financa.constant.Constant;
@@ -25,7 +26,9 @@ import com.ph.financa.wxapi.pay.ZhiFuBaoStrategy;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
-import java.io.Serializable;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,7 @@ import java.util.Map;
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.manager.GlideManager;
+import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.ToastUtils;
@@ -55,6 +59,8 @@ public class VipActivity extends BaseTitleActivity {
 
     private View mOldView;
     private long mServiceId;/*服务模板ID*/
+
+    private String[] PAYTYPE = {"wxpay", "alipay"};
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -81,8 +87,6 @@ public class VipActivity extends BaseTitleActivity {
         setData(SPHelper.getStringSF(mContext, Constant.USERNAME, "")
                 , SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
 
-        createRecommendView();
-
         setPrivilegeData(null);
     }
 
@@ -104,44 +108,6 @@ public class VipActivity extends BaseTitleActivity {
                 linearLayout.addView(itemView);
             }
         }
-    }
-
-    private void createRecommendView() {
-        String[] year = {"1年", "2年", "团购"};
-        String[] price = {"388", "688", "288"};
-        String[] oldPrice = {"888", "1766", "888"};
-        for (int i = 0; i < 3; i++) {
-            LinearLayout itemView = (LinearLayout) View.inflate(mContext, R.layout.item_recommend, null);
-
-            TextView tvYear = itemView.findViewById(R.id.tv_year);
-            TextView tvPrice = itemView.findViewById(R.id.tv_price);
-            TextView tvOldPrice = itemView.findViewById(R.id.tv_old_price);
-
-            setRecommendData(year[i], price[i], oldPrice[i], tvYear, tvPrice, tvOldPrice);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.weight = 1;
-            itemView.setLayoutParams(params);
-
-            itemView.setOnClickListener(view -> {
-                if (view != mOldView) {
-                    mOldView.setBackgroundResource(R.drawable.shape_bg_recommend_nomar);
-                    view.setBackgroundResource(R.drawable.shape_bg_recommend_select);
-
-                    mOldView = view;
-
-                    String text = ((TextView) view.findViewById(R.id.tv_year)).getText().toString();
-                    for (int i1 = 0; i1 < year.length; i1++) {
-                        if (text.equals(year[i1])) {
-                            setPrice(price[i1]);
-                        }
-                    }
-                }
-            });
-            mLLRecommend.addView(itemView);
-        }
-        mOldView = mLLRecommend.getChildAt(0);
-        mOldView.setBackgroundResource(R.drawable.shape_bg_recommend_nomar);
     }
 
     private void setRecommendData(String year, String price, String oldPrice, TextView tvYear, TextView tvPrice, TextView tvOldPrice) {
@@ -189,6 +155,7 @@ public class VipActivity extends BaseTitleActivity {
                 .request(new ACallback<BaseTResp2<List<SelectBean>>>() {
                     @Override
                     public void onSuccess(BaseTResp2<List<SelectBean>> data) {
+                        Log.i(TAG, "onSuccess: ");
                         if (data.isSuccess()) {
                             Log.i(TAG, "onSuccess: " + data.getData());
                             createRecommendView(data.getData());
@@ -199,6 +166,7 @@ public class VipActivity extends BaseTitleActivity {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
+                        Log.i(TAG, "onFail: " + errMsg);
                         ToastUtil.show(errMsg);
                     }
                 });
@@ -206,7 +174,7 @@ public class VipActivity extends BaseTitleActivity {
 
     private void createRecommendView(List<SelectBean> data) {
         if (null != data && data.size() > 0) {
-
+            int index = 0;
             for (SelectBean bean : data) {
                 LinearLayout itemView = (LinearLayout) View.inflate(mContext, R.layout.item_recommend, null);
 
@@ -232,51 +200,22 @@ public class VipActivity extends BaseTitleActivity {
                                 setPrice(datum.getPrice());
                             }
                         }
-
-//                        for (int i1 = 0; i1 < year.length; i1++) {
-//                            if (text.equals(year[i1])) {
-//                                setPrice(price[i1]);
-//                            }
-//                        }
                     }
                 });
+                index++;
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) itemView.getLayoutParams();
+                if (index == data.size()) {
+                    layoutParams.setMargins(DisplayUtil.dip2px(16), 0, DisplayUtil.dip2px(16), 0);
+                } else {
+                    layoutParams.setMargins(DisplayUtil.dip2px(16), 0, 0, 0);
+                }
                 mLLRecommend.addView(itemView);
             }
-//            for (int i = 0; i < data.size(); i++) {
-//                LinearLayout itemView = (LinearLayout) View.inflate(mContext, R.layout.item_recommend, null);
-//
-//                TextView tvYear = itemView.findViewById(R.id.tv_year);
-//                TextView tvPrice = itemView.findViewById(R.id.tv_price);
-//                TextView tvOldPrice = itemView.findViewById(R.id.tv_old_price);
-//
-//                setRecommendData(year[i], price[i], oldPrice[i], tvYear, tvPrice, tvOldPrice);
-//
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//                params.weight = 1;
-//                itemView.setLayoutParams(params);
-//
-//                itemView.setOnClickListener(view -> {
-//                    if (view != mOldView) {
-//                        mOldView.setBackgroundResource(R.drawable.shape_bg_recommend_nomar);
-//                        view.setBackgroundResource(R.drawable.shape_bg_recommend_select);
-//
-//                        mOldView = view;
-//
-//                        String text = ((TextView) view.findViewById(R.id.tv_year)).getText().toString();
-//                        for (int i1 = 0; i1 < year.length; i1++) {
-//                            if (text.equals(year[i1])) {
-//                                setPrice(price[i1]);
-//                            }
-//                        }
-//                    }
-//                });
-//                mLLRecommend.addView(itemView);
-//            }
+            mOldView = mLLRecommend.getChildAt(0);
+            mOldView.setBackgroundResource(R.drawable.shape_bg_recommend_select);
+            setPrice(data.get(0).getPrice());
         }
-        mOldView = mLLRecommend.getChildAt(0);
-        mOldView.setBackgroundResource(R.drawable.shape_bg_recommend_nomar);
     }
-
 
     /*套餐模块-判断是否已开通vip套餐服务*/
     private void isVip() {
@@ -306,10 +245,12 @@ public class VipActivity extends BaseTitleActivity {
 
     /*订单模块-创建订单*/
     private void insert(int payType) {
+        Map<String, String> map = new HashMap<>();
+        map.put("serviceId", String.valueOf(mServiceId));
+        map.put("amount", SPHelper.getStringSF(mContext, Constant.PRICE));
+        map.put("payType", String.valueOf(payType));
         ViseHttp.POST(ApiConstant.INSERT)
-                .addParam("serviceId", String.valueOf(mServiceId))
-                .addParam("amount", SPHelper.getStringSF(mContext, Constant.PRICE))
-                .addParam("payType", String.valueOf(payType))
+                .setJson(new JSONObject(map))
                 .request(new ACallback<BaseTResp2<InsertBean>>() {
                     @Override
                     public void onSuccess(BaseTResp2<InsertBean> data) {
@@ -342,26 +283,34 @@ public class VipActivity extends BaseTitleActivity {
 
     /*支付*/
     private void pay(long orderId, String orderNo, int payType) {
+        Map<String, String> map = new HashMap<>();
+        map.put("orderId", String.valueOf(orderId));
+        map.put("orderNo", orderNo);
+        map.put("tradeType", "APP");
+        map.put("payType", PAYTYPE[payType - 1]);
         ViseHttp.POST(ApiConstant.PAY)
-                .addParam("orderId", String.valueOf(orderId))
-                .addParam("orderNo", orderNo)
-                .addParam("tradeType", "APP")
-                .addParam("payType", String.valueOf(payType))
-                .request(new ACallback<PayBean>() {
+                .setJson(new JSONObject(map))
+                .request(new ACallback<BaseTResp2<PayBean>>() {
                     @Override
-                    public void onSuccess(PayBean data) {
-                        Log.i(TAG, "onSuccess: " + data);
-                      /*  if (data.isSuccess()) {
+                    public void onSuccess(BaseTResp2<PayBean> data) {
+                        if (data.isSuccess()) {
                             PayBean bean = data.getData();
-                            if (bean.isIsEnable()) {
-                                mTvVip.setText("您是VIP会员");
-                            } else {
-                                mTvVip.setText("您还不是VIP会员");
+                            String payUrl = bean.getPayUrl();
+                            switch (payType) {
+                                case 1:/*微信*/
+                                    try {
+                                        weiXinPay(new JSONObject(payUrl));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case 2:
+                                    zhiFuBaoPay(payUrl);
+                                    break;
                             }
-                            mServiceId = bean.getServiceId();
                         } else {
                             ToastUtil.show(data.getMsg());
-                        }*/
+                        }
                     }
 
                     @Override
@@ -371,11 +320,6 @@ public class VipActivity extends BaseTitleActivity {
                 });
 
     }
-
-    public class PayBean implements Serializable {
-
-    }
-
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -445,17 +389,26 @@ public class VipActivity extends BaseTitleActivity {
         }
     }
 
-    private void weiXinPay() {
-        if (!TextUtils.isEmpty(getPrice())) {
-            Context context = new Context(WeiXinBaoStrategy.getInstance(this));
-            Map<String, String> map = new HashMap<>();
-//            map.put("appId",appId);
-//            map.put("partnerId", response.getPartnerid());
-//            map.put("prepayId", response.getPrepayid());
-//            map.put("nonceStr", response.getNonce_strX());
-//            map.put("timeStamp", response.getTimestamp());
-//            map.put("sign", response.getSignX());
+    private void weiXinPay(JSONObject jsonObject) {
+        Context context = new Context(WeiXinBaoStrategy.getInstance(this));
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            String appId = jsonObject.getString("appId");
+            String partnerId = jsonObject.getString("partnerId");
+            String prepayId = jsonObject.getString("prepayId");
+            String nonceStr = jsonObject.getString("nonceStr");
+            String timeStamp = jsonObject.getString("timeStamp");
+            String sign = jsonObject.getString("sign");
+            map.put("appId", appId);
+            map.put("partnerId", partnerId);
+            map.put("prepayId", prepayId);
+            map.put("nonceStr", nonceStr);
+            map.put("timeStamp", timeStamp);
+            map.put("sign", sign);
             context.pay(map, jPayListener);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

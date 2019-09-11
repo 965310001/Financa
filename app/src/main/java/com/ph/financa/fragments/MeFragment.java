@@ -72,6 +72,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
 
         if (!TextUtils.isEmpty(companyName)) {
+            mTvCompanyName.setText(companyName);
+        } else {
             mTvCompanyName.setText("公司名字");
         }
 
@@ -98,11 +100,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.tv_receive:
                 // TODO: 2019/9/9 新会员专享688/两年 立即领取
-                goActivity(VipActivity.class, null);
+                goActivity(null, null);
                 break;
             case R.id.ic_open:
                 // TODO: 2019/9/9 开通688会员
-                goActivity(null, null);
+                goActivity(VipActivity.class, null);
                 break;
             case R.id.ll_card:
                 // TODO: 2019/9/9 我的名片

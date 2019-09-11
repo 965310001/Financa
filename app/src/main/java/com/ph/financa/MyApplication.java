@@ -14,11 +14,13 @@ import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.DBCookieStore;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
+import com.ph.financa.constant.Constant;
 import com.vise.log.ViseLog;
 import com.vise.log.inner.LogcatTree;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.interceptor.HttpLogInterceptor;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,6 +28,7 @@ import okhttp3.OkHttpClient;
 import tech.com.commoncore.app.FastManager;
 import tech.com.commoncore.base.BaseApplication;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.Utils;
 
 
@@ -115,6 +118,11 @@ public class MyApplication extends BaseApplication {
                 .configAllowLog(true)//是否输出日志
                 .configShowBorders(false);//是否排版显示
         ViseLog.plant(new LogcatTree());//添加打印日志信息到Logcat的树
+
+        HashMap<String, String> globalHeaders = new HashMap<>();
+        globalHeaders.put("openId", SPHelper.getStringSF(getApplicationContext(), Constant.WXOPENID, ""));
+        globalHeaders.put("userId", SPHelper.getStringSF(getApplicationContext(), Constant.USERID, ""));
+        ViseHttp.CONFIG().globalHeaders(globalHeaders);
     }
 
     private void initNet() {

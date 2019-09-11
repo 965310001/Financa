@@ -10,9 +10,9 @@
     <include layout="@layout/layout_title_bar" />
 
     <androidx.core.widget.NestedScrollView
-        android:background="#F5F5F5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F5F5F5"
         android:scrollbars="none">
 
         <LinearLayout
@@ -74,50 +74,56 @@
                         android:textSize="12sp" />
                 </RelativeLayout>
 
-                <androidx.cardview.widget.CardView
+                <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="@dimen/dp_16"-->
+                <!--android:layout_marginRight="@dimen/dp_16"-->
+                <!---->
+                <!--app:cardElevation="@dimen/dp_8">-->
+
+                <LinearLayout
+                    android:id="@+id/ll_privilege"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/dp_16"
                     android:layout_marginTop="@dimen/dp_80"
                     android:layout_marginRight="@dimen/dp_16"
                     android:background="@drawable/shape_bg_privilege"
-                    app:cardElevation="@dimen/dp_8">
+                    android:minHeight="@dimen/dp_240"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="255dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:text="开通 AI财富大师 VIP会员，立享8大特权"
+                        android:textColor="#ff555555"
+                        android:textSize="14sp" />
 
                     <LinearLayout
-                        android:id="@+id/ll_privilege"
+                        android:id="@+id/ll_privilege_one"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" />
 
-                        android:minHeight="@dimen/dp_240"
-                        android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/ll_privilege_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" />
 
-                        <TextView
-                            android:layout_width="255dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/dp_12"
-                            android:text="开通 AI财富大师 VIP会员，立享8大特权"
-                            android:textColor="#ff555555"
-                            android:textSize="14sp" />
-
-                        <LinearLayout
-                            android:id="@+id/ll_privilege_one"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="@dimen/dp_16"
-                            android:layout_weight="1"
-                            android:orientation="horizontal" />
-
-                        <LinearLayout
-                            android:id="@+id/ll_privilege_two"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="@dimen/dp_12"
-                            android:layout_weight="1"
-                            android:orientation="horizontal" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_16" />
+                </LinearLayout>
+                <!--</androidx.cardview.widget.CardView>-->
             </FrameLayout>
 
             <TextView
@@ -129,14 +135,28 @@
                 android:textColor="#ff000000"
                 android:textSize="18sp" />
 
-            <LinearLayout
-                android:id="@+id/ll_recommend"
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:scrollbars="none"
+                android:layout_height="wrap_content"
+                tools:background="@color/colorAccent">
+
+                <LinearLayout
+                    android:id="@+id/ll_recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:minHeight="@dimen/dp_128"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <com.ph.financa.view.HorizontalListView
+                android:visibility="gone"
+                android:id="@+id/hl_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_12"
-                android:minHeight="@dimen/dp_128"
-                android:orientation="horizontal"
-                tools:background="@color/colorAccent" />
+                android:background="@color/colorPrimary"
+                android:minHeight="128dp" />
 
             <TextView
                 android:layout_width="74dp"

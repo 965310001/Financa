@@ -10,6 +10,7 @@
     <include layout="@layout/layout_title_bar" />
 
     <androidx.core.widget.NestedScrollView
+        android:background="#F5F5F5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -77,9 +78,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:background="@drawable/shape_bg_privilege"
                     android:layout_marginTop="@dimen/dp_80"
-                    android:layout_marginRight="@dimen/dp_16">
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:background="@drawable/shape_bg_privilege"
+                    app:cardElevation="@dimen/dp_8">
 
                     <LinearLayout
                         android:id="@+id/ll_privilege"
@@ -112,7 +114,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_marginTop="@dimen/dp_12"
-                            android:layout_marginBottom="@dimen/dp_16"
                             android:layout_weight="1"
                             android:orientation="horizontal" />
                     </LinearLayout>
@@ -129,13 +130,13 @@
                 android:textSize="18sp" />
 
             <LinearLayout
+                android:id="@+id/ll_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:background="@color/colorAccent"
-                android:minHeight="@dimen/dp_128">
-
-            </LinearLayout>
+                android:minHeight="@dimen/dp_128"
+                android:orientation="horizontal"
+                tools:background="@color/colorAccent" />
 
             <TextView
                 android:layout_width="74dp"
@@ -166,6 +167,7 @@
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_privilege1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_17"
@@ -195,6 +197,8 @@
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_privilege2"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_17"
@@ -223,6 +227,8 @@
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_privilege3"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_17"
@@ -251,6 +257,8 @@
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_privilege4"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_17"
@@ -279,6 +287,8 @@
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_privilege5"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_17"
@@ -307,6 +317,7 @@
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_privilege6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_17"

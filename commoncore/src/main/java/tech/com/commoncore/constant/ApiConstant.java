@@ -123,4 +123,14 @@ public class ApiConstant {
     /*退出登录*/
     public static final String LOGINOUT = "/api/loginout";
 
+    /*套餐模块-判断是否已开通vip套餐服务*/
+    public static final String IS_VIP = "api/order/pay";
+
+    /*支付*/
+    public static final String PAY = "api/order/pay";
+
+    /*订单模块-创建订单*/
+    public static final String INSERT = "api/order/insert";
+    /*套餐模板模块-根据服务类型查询对应所有订单模板*/
+    public static final String ORDER_TEMPLATE_SELECT = "api/order_template/select";
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_bg_recommend_nomar"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:text="1年"
+        android:textColor="#ff333333"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:text="￥388"
+        android:textColor="#fff1a843"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tv_old_price"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:text="￥888"
+        android:textColor="#999999"
+        android:textSize="14sp" />
+</LinearLayout>

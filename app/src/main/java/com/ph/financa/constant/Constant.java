@@ -42,4 +42,6 @@ public interface Constant {
 
     /*支付价格*/
     String PRICE = "price";
+
+
 }

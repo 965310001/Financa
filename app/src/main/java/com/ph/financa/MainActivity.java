@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WriteArticleActivity;
 import com.ph.financa.dialog.AddDialog;
 import com.ph.financa.fragments.CustomerFragment;
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
 
         /*测试*/
-        /*FastUtil.startActivity(mContext, LoginActivity.class);*/
+        FastUtil.startActivity(mContext, VipActivity.class);
 
         navigationBar = findViewById(R.id.navigationBar);
 

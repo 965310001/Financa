@@ -14,6 +14,11 @@ import com.ph.financa.constant.Constant;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
@@ -26,8 +31,9 @@ import tech.com.commoncore.utils.ToastUtil;
  */
 public class SendCodeActivity extends BaseTitleActivity {
 
-    private TextView mTvSendCode, mTvErrCode;
+    private TextView mTvSendCode, mTvErrCode, mTvTime;
     private AppCompatEditText mEtPhone, mEtCode;
+    private Disposable mdDisposable;
 
     @Override
     public int getContentLayout() {
@@ -40,6 +46,7 @@ public class SendCodeActivity extends BaseTitleActivity {
         mEtPhone = findViewById(R.id.et_phone);
         mEtCode = findViewById(R.id.et_code);
         mTvErrCode = findViewById(R.id.tv_code_err);
+        mTvTime = findViewById(R.id.tv_time);
     }
 
     public void onClick(View view) {
@@ -70,15 +77,14 @@ public class SendCodeActivity extends BaseTitleActivity {
         String phone = getPhone();
         ViseHttp.POST(ApiConstant.SEND_CODE)
                 .addParam("phone", phone)
-                .request(new ACallback<Object>() {
+                .request(new ACallback<BaseTResp2>() {
                     @Override
-                    public void onSuccess(Object data) {
+                    public void onSuccess(BaseTResp2 data) {
                         hideLoading();
-                        if (true) {
-                            Log.i(TAG, "onSuccess: 发送成功");
+                        if (data.isSuccess()) {
                             countdownTime();
                         } else {
-                            Log.i(TAG, "onSuccess: 发送失败");
+                            ToastUtil.show(data.getMsg());
                         }
                     }
 
@@ -91,6 +97,19 @@ public class SendCodeActivity extends BaseTitleActivity {
     }
 
     private void countdownTime() {
+        mTvSendCode.setVisibility(View.GONE);
+        mTvTime.setVisibility(View.VISIBLE);
+
+        mdDisposable = Flowable.intervalRange(1, 61, 0, 1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(aLong -> {
+                    mTvTime.setText(String.format("%ds", (61 - aLong)));
+                })
+                .doOnComplete(() -> {
+                    mTvSendCode.setVisibility(View.VISIBLE);
+                    mTvTime.setVisibility(View.GONE);
+                })
+                .subscribe();
     }
 
     /*执行下一步*/
@@ -157,5 +176,13 @@ public class SendCodeActivity extends BaseTitleActivity {
     @Override
     public void setTitleBar(TitleBarView titleBar) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mdDisposable != null) {
+            mdDisposable.dispose();
+        }
     }
 }

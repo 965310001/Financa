@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.ph.financa.R;
 import com.ph.financa.activity.CustomerActivity;
 import com.ph.financa.activity.SettingActivity;
+import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.constant.Constant;
 
@@ -97,7 +98,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.tv_receive:
                 // TODO: 2019/9/9 新会员专享688/两年 立即领取
-                goActivity(null, null);
+                goActivity(VipActivity.class, null);
                 break;
             case R.id.ic_open:
                 // TODO: 2019/9/9 开通688会员

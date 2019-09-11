@@ -27,7 +27,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
-        <activity android:name=".activity.CustomerActivity"></activity>
+        <activity android:name=".activity.VipActivity" />
+        <activity android:name=".activity.CustomerActivity" />
         <activity android:name=".activity.WriteArticleActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity

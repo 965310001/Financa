@@ -82,7 +82,6 @@
             android:paddingLeft="@dimen/dp_12"
             android:textSize="@dimen/textSize_16" />
 
-
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="72dp"
@@ -92,7 +91,8 @@
             android:onClick="onClick"
             android:text="60s"
             android:textColor="#ff333333"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

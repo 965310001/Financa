@@ -179,6 +179,7 @@ public class LoginActivity extends BaseActivity {
 //                                        loginEaseMob(String.valueOf(data.data.getId()), "");
                                         Log.i(TAG, "onSuccess: " + data);
 
+//                                        FastUtil.startActivity(mContext, SendCodeActivity.class);
 
                                         if (data.getCode() == 40102002) {
                                             SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");

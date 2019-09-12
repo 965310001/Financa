@@ -1,7 +1,6 @@
 package com.ph.financa.dialog;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ph.financa.R;
 
 import java.util.List;
+
+import tech.com.commoncore.utils.DisplayUtil;
 
 /**
  * list Dialog
@@ -72,8 +73,7 @@ public class ListDialog extends DialogFragment {
         super.onStart();
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams windowParams = window.getAttributes();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        window.setGravity(Gravity.TOP | Gravity.RIGHT);
+        window.setLayout((int) (DisplayUtil.getScreenWidth() * 0.7), ViewGroup.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(null);
         window.setAttributes(windowParams);
     }

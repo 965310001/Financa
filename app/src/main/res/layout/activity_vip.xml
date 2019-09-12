@@ -377,7 +377,7 @@
                     android:layout_width="0dp"
                     android:layout_height="25dp"
                     android:layout_weight="1"
-                    android:text="￥388"
+                    tools:text="￥388"
                     android:textColor="#fff5ba68"
                     android:textSize="18sp" />
 

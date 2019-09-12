@@ -38,6 +38,7 @@ import java.util.List;
 
 import tech.com.commoncore.base.BaseTitleRefreshLoadFragment;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.utils.DisplayUtils;
 import tech.com.commoncore.utils.ToastUtil;
 
 /**
@@ -106,6 +107,7 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
         } else {
             mRlTitle.setVisibility(View.VISIBLE);
             mRlSearch.setVisibility(View.GONE);
+            DisplayUtils.hideSoftInput(mContext, mEtInput);
 
             mEtInput.setText("");
         }

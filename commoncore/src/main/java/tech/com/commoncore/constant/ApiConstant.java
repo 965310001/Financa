@@ -133,4 +133,7 @@ public class ApiConstant {
     public static final String INSERT = "api/order/insert";
     /*套餐模板模块-根据服务类型查询对应所有订单模板*/
     public static final String ORDER_TEMPLATE_SELECT = "api/order_template/select";
+
+    /*查询谁看了我列表*/
+    public static final String CUSTOMER_LIST = "api/customer/list";
 }

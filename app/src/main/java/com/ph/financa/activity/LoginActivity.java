@@ -2,7 +2,6 @@ package com.ph.financa.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
@@ -176,17 +175,15 @@ public class LoginActivity extends BaseActivity {
                                         if (null != bean) {
                                             saveUser(data.data);
                                         }
-//                                        loginEaseMob(String.valueOf(data.data.getId()), "");
-                                        Log.i(TAG, "onSuccess: " + data);
+
+                                        /*Log.i(TAG, "onSuccess: " + data);*/
 
 //                                        FastUtil.startActivity(mContext, SendCodeActivity.class);
 
                                         if (data.getCode() == 40102002) {
-                                            SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
-                                            FastUtil.startActivity(mContext, SendCodeActivity.class);
+                                            loginEaseMob(String.valueOf(data.data.getId()), "123456", data.getCode());
                                         } else if (data.isSuccess()) {
-                                            SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
-                                            FastUtil.startActivity(mContext, MainActivity.class);
+                                            loginEaseMob(String.valueOf(data.data.getId()), "123456", data.getCode());
                                         } else {
                                             ToastUtil.show(data.getMsg());
                                         }
@@ -207,31 +204,34 @@ public class LoginActivity extends BaseActivity {
     }
 
     /*登录环信*/
-    private void loginEaseMob(String id, String password) {
-        new Thread(() ->
-                EMClient.getInstance().login(id, password, new EMCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        Looper.prepare();
-                        showLoading();
-                        Log.i(TAG, "onSuccess: 环信登录成功");
-                        EMClient.getInstance().chatManager().loadAllConversations();
-                        EMClient.getInstance().groupManager().loadAllGroups();
-                    }
+    private void loginEaseMob(String id, String password, int code) {
+        EMClient.getInstance().login(id, password, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                Log.i(TAG, "onSuccess: 环信登录成功");
+                EMClient.getInstance().chatManager().loadAllConversations();
+                EMClient.getInstance().groupManager().loadAllGroups();
+                if (code == 40102002) {
+                    SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
+                    FastUtil.startActivity(mContext, SendCodeActivity.class);
+                } else if (code == 200) {
+                    SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
+                    FastUtil.startActivity(mContext, MainActivity.class);
+                }
+            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        showLoading();
-                        ToastUtil.show(s);
-                        Log.i(TAG, "环信登录失败:" + s + i);
-                    }
+            @Override
+            public void onError(int i, String s) {
+                /*showLoading();*/
+                ToastUtil.show(s);
+                Log.i(TAG, "环信登录失败:" + s + i);
+            }
 
-                    @Override
-                    public void onProgress(int i, String s) {
-                        Log.i(TAG, "onProgress: 正在请求 : " + s);
-                    }
-                })
-        ).start();
+            @Override
+            public void onProgress(int i, String s) {
+                Log.i(TAG, "onProgress: 正在请求 : " + s);
+            }
+        });
     }
 
     /*保存用户信息*/

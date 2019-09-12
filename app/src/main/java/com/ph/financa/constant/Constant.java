@@ -38,7 +38,7 @@ public interface Constant {
 
 
     /*环信*/
-    String EASEMOB_APPKEY = "";/*需要初始化清单文件*/
+    String EASEMOB_APPKEY = "1104190909181743#radar";/*需要初始化清单文件*/
 
     /*支付价格*/
     String PRICE = "price";

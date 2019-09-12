@@ -11,6 +11,10 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.aries.ui.view.title.TitleBarView;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.ui.EaseChatFragment;
+import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
 
@@ -21,16 +25,6 @@ import tech.com.commoncore.utils.SPHelper;
  * 我的客服
  */
 public class CustomerActivity extends BaseTitleActivity {
-
-    @Override
-    public void setTitleBar(TitleBarView titleBar) {
-
-    }
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.activity_customer;
-    }
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -71,7 +65,59 @@ public class CustomerActivity extends BaseTitleActivity {
                 }
             }
         });
+
+        // TODO: 2019/9/12 聊天
+        EaseChatFragment chatFragment = new EaseChatFragment();
+        Bundle args = new Bundle();
+        args.putString(EaseConstant.EXTRA_USER_ID, getIntent().getStringExtra(EaseConstant.EXTRA_USER_ID));
+        chatFragment.setArguments(args);
+        chatFragment.hideTitleBar();
+        chatFragment.setChatFragmentHelper(mHelper);
+        getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
     }
+
+    private EaseChatFragment.EaseChatFragmentHelper mHelper = new EaseChatFragment.EaseChatFragmentHelper() {
+        @Override
+        public void onSetMessageAttributes(EMMessage message) {
+//            message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, "profilePhoto"));
+//            message.setAttribute("nickName", SPHelper.getStringSF(mContext, "nickName"));
+//
+//            message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
+//            message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
+        }
+
+        @Override
+        public void onEnterToChatDetails() {
+        }
+
+        @Override
+        public void onAvatarClick(String username) {
+        }
+
+        @Override
+        public void onAvatarLongClick(String username) {
+        }
+
+        @Override
+        public boolean onMessageBubbleClick(EMMessage message) {
+            return false;
+        }
+
+        @Override
+        public void onMessageBubbleLongClick(EMMessage message) {
+        }
+
+        @Override
+        public boolean onExtendMenuItemClick(int itemId, View view) {
+            return false;
+        }
+
+        @Override
+        public EaseCustomChatRowProvider onSetCustomChatRowProvider() {
+            return null;
+        }
+    };
+
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -79,4 +125,14 @@ public class CustomerActivity extends BaseTitleActivity {
                 break;
         }
     }
+
+    @Override
+    public void setTitleBar(TitleBarView titleBar) {
+    }
+
+    @Override
+    public int getContentLayout() {
+        return R.layout.activity_customer;
+    }
+
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,21 +12,20 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white"
-        android:paddingBottom="5dp" />
+        android:background="@color/white" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--android:orientation="horizontal">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,10 +43,11 @@
                 android:layout_marginRight="@dimen/dp_4"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:minHeight="@dimen/dp_33" />
+                android:minHeight="@dimen/dp_33"
+                android:paddingLeft="@dimen/dp_4"
+                android:textSize="@dimen/textSize_14" />
 
             <TextView
-                android:onClick="onClick"
                 android:id="@+id/tv_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,10 +56,11 @@
                 android:gravity="center"
                 android:minWidth="@dimen/dp_60"
                 android:minHeight="@dimen/dp_33"
+                android:onClick="onClick"
                 android:text="发送"
                 android:textColor="#ffbbbbbb"
                 android:textSize="14sp" />
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 

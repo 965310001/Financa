@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
@@ -45,14 +44,17 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> fragments = new ArrayList<>();
 
     //仿微博图片和文字集合
-    private int[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
-    private String[] menuTextItems = {"文字", "拍摄", "相册", "直播"};
-
-    private LinearLayout menuLayout;
-    private View cancelImageView;
-    private Handler mHandler = new Handler();
-    private AddDialog mAddDialog;
+//    private int[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
+//    private String[] menuTextItems = {"文字", "拍摄", "相册", "直播"};
+//
+//    private LinearLayout menuLayout;
+//    private View cancelImageView;
     /*private MoreDialog moreDialog;*/
+
+    private AddDialog mAddDialog;
+
+    private Handler mHandler = new Handler();
+
 
     public EasyNavigationBar getNavigationBar() {
         return navigationBar;
@@ -65,7 +67,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
         /*测试*/
         /*FastUtil.startActivity(mContext, LoginActivity.class);*/
 

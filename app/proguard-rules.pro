@@ -25,3 +25,7 @@
 #如果使用了实时音视频功能
 -keep class com.superrtc.** {*;}
 -dontwarn  com.superrtc.**
+
+
+
+-keep class com.sina.weibo.sdk.** { *; }

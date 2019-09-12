@@ -19,6 +19,7 @@ import com.aries.ui.view.title.TitleBarView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ph.financa.R;
+import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.adpater.CustomerListAdapter;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.ContactColumnBean;
@@ -32,19 +33,28 @@ import com.vise.xsnow.http.request.GetRequest;
 import com.vise.xsnow.permission.OnPermissionCallback;
 import com.vise.xsnow.permission.PermissionManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tech.com.commoncore.base.BaseTitleRefreshLoadFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtils;
+import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.ToastUtil;
 
 /**
  * 客户
  */
 public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean> implements View.OnClickListener {
+
+    private String[] SORTINDEX = {"ASC", "DESC"};
 
     private SortNameDialog mSortNameDialog;
     private MoreDialog moreDialog;
@@ -53,6 +63,7 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
     private LinearLayout mRlSearch;
     private AppCompatEditText mEtInput;
     private boolean isErr;
+    private RelativeLayout mRlDel;
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -80,6 +91,31 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
             }
             return false;
         });
+
+        mRlDel = mContentView.findViewById(R.id.rl_del);
+        mContentView.findViewById(R.id.tv_del_cancel).setOnClickListener(this);
+        mContentView.findViewById(R.id.tv_del).setOnClickListener(this);
+
+
+
+        /*设置长按*/
+        mBaseRefreshLoadDelegate.mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            List<CustomerBean> data = mBaseRefreshLoadDelegate.mAdapter.getData();
+            for (CustomerBean bean : data) {
+                bean.setSelect(true);
+            }
+            showDel(true);
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+            return true;
+        });
+    }
+
+    @Override
+    public void onItemClicked(BaseQuickAdapter<CustomerBean, BaseViewHolder> adapter, View view, int position) {
+        super.onItemClicked(adapter, view, position);
+
+        CustomerBean bean = adapter.getData().get(position);
+        bean.setCheck(!bean.isCheck());
     }
 
     @Override
@@ -97,7 +133,38 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
                 showSearch(false);
                 break;
 
+            case R.id.tv_del_cancel:
+                List<CustomerBean> data = mBaseRefreshLoadDelegate.mAdapter.getData();
+                for (CustomerBean bean : data) {
+                    bean.setSelect(false);
+                    bean.setCheck(false);
+                }
+                showDel(false);
+                mBaseRefreshLoadDelegate.mAdapter.notifyDataSetChanged();
+                break;
+
+            case R.id.tv_del:
+                data = mBaseRefreshLoadDelegate.mAdapter.getData();
+                if (null != data && data.size() > 0) {
+                    List<String> list = new ArrayList<>();
+                    for (CustomerBean bean : data) {
+                        if (bean.isCheck()) {
+                            list.add(String.valueOf(bean.getId()));
+                        }
+                    }
+                    if (list.size() > 0) {
+                        deleteBatch(list);
+                    } else {
+                        ToastUtil.show("至少选中一个");
+                    }
+                }
+                break;
         }
+    }
+
+    /*true:显示 false：隐藏*/
+    private void showDel(boolean isDel) {
+        mRlDel.setVisibility(isDel ? View.VISIBLE : View.GONE);
     }
 
     private void showSearch(boolean isSearch) {
@@ -113,16 +180,21 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
         }
     }
 
-
     private void showMoreDialog() {
         moreDialog = MoreDialog.show(getFragmentManager(), "", index -> {
+            moreDialog.dismiss();
             switch (index) {
-                case 0:
+                case 0:/*新建客户*/
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.ADD_CUSTOMER));
+                    goActivity(WebActivity.class, bundle);
                     break;
-                case 1:
+                case 1:/*分组*/
+                    bundle = new Bundle();
+                    bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.CUSTOMER_GROUP));
+                    goActivity(WebActivity.class, bundle);
                     break;
                 case 2:
-                    moreDialog.dismiss();
                     showSortDialog();
                     break;
                 case 3:
@@ -130,6 +202,15 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
                     break;
             }
         });
+    }
+
+
+    private void goActivity(Class clazz, Bundle bundle) {
+        if (null != bundle) {
+            FastUtil.startActivity(mContext, clazz, bundle);
+        } else {
+            FastUtil.startActivity(mContext, clazz);
+        }
     }
 
     private void showListDialog() {
@@ -141,7 +222,24 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
 //                    getCustomerList();
                     break;
                 case 1:
-                    getPhoneContacts();
+                    PermissionManager.instance().request(getActivity(), new OnPermissionCallback() {
+                        @Override
+                        public void onRequestAllow(String permissionName) {
+                            Log.i(TAG, "onRequestAllow: " + permissionName);
+                            List<ContactColumnBean> beans = getPhoneContacts();
+                            insertContact(beans);
+                        }
+
+                        @Override
+                        public void onRequestRefuse(String permissionName) {
+                            Log.i(TAG, "onRequestRefuse: " + permissionName);
+                        }
+
+                        @Override
+                        public void onRequestNoAsk(String permissionName) {
+                            Log.i(TAG, "onRequestNoAsk: " + permissionName);
+                        }
+                    }, Manifest.permission.READ_CONTACTS);
                     break;
                 case 2:
                     break;
@@ -149,33 +247,77 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
         });
     }
 
+    /*从通讯录导入*/
+    private void insertContact(List<ContactColumnBean> beans) {
+        if (null != beans && beans.size() > 0) {
+            JSONArray jsonArray = new JSONArray();
+            for (ContactColumnBean bean : beans) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("customerName", bean.getName());
+                map.put("telephone", Arrays.asList(bean.getNumber()));
+                jsonArray.put(new JSONObject(map));
+            }
+            ViseHttp.POST(ApiConstant.INSERT_CONTACT)
+                    .setJson(jsonArray)
+                    .request(new ACallback<BaseTResp2>() {
+                        @Override
+                        public void onSuccess(BaseTResp2 data) {
+                            if (data.isSuccess()) {
+                                ToastUtil.show("上传成功！");
+                                loadData();
+                            } else {
+                                ToastUtil.show(data.getMsg());
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int errCode, String errMsg) {
+                            ToastUtil.show(errMsg);
+                        }
+                    });
+        } else {
+            ToastUtil.show("通讯录为空");
+        }
+    }
+
+    /*批量或单个删除客户*/
+    private void deleteBatch(List<String> ids) {
+        if (null != ids && ids.size() > 0) {
+            StringBuffer sb = new StringBuffer();
+            for (String id : ids) {
+                sb.append(id).append(",");
+            }
+            ViseHttp.POST(ApiConstant.DELETE_BATCH)
+                    .addForm("ids", sb.toString())
+                    .request(new ACallback<BaseTResp2>() {
+                        @Override
+                        public void onSuccess(BaseTResp2 data) {
+                            if (data.isSuccess()) {
+                                ToastUtil.show("删除成功");
+                                mBaseRefreshLoadDelegate.mAdapter.getData().clear();
+                                mBaseRefreshLoadDelegate.mAdapter.notifyDataSetChanged();
+                                loadData();
+                            } else {
+                                ToastUtil.show(data.getMsg());
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int errCode, String errMsg) {
+                            ToastUtil.show(errMsg);
+                        }
+                    });
+        }
+    }
+
     @Override
     public void loadData() {
         super.loadData();
-
-        PermissionManager.instance().request(getActivity(), new OnPermissionCallback() {
-            @Override
-            public void onRequestAllow(String permissionName) {
-                Log.i(TAG, "onRequestAllow: " + permissionName);
-                getPhoneContacts();
-            }
-
-            @Override
-            public void onRequestRefuse(String permissionName) {
-                Log.i(TAG, "onRequestRefuse: " + permissionName);
-            }
-
-            @Override
-            public void onRequestNoAsk(String permissionName) {
-                Log.i(TAG, "onRequestNoAsk: " + permissionName);
-            }
-        }, Manifest.permission.READ_CONTACTS);
-
         getCustomerList("", "");
     }
 
     /*从通讯录导入*/
-    private void getPhoneContacts() {
+    private List<ContactColumnBean> getPhoneContacts() {
         ContentResolver resolver = getActivity().getContentResolver();
         Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         if (cursor != null) {
@@ -185,11 +327,12 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)); // 姓名
                 String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)); // 电话
                 beanList.add(new ContactColumnBean(id, name, number));
-
                 Log.i(TAG, "getPhoneContacts: " + id + " " + name + " " + number);
             }
             cursor.close();
+            return beanList;
         }
+        return null;
     }
 
     /*从谁看了我导入*/
@@ -223,19 +366,24 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
         });
     }
 
+
     private void showSortDialog() {
         mSortNameDialog = SortNameDialog.show(getFragmentManager(), "", index -> {
             mSortNameDialog.dismiss();
             switch (index) {
                 case 0:
+                    getCustomerList("", SORTINDEX[0]);
                     break;
                 case 1:
+                    getCustomerList("", SORTINDEX[1]);
                     break;
                 case 2:
+                    getCustomerList("", SORTINDEX[0]);
                     break;
             }
         });
     }
+
 
     @Override
     public int getContentLayout() {
@@ -257,7 +405,11 @@ public class CustomerFragment extends BaseTitleRefreshLoadFragment<CustomerBean>
     }
 
     @Override
-    public void setTitleBar(TitleBarView titleBar) {
+    public boolean isLoadMoreEnable() {
+        return false;
+    }
 
+    @Override
+    public void setTitleBar(TitleBarView titleBar) {
     }
 }

@@ -104,6 +104,54 @@
         android:layout_height="1dp"
         android:background="#EEEEEE" />
 
+    <RelativeLayout
+        android:id="@+id/rl_del"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F4F4F4"
+        android:gravity="center"
+        android:minHeight="@dimen/dp_38"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:gravity="center"
+            android:minHeight="@dimen/dp_28"
+            android:text="批量删除 "
+            android:textColor="#ff999999"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_del_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_12"
+            android:layout_toLeftOf="@id/tv_del"
+            android:background="@drawable/shape_bg_del_cancel"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_52"
+            android:minHeight="@dimen/dp_28"
+            android:text="取消"
+            android:textColor="#ffffffff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_16"
+            android:background="@drawable/shape_bg_del"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_52"
+            android:minHeight="@dimen/dp_28"
+            android:text="删除"
+            android:textColor="#ffffffff"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
     <include layout="@layout/layout_recycler" />
 
 </LinearLayout>

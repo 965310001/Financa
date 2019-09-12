@@ -50,4 +50,16 @@
         android:background="#EEEEEE"
         app:layout_constraintTop_toBottomOf="@id/iv_head" />
 
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/cb_check"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@drawable/select_checkbox_style"
+        android:button="@null"
+        android:visibility="visible"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

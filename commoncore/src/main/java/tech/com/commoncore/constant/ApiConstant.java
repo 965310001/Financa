@@ -83,6 +83,18 @@ public class ApiConstant {
 //    public static final String SHARE ="http://wealth.phscitech.com/h5/browse-detail";
 
 
+    /*客户*/
+    /*新建客户*/
+    public static final String ADD_CUSTOMER = "h5/add-customer";
+    /*新建分组*/
+    public static final String CUSTOMER_GROUP = "h5/customer-group";
+    /*客户分组*/
+    public static final String visit_leading_in = "h5/visit-leading-in";
+
+    /*批量或单个删除客户*/
+    public static final String DELETE_BATCH = "api/customer/delete/batch";
+
+
     /*我的*/
     public static final String mine = "h5/mine";
     /*我的收藏*/
@@ -136,4 +148,8 @@ public class ApiConstant {
 
     /*查询谁看了我列表*/
     public static final String CUSTOMER_LIST = "api/customer/list";
+
+    /*从通讯录导入*/
+    public static final String INSERT_CONTACT = "api/customer/insert/batch/contact";
+
 }

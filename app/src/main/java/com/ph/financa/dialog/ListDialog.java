@@ -29,14 +29,13 @@ public class ListDialog extends DialogFragment {
 
     private List<String> mData;
 
-    private BaseQuickAdapter.OnItemChildClickListener mClick;
+    private BaseQuickAdapter.OnItemClickListener mClick;
 
-    public static ListDialog show(FragmentManager manager, String tag, List<String> data, BaseQuickAdapter.OnItemChildClickListener click) {
+    public static ListDialog show(FragmentManager manager, String tag, List<String> data, BaseQuickAdapter.OnItemClickListener click) {
         ListDialog listDialog = new ListDialog();
         listDialog.show(manager, tag);
         listDialog.setClick(click);
         listDialog.setData(data);
-
         return listDialog;
     }
 
@@ -44,7 +43,7 @@ public class ListDialog extends DialogFragment {
         this.mData = data;
     }
 
-    public void setClick(BaseQuickAdapter.OnItemChildClickListener mClick) {
+    public void setClick(BaseQuickAdapter.OnItemClickListener mClick) {
         this.mClick = mClick;
     }
 
@@ -57,9 +56,18 @@ public class ListDialog extends DialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ListAdapter adapter = new ListAdapter(R.layout.item_list_text);
         adapter.setNewData(mData);
-        adapter.setOnItemChildClickListener((adapter1, view1, position) -> {
-            if (null != mClick) {
-                mClick.onItemChildClick(adapter1, view1, position);
+//        adapter.setOnItemChildClickListener((adapter1, view1, position) -> {
+//            Log.i("TAG", "onCreateView: " + position);
+//            if (null != mClick) {
+//                mClick.onItemChildClick(adapter1, view1, position);
+//            }
+//        });
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (null != mClick) {
+                    mClick.onItemClick(adapter, view, position);
+                }
             }
         });
         recyclerView.setAdapter(adapter);

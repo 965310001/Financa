@@ -20,28 +20,9 @@ import tech.com.commoncore.utils.Utils;
 public class HomeFragment extends BaseFragment {
 
     private String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
-            SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""), SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
+            SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
     private AgentWeb mAgentWeb;
-
-//    @Override
-//    public void loadData() {
-//        super.loadData();
-//    }
-//   /* @Override
-//    public void onPause() {
-//        if (null != mAgentWeb) {
-//            mAgentWeb.getWebLifeCycle().onPause();
-//        }
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        if (null != mAgentWeb) {
-//            mAgentWeb.getWebLifeCycle().onResume();
-//        }
-//        super.onResume();
-//    }*/
 
     @Override
     public int getContentLayout() {

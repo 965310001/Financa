@@ -17,6 +17,7 @@ import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.ease.FriendTable;
 
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.utils.SPHelper;
@@ -84,6 +85,14 @@ public class CustomerActivity extends BaseTitleActivity {
 //
 //            message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
 //            message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
+
+
+            message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, "profilePhoto"));
+            message.setAttribute("nickName", SPHelper.getStringSF(mContext, "nickName"));
+
+            message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
+            message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
+
         }
 
         @Override

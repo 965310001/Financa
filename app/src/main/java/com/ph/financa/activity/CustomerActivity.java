@@ -70,7 +70,7 @@ public class CustomerActivity extends BaseTitleActivity {
         // TODO: 2019/9/12 聊天
         EaseChatFragment chatFragment = new EaseChatFragment();
         Bundle args = new Bundle();
-        args.putString(EaseConstant.EXTRA_USER_ID, getIntent().getStringExtra(EaseConstant.EXTRA_USER_ID));
+        args.putString(EaseConstant.EXTRA_USER_ID, "1173549052970016768");
         chatFragment.setArguments(args);
         chatFragment.hideTitleBar();
         chatFragment.setChatFragmentHelper(mHelper);
@@ -82,17 +82,14 @@ public class CustomerActivity extends BaseTitleActivity {
         public void onSetMessageAttributes(EMMessage message) {
 //            message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, "profilePhoto"));
 //            message.setAttribute("nickName", SPHelper.getStringSF(mContext, "nickName"));
-//
 //            message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
 //            message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
-
 
             message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, "profilePhoto"));
             message.setAttribute("nickName", SPHelper.getStringSF(mContext, "nickName"));
 
             message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
             message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
-
         }
 
         @Override

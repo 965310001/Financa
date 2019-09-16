@@ -66,14 +66,21 @@
 
         <activity
             android:name=".MainActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <!--            android:taskAffinity="net.sourceforge.simcpux"-->
+        <!--<activity-->
+            <!--android:name=".WXEntryActivity"-->
+            <!--android:exported="true"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:theme="@android:style/Theme.Translucent" />-->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:taskAffinity="net.sourceforge.simcpux"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
@@ -113,20 +120,22 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
-        </receiver> <!-- 阿里支付 -->
+        </receiver>
+        <!-- 阿里支付 -->
         <!-- 支付宝支付 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
-        <!-- 解决 9.0 手机的通讯问题 -->
+
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" /> <!-- 解决 9.0 手机的通讯问题 -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

@@ -2,10 +2,12 @@ package com.ph.financa.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.aries.ui.view.title.TitleBarView;
+import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 
@@ -28,12 +30,15 @@ public class WebActivity extends BaseTitleActivity {
             mTitleBar.setTitleMainText(intent.getStringExtra("title"));
         } else {
             mTitleBar.setVisibility(View.GONE);
+            StatusBarCompat.setStatusBarColor(mContext, getColor(R.color.white));
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
         }
 
         if (intent.hasExtra("url")) {
             mUrl = intent.getStringExtra("url");
         }
+
+        Log.i(TAG, "initView: " + mUrl);
     }
 
     @Override

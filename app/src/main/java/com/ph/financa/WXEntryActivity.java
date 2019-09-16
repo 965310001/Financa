@@ -1,4 +1,4 @@
-package com.ph.financa.wxapi;
+package com.ph.financa;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;

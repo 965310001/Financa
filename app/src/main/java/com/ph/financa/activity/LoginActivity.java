@@ -126,7 +126,7 @@ public class LoginActivity extends BaseActivity {
 
     private void getAccessToken(String code) {
         Map<String, String> params = new HashMap();
-        params.put("appid", Constant.WEIXIN_APP_ID);
+        params.put("appid", Constant.WECHATAPPKEY);
         params.put("secret", Constant.WECHATAPPSECRET);
         params.put("code", code);
         params.put("grant_type", "authorization_code");
@@ -175,11 +175,6 @@ public class LoginActivity extends BaseActivity {
                                         if (null != bean) {
                                             saveUser(data.data);
                                         }
-
-                                        /*Log.i(TAG, "onSuccess: " + data);*/
-
-//                                        FastUtil.startActivity(mContext, SendCodeActivity.class);
-
                                         if (data.getCode() == 40102002) {
                                             loginEaseMob(String.valueOf(data.data.getId()), "123456", data.getCode());
                                         } else if (data.isSuccess()) {
@@ -214,9 +209,11 @@ public class LoginActivity extends BaseActivity {
                 if (code == 40102002) {
                     SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
                     FastUtil.startActivity(mContext, SendCodeActivity.class);
+                    finish();
                 } else if (code == 200) {
                     SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
                     FastUtil.startActivity(mContext, MainActivity.class);
+                    finish();
                 }
             }
 

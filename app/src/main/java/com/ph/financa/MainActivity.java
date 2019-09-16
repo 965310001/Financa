@@ -2,6 +2,7 @@ package com.ph.financa;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -46,7 +47,6 @@ public class MainActivity extends BaseActivity {
     //仿微博图片和文字集合
 //    private int[] menuIconItems = {R.mipmap.pic1, R.mipmap.pic2, R.mipmap.pic3, R.mipmap.pic4};
 //    private String[] menuTextItems = {"文字", "拍摄", "相册", "直播"};
-//
 //    private LinearLayout menuLayout;
 //    private View cancelImageView;
     /*private MoreDialog moreDialog;*/
@@ -54,7 +54,6 @@ public class MainActivity extends BaseActivity {
     private AddDialog mAddDialog;
 
     private Handler mHandler = new Handler();
-
 
     public EasyNavigationBar getNavigationBar() {
         return navigationBar;
@@ -74,6 +73,10 @@ public class MainActivity extends BaseActivity {
 
         fragments.add(new HomeFragment());
         fragments.add(new SeeFragment());
+//        fragments.add(WebFragment.newInstance(String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP,
+//                ApiConstant.CUSTOMER,
+//                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+//                SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""))));
         fragments.add(new CustomerFragment());
         fragments.add(new MeFragment());
 
@@ -118,6 +121,14 @@ public class MainActivity extends BaseActivity {
 
         navigationBar.setAddViewLayout(createView());
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.i(TAG, "onNewIntent: 分享回调来这里了———————-");
+    }
+
 
     private View createView() {
         ViewGroup view = (ViewGroup) View.inflate(mContext, R.layout.dialog_add, null);

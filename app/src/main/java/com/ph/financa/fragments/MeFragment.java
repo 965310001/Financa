@@ -18,6 +18,7 @@ import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.manager.GlideManager;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
+import tech.com.commoncore.utils.Utils;
 import tech.com.commoncore.widget.CircleImageView;
 
 /**
@@ -108,27 +109,27 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.ll_card:
                 // TODO: 2019/9/9 我的名片
-                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.MY_CARD));
+                bundle.putString("url", getUrl(ApiConstant.MY_CARD));
                 goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_collection:
                 // TODO: 2019/9/9 我的收藏
-                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.COLLECTION));
+                bundle.putString("url", getUrl(ApiConstant.COLLECTION));
                 goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_products:
                 // TODO: 2019/9/9 我的产品
-                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.MY_PRODUCT));
+                bundle.putString("url", getUrl(ApiConstant.MY_PRODUCT));
                 goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_share:
                 // TODO: 2019/9/9 历史分享
-                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.HISTORYARTICLE));
+                bundle.putString("url", getUrl(ApiConstant.HISTORYARTICLE));
                 goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_message:
                 // TODO: 2019/9/9 消息通知
-                bundle.putString("url", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.MESSAGE_NOTICE));
+                bundle.putString("url", getUrl(ApiConstant.MESSAGE_NOTICE));
                 goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_service:
@@ -140,6 +141,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 goActivity(SettingActivity.class, null);
                 break;
         }
+    }
+
+    private String getUrl(String url) {
+        return String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, url,
+                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
     }
 
     private void goActivity(Class clazz, Bundle bundle) {

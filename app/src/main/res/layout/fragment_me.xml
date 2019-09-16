@@ -1,421 +1,427 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_164"
-        android:background="@drawable/shape_bg_me">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <tech.com.commoncore.widget.CircleImageView
-            android:id="@+id/ic_head"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_56"
-            android:src="@color/colorPrimary"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_61"
-            android:text="周莘羽"
-            android:textColor="#ffffffff"
-            android:textSize="17sp"
-            app:layout_constraintLeft_toRightOf="@id/ic_head"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_17"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="@dimen/dp_61"
-            app:layout_constraintLeft_toRightOf="@id/tv_name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_shape" />
-
-        <TextView
-            android:id="@+id/tv_company_name"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:text="公司名称"
-            android:textColor="#ffffffff"
-            android:textSize="14sp"
-            app:layout_constraintLeft_toRightOf="@id/ic_head"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
-
-        <TextView
-            android:id="@+id/tv_rights"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_17"
-            android:text="会员权益"
-            android:textColor="#ffffffff"
-            android:textSize="12sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ic_head" />
-
-        <TextView
-            android:id="@+id/tv_receive"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginLeft="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_17"
-            android:text="新会员专享688/两年 立即领取 >"
-            android:textColor="#ffffffff"
-            android:textSize="12sp"
-            app:layout_constraintLeft_toRightOf="@id/tv_rights"
-            app:layout_constraintTop_toBottomOf="@id/ic_head" />
-
-        <ImageView
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_78"
-            android:layout_marginTop="@dimen/dp_47"
-            android:layout_marginRight="@dimen/dp_4"
-            android:src="@mipmap/ic_vip"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:background="#F1F0F0"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ic_open"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_76"
-            android:layout_marginTop="@dimen/dp_8"
-            android:background="@mipmap/ic_grouping" />
+            android:layout_height="@dimen/dp_164"
+            android:background="@drawable/shape_bg_me">
 
-    </FrameLayout>
+            <tech.com.commoncore.widget.CircleImageView
+                android:id="@+id/ic_head"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_56"
+                android:src="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_card"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_52"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_61"
+                android:text="周莘羽"
+                android:textColor="#ffffffff"
+                android:textSize="17sp"
+                app:layout_constraintLeft_toRightOf="@id/ic_head"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:src="@mipmap/ic_card" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_17"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="@dimen/dp_61"
+                app:layout_constraintLeft_toRightOf="@id/tv_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/ic_shape" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_weight="1"
-            android:text="我的名片"
-            android:textColor="#ff333333"
-            android:textSize="17sp" />
+            <TextView
+                android:id="@+id/tv_company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:text="公司名称"
+                android:textColor="#ffffffff"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toRightOf="@id/ic_head"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
+            <TextView
+                android:id="@+id/tv_rights"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_17"
+                android:text="会员权益"
+                android:textColor="#ffffffff"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ic_head" />
+
+            <TextView
+                android:id="@+id/tv_receive"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_17"
+                android:text="新会员专享688/两年 立即领取 >"
+                android:textColor="#ffffffff"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toRightOf="@id/tv_rights"
+                app:layout_constraintTop_toBottomOf="@id/ic_head" />
+
+            <ImageView
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_78"
+                android:layout_marginTop="@dimen/dp_47"
+                android:layout_marginRight="@dimen/dp_4"
+                android:src="@mipmap/ic_vip"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F1F0F0">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_open"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_76"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@mipmap/ic_grouping" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_card"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:src="@mipmap/ic_card" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_weight="1"
+                android:text="我的名片"
+                android:textColor="#ff333333"
+                android:textSize="17sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_17"
+                app:srcCompat="@mipmap/ic_chevron" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_62"
             android:layout_marginRight="@dimen/dp_17"
-            app:srcCompat="@mipmap/ic_chevron" />
-    </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_62"
-        android:layout_marginRight="@dimen/dp_17"
+            android:background="@drawable/shape_bg_line" />
 
-        android:background="@drawable/shape_bg_line" />
+        <LinearLayout
+            android:id="@+id/ll_collection"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/ll_collection"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_52"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_20"
+                app:srcCompat="@mipmap/ic_collection" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_20"
-            app:srcCompat="@mipmap/ic_collection" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_weight="1"
+                android:text="我的收藏"
+                android:textColor="#ff333333"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_collection"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginRight="@dimen/dp_11"
+                android:text="8"
+                android:textColor="#ff999999"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_17"
+                app:srcCompat="@mipmap/ic_chevron" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_62"
+            android:layout_marginRight="@dimen/dp_17"
+
+            android:background="@drawable/shape_bg_line" />
+
+        <LinearLayout
+            android:id="@+id/ll_products"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_20"
+                app:srcCompat="@mipmap/ic_products" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_weight="1"
+                android:text="我的产品"
+                android:textColor="#ff333333"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_products"
+                android:layout_width="wrap_content"
+
+                android:layout_height="22dp"
+                android:layout_marginRight="@dimen/dp_11"
+                android:text="8"
+                android:textColor="#ff999999"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_17"
+                app:srcCompat="@mipmap/ic_chevron" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_62"
+
+            android:layout_marginRight="@dimen/dp_17"
+            android:background="@drawable/shape_bg_line" />
+
+        <LinearLayout
+            android:id="@+id/ll_share"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_20"
+                app:srcCompat="@mipmap/ic_share" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_weight="1"
+                android:text="历史分享"
+
+                android:textColor="#ff333333"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_share"
+                android:layout_width="wrap_content"
+
+                android:layout_height="22dp"
+                android:layout_marginRight="@dimen/dp_11"
+                android:text="8"
+                android:textColor="#ff999999"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_17"
+                app:srcCompat="@mipmap/ic_chevron" />
+        </LinearLayout>
+
+
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dp_16"-->
+        <!--android:background="#FDFDFE" />-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_16"
+            android:background="@drawable/shape_bg_line" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_message"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_20"
+                app:srcCompat="@mipmap/ic_message" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_weight="1"
+                android:text="消息通知"
+                android:textColor="#ff333333"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginRight="@dimen/dp_11"
+                android:text="8"
+                android:textColor="#ff999999"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_17"
+                app:srcCompat="@mipmap/ic_chevron" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:layout_marginLeft="@dimen/dp_62"
+            android:layout_marginRight="@dimen/dp_17"
+            android:background="@drawable/shape_bg_line" />
+
+        <LinearLayout
+            android:id="@+id/ll_service"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_20"
+                app:srcCompat="@mipmap/ic_service" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_weight="1"
+                android:text="我的客服"
+                android:textColor="#ff333333"
+                android:textSize="17sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_17"
+                app:srcCompat="@mipmap/ic_chevron" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_62"
+            android:background="@drawable/shape_bg_line" />
+
+        <LinearLayout
+            android:id="@+id/ll_setting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_52"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginLeft="@dimen/dp_20"
+                app:srcCompat="@mipmap/ic_setting" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_weight="1"
+                android:text="设置"
+                android:textColor="#ff333333"
+                android:textSize="17sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_18"
+                android:layout_height="@dimen/dp_18"
+                android:layout_marginRight="@dimen/dp_17"
+                app:srcCompat="@mipmap/ic_chevron" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/dp_62"
+            android:layout_marginRight="@dimen/dp_17"
+            android:background="@drawable/shape_bg_line" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_weight="1"
-            android:text="我的收藏"
-            android:textColor="#ff333333"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/tv_collection"
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_marginRight="@dimen/dp_11"
-            android:text="8"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:text="Copyringht@2019-2020 浦衡科技版权所有"
             android:textColor="#ff999999"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
-            android:layout_marginRight="@dimen/dp_17"
-            app:srcCompat="@mipmap/ic_chevron" />
+            android:textSize="12sp" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_62"
-        android:layout_marginRight="@dimen/dp_17"
-
-        android:background="@drawable/shape_bg_line" />
-
-    <LinearLayout
-        android:id="@+id/ll_products"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_52"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_20"
-            app:srcCompat="@mipmap/ic_products" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_weight="1"
-            android:text="我的产品"
-            android:textColor="#ff333333"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/tv_products"
-            android:layout_width="wrap_content"
-
-            android:layout_height="22dp"
-            android:layout_marginRight="@dimen/dp_11"
-            android:text="8"
-            android:textColor="#ff999999"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
-            android:layout_marginRight="@dimen/dp_17"
-            app:srcCompat="@mipmap/ic_chevron" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_62"
-
-        android:layout_marginRight="@dimen/dp_17"
-        android:background="@drawable/shape_bg_line" />
-
-    <LinearLayout
-        android:id="@+id/ll_share"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_52"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_20"
-            app:srcCompat="@mipmap/ic_share" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_weight="1"
-            android:text="历史分享"
-
-            android:textColor="#ff333333"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/tv_share"
-            android:layout_width="wrap_content"
-
-            android:layout_height="22dp"
-            android:layout_marginRight="@dimen/dp_11"
-            android:text="8"
-            android:textColor="#ff999999"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
-            android:layout_marginRight="@dimen/dp_17"
-            app:srcCompat="@mipmap/ic_chevron" />
-    </LinearLayout>
-
-
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/dp_16"-->
-    <!--android:background="#FDFDFE" />-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_16"
-        android:background="@drawable/shape_bg_line" />
-
-
-    <LinearLayout
-        android:id="@+id/ll_message"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_52"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_20"
-            app:srcCompat="@mipmap/ic_message" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_weight="1"
-            android:text="消息通知"
-            android:textColor="#ff333333"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/tv_message"
-            android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_marginRight="@dimen/dp_11"
-            android:text="8"
-            android:textColor="#ff999999"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
-            android:layout_marginRight="@dimen/dp_17"
-            app:srcCompat="@mipmap/ic_chevron" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:layout_marginLeft="@dimen/dp_62"
-        android:layout_marginRight="@dimen/dp_17"
-        android:background="@drawable/shape_bg_line" />
-
-    <LinearLayout
-        android:id="@+id/ll_service"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_52"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_20"
-            app:srcCompat="@mipmap/ic_service" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_weight="1"
-            android:text="我的客服"
-            android:textColor="#ff333333"
-            android:textSize="17sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
-            android:layout_marginRight="@dimen/dp_17"
-            app:srcCompat="@mipmap/ic_chevron" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_62"
-        android:background="@drawable/shape_bg_line" />
-
-    <LinearLayout
-        android:id="@+id/ll_setting"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_52"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_marginLeft="@dimen/dp_20"
-            app:srcCompat="@mipmap/ic_setting" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="@dimen/dp_17"
-            android:layout_weight="1"
-            android:text="设置"
-            android:textColor="#ff333333"
-            android:textSize="17sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
-            android:layout_marginRight="@dimen/dp_17"
-            app:srcCompat="@mipmap/ic_chevron" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dp_62"
-        android:layout_marginRight="@dimen/dp_17"
-        android:background="@drawable/shape_bg_line" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp_20"
-        android:text="Copyringht@2019-2020 浦衡科技版权所有"
-        android:textColor="#ff999999"
-        android:textSize="12sp" />
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -65,7 +65,7 @@ public class ApiConstant {
     /*添加文章*/
     public static final String addArticle = "add-article";
     /*历史分享文章*/
-    public static final String HISTORYARTICLE = "history-article";
+    public static final String HISTORYARTICLE = "h5/history-article";
 
 
     /*谁看了我*/
@@ -84,6 +84,7 @@ public class ApiConstant {
 
 
     /*客户*/
+    public static final String CUSTOMER = "h5/customer";
     /*新建客户*/
     public static final String ADD_CUSTOMER = "h5/add-customer";
     /*新建分组*/
@@ -136,7 +137,7 @@ public class ApiConstant {
     public static final String LOGINOUT = "/api/loginout";
 
     /*套餐模块-判断是否已开通vip套餐服务*/
-    public static final String IS_VIP = "api/order/pay";
+    public static final String IS_VIP = "api/order_package/is_vip";
 
     /*支付*/
     public static final String PAY = "api/order/pay";
@@ -152,4 +153,6 @@ public class ApiConstant {
     /*从通讯录导入*/
     public static final String INSERT_CONTACT = "api/customer/insert/batch/contact";
 
+    /*分享文章成功回调接口*/
+    public static final String SHARE_SUCCESS = "api/cms/share/success";
 }

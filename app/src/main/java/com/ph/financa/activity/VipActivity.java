@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.aries.ui.view.title.TitleBarView;
+import com.githang.statusbar.StatusBarCompat;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.InsertBean;
@@ -64,6 +65,7 @@ public class VipActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        StatusBarCompat.setStatusBarColor(mContext, getColor(R.color.white));
         mIvHead = findViewById(R.id.iv_head);
         mTvName = findViewById(R.id.tv_name);
         mTvVip = findViewById(R.id.tv_vip);
@@ -198,6 +200,7 @@ public class VipActivity extends BaseTitleActivity {
                         for (SelectBean datum : data) {
                             if (text.equals(datum.getName())) {
                                 setPrice(datum.getPrice());
+                                mServiceId = datum.getId();
                             }
                         }
                     }
@@ -213,7 +216,9 @@ public class VipActivity extends BaseTitleActivity {
             }
             mOldView = mLLRecommend.getChildAt(0);
             mOldView.setBackgroundResource(R.drawable.shape_bg_recommend_select);
-            setPrice(data.get(0).getPrice());
+            SelectBean bean = data.get(0);
+            setPrice(bean.getPrice());
+            mServiceId = bean.getId();
         }
     }
 
@@ -230,7 +235,6 @@ public class VipActivity extends BaseTitleActivity {
                             } else {
                                 mTvVip.setText("您还不是VIP会员");
                             }
-                            mServiceId = bean.getServiceId();
                         } else {
                             ToastUtil.show(data.getMsg());
                         }
@@ -305,6 +309,13 @@ public class VipActivity extends BaseTitleActivity {
                                     }
                                     break;
                                 case 2:
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(payUrl);
+                                        payUrl = jsonObject.getString("aliPayUrl");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.i(TAG, "onSuccess: " + payUrl);
                                     zhiFuBaoPay(payUrl);
                                     break;
                             }

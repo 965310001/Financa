@@ -20,24 +20,24 @@ public abstract class EaseBaseFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         //noinspection ConstantConditions
-        titleBar = (EaseTitleBar) getView().findViewById(R.id.title_bar);
-        
+        titleBar = getView().findViewById(R.id.title_bar);
+
         initView();
         setUpView();
     }
-    
-    public void showTitleBar(){
-        if(titleBar != null){
+
+    public void showTitleBar() {
+        if (titleBar != null) {
             titleBar.setVisibility(View.VISIBLE);
         }
     }
-    
-    public void hideTitleBar(){
-        if(titleBar != null){
+
+    public void hideTitleBar() {
+        if (titleBar != null) {
             titleBar.setVisibility(View.GONE);
         }
     }
-    
+
     protected void hideSoftKeyboard() {
         if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
             if (getActivity().getCurrentFocus() != null)
@@ -45,9 +45,9 @@ public abstract class EaseBaseFragment extends Fragment {
                         InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-    
+
     protected abstract void initView();
-    
+
     protected abstract void setUpView();
 
 

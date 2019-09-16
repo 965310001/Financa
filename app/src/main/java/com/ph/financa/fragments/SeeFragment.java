@@ -35,6 +35,9 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//        StatusBarCompat.setStatusBarColor(mContext, getContext().getColor(R.color.white));
+
         mContentView.findViewById(R.id.tv_vip).setOnClickListener(this);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[0], mIconSelectIds[0]));

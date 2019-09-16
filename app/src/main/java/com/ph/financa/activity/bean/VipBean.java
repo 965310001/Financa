@@ -12,34 +12,34 @@ public class VipBean implements Serializable {
      * endTime : 2021-09-01 21:37:13
      */
 
-    private int userId;
-    private long serviceId;
-    private int status;
+    private Number userId;
+    private Number serviceId;
+    private Number status;
     private boolean isEnable;
     private String startTime;
     private String endTime;
 
-    public int getUserId() {
+    public Number getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Number userId) {
         this.userId = userId;
     }
 
-    public long getServiceId() {
+    public Number getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(long serviceId) {
+    public void setServiceId(Number serviceId) {
         this.serviceId = serviceId;
     }
 
-    public int getStatus() {
+    public Number getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Number status) {
         this.status = status;
     }
 

@@ -117,7 +117,6 @@ public abstract class BaseFragment extends RxFragment implements IBaseView {
 
     @Override
     public void loadData() {
-
     }
 
     @Override

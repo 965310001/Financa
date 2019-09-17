@@ -96,7 +96,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void loginWeixin() {
-        Log.i(TAG, "loginWeixin: ");
         WeiXinBaoStrategy weiXinBaoStrategy = WeiXinBaoStrategy.getInstance(mContext);
         weiXinBaoStrategy.login(Constant.WECHATAPPKEY, new JPayListener() {
             @Override
@@ -125,12 +124,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void getAccessToken(String code) {
+        showLoading();
         Map<String, String> params = new HashMap();
         params.put("appid", Constant.WECHATAPPKEY);
         params.put("secret", Constant.WECHATAPPSECRET);
         params.put("code", code);
         params.put("grant_type", "authorization_code");
-        Log.i(TAG, "getWXUserInfo: ");
         ViseHttp.GET("sns/oauth2/access_token")
                 .baseUrl("https://api.weixin.qq.com/")
                 .addParams(params)
@@ -206,6 +205,9 @@ public class LoginActivity extends BaseActivity {
                 Log.i(TAG, "onSuccess: 环信登录成功");
                 EMClient.getInstance().chatManager().loadAllConversations();
                 EMClient.getInstance().groupManager().loadAllGroups();
+
+                EMClient.getInstance().pushManager().updatePushNickname(
+                        SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
                 if (code == 40102002) {
                     SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
                     FastUtil.startActivity(mContext, SendCodeActivity.class);
@@ -215,6 +217,7 @@ public class LoginActivity extends BaseActivity {
                     FastUtil.startActivity(mContext, MainActivity.class);
                     finish();
                 }
+
             }
 
             @Override

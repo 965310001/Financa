@@ -21,6 +21,7 @@ import com.hyphenate.easeui.adapter.EaseMessageAdapter;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.model.styles.EaseMessageListItemStyle;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.GlideManager;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
 import com.hyphenate.easeui.widget.EaseImageView;
@@ -151,7 +152,8 @@ public abstract class EaseChatRow extends LinearLayout {
                 /*EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);*/
                 try {
                     Map<String, Object> map = message.ext();
-                    Glide.with(getContext()).load(map.get("UserPortrait").toString()).into(userAvatarView);
+//                    Glide.with(getContext()).load(map.get("UserPortrait").toString()).into(userAvatarView);
+                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
                 } catch (Exception e) {
                     Log.i(TAG, "setUpBaseView: " + e);
                 }

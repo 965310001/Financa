@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyphenate.easeui.EaseConstant;
 import com.ph.financa.R;
 import com.ph.financa.activity.CustomerActivity;
 import com.ph.financa.activity.SettingActivity;
@@ -134,7 +135,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.ll_service:
                 // TODO: 2019/9/9 我的客服
-                goActivity(CustomerActivity.class, null);
+                bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
+                goActivity(CustomerActivity.class, bundle);
                 break;
             case R.id.ll_setting:
                 // TODO: 2019/9/9 设置

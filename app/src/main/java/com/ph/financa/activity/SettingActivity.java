@@ -1,7 +1,6 @@
 package com.ph.financa.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -40,7 +39,7 @@ public class SettingActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        StatusBarCompat.setStatusBarColor(mContext, getColor(R.color.white));
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         /*版本号*/
         TextView tvVersion = findViewById(R.id.tv_version);
         /*手机号码*/
@@ -60,7 +59,6 @@ public class SettingActivity extends BaseTitleActivity {
         return phone;
     }
 
-
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_feedback:
@@ -72,7 +70,7 @@ public class SettingActivity extends BaseTitleActivity {
                 break;
             case R.id.rl_change_phone:
                 // TODO: 2019/9/9 更改手机号
-                FastUtil.startActivity(mContext, null);
+                FastUtil.startActivity(mContext, ChangePhoneActivity.class);
                 break;
             case R.id.tv_quit:
                 // TODO: 2019/9/9 退出登录
@@ -106,32 +104,27 @@ public class SettingActivity extends BaseTitleActivity {
 
     /*退出环信*/
     private void logoutEaseMob() {
-        runOnUiThread(new Runnable() {
+        runOnUiThread(() -> EMClient.getInstance().logout(true, new EMCallBack() {
+
             @Override
-            public void run() {
-                EMClient.getInstance().logout(true, new EMCallBack() {
+            public void onSuccess() {
 
-                    @Override
-                    public void onSuccess() {
-
-                        hideLoading();
-                        SPHelper.clearShareprefrence(mContext);
-                        FastUtil.startActivity(mContext, LoginActivity.class);
-                        finish();
-                    }
-
-                    @Override
-                    public void onProgress(int progress, String status) {
-                    }
-
-                    @Override
-                    public void onError(int code, String message) {
-                        hideLoading();
-                        ToastUtil.show(message);
-                    }
-                });
+                hideLoading();
+                SPHelper.clearShareprefrence(mContext);
+                FastUtil.startActivity(mContext, LoginActivity.class);
+                finish();
             }
-        });
+
+            @Override
+            public void onProgress(int progress, String status) {
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                hideLoading();
+                ToastUtil.show(message);
+            }
+        }));
     }
 
 }

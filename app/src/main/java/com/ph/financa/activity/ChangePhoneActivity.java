@@ -1,6 +1,7 @@
 package com.ph.financa.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -27,18 +28,13 @@ import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 
 /**
- * 发送验证码和验证
+ * 更换手机号
  */
-public class SendCodeActivity extends BaseTitleActivity {
+public class ChangePhoneActivity extends BaseTitleActivity {
 
     private TextView mTvSendCode, mTvErrCode, mTvTime;
     private AppCompatEditText mEtPhone, mEtCode;
     private Disposable mdDisposable;
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.activity_send_code;
-    }
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -47,6 +43,31 @@ public class SendCodeActivity extends BaseTitleActivity {
         mEtCode = findViewById(R.id.et_code);
         mTvErrCode = findViewById(R.id.tv_code_err);
         mTvTime = findViewById(R.id.tv_time);
+
+
+        TextView tvCurrentPhone = findViewById(R.id.tv_current_phone);
+        tvCurrentPhone.setText(String.format("当前手机号：%s", getAsteriskPhone()));
+    }
+
+    /*获取星号收获吗*/
+    private String getAsteriskPhone() {
+        String phone = SPHelper.getStringSF(mContext, Constant.USERPHONE, "");
+        if (!TextUtils.isEmpty(phone)) {
+            if (RegUtils.isMobile(phone)) {
+                // TODO: 2019/9/9 手机号码使用星号代替
+            }
+        }
+        return phone;
+    }
+
+    @Override
+    public void setTitleBar(TitleBarView titleBar) {
+        titleBar.setTitleMainText("更换手机号");
+    }
+
+    @Override
+    public int getContentLayout() {
+        return R.layout.activity_change_phone;
     }
 
     public void onClick(View view) {
@@ -173,15 +194,11 @@ public class SendCodeActivity extends BaseTitleActivity {
     }
 
     @Override
-    public void setTitleBar(TitleBarView titleBar) {
-
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mdDisposable != null) {
             mdDisposable.dispose();
         }
     }
+
 }

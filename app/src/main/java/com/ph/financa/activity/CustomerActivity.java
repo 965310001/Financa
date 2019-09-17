@@ -36,13 +36,12 @@ public class CustomerActivity extends BaseTitleActivity {
             mTitleBar.setTitleMainText("我的客服");
         }
 
-        String id;
+       /* String id;
         if (intent.hasExtra("id")) {
             id = intent.getStringExtra("id");
         } else {
             id = SPHelper.getStringSF(mContext, Constant.USERID, "");
-        }
-
+        }*/
 
         TextView mTvSend = findViewById(R.id.tv_send);
         AppCompatEditText mEtInput = findViewById(R.id.et_input);
@@ -66,11 +65,14 @@ public class CustomerActivity extends BaseTitleActivity {
                 }
             }
         });
-
         // TODO: 2019/9/12 聊天
         EaseChatFragment chatFragment = new EaseChatFragment();
         Bundle args = new Bundle();
-        args.putString(EaseConstant.EXTRA_USER_ID, "1173549052970016768");
+        if (intent.hasExtra(EaseConstant.EXTRA_USER_ID)) {
+            args.putString(EaseConstant.EXTRA_USER_ID, intent.getStringExtra(EaseConstant.EXTRA_USER_ID));
+        } else {
+            args.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
+        }
         chatFragment.setArguments(args);
         chatFragment.hideTitleBar();
         chatFragment.setChatFragmentHelper(mHelper);
@@ -80,13 +82,8 @@ public class CustomerActivity extends BaseTitleActivity {
     private EaseChatFragment.EaseChatFragmentHelper mHelper = new EaseChatFragment.EaseChatFragmentHelper() {
         @Override
         public void onSetMessageAttributes(EMMessage message) {
-//            message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, "profilePhoto"));
-//            message.setAttribute("nickName", SPHelper.getStringSF(mContext, "nickName"));
-//            message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
-//            message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
-
-            message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, "profilePhoto"));
-            message.setAttribute("nickName", SPHelper.getStringSF(mContext, "nickName"));
+            message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
+            message.setAttribute("nickName", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
 
             message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
             message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
@@ -123,7 +120,6 @@ public class CustomerActivity extends BaseTitleActivity {
             return null;
         }
     };
-
 
     public void onClick(View view) {
         switch (view.getId()) {

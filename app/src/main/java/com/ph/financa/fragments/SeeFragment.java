@@ -56,7 +56,6 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void onTabReselect(int position) {
-
             }
         });
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

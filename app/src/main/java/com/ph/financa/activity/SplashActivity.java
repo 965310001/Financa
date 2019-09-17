@@ -20,7 +20,8 @@ public class SplashActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        StatusBarCompat.setStatusBarColor(mContext, getColor(R.color.white));
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+
         new Handler().postDelayed(() -> {
             if (SPHelper.getStringSF(mContext, Constant.ISLOGIN, "false").equals("true")) {
                 FastUtil.startActivity(mContext, MainActivity.class);
@@ -28,7 +29,7 @@ public class SplashActivity extends BaseTitleActivity {
                 FastUtil.startActivity(mContext, LoginActivity.class);
             }
             finish();
-        }, 1);
+        }, 1500);
     }
 
     @Override

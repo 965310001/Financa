@@ -27,7 +27,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private static String TAG = "WXENTRYACTIVITY";
 
     private IWXAPI api;
-//    private MyHandler handler;
+    //    private MyHandler handler;
     private static final int RETURN_MSG_TYPE_LOGIN = 1; //登录
 
 //    private static class MyHandler extends Handler {
@@ -70,6 +70,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);
 
         api = WXAPIFactory.createWXAPI(this, Constant.WECHATAPPKEY, false);
+//        api.registerApp(Constant.WECHATAPPKEY);
 //        handler = new MyHandler(this);
 
         try {
@@ -79,12 +80,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             e.printStackTrace();
         }
 
-//        if (WeiXinBaoStrategy.getInstance(this) != null) {
-//            WeiXinBaoStrategy.getInstance(this).getWXApi().handleIntent(getIntent(), this);
-//        } else {
+        if (WeiXinBaoStrategy.getInstance(this) != null) {
+            WeiXinBaoStrategy.getInstance(this).getWXApi().handleIntent(getIntent(), this);
+        } else {
 //            finish();
-//        }
+        }
         Log.i(TAG, "onCreate: ");
+
+        finish();
     }
 
     @Override
@@ -94,9 +97,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         setIntent(intent);
         api.handleIntent(intent, this);
 
-//        if (WeiXinBaoStrategy.getInstance(this) != null) {
-//            WeiXinBaoStrategy.getInstance(this).getWXApi().handleIntent(intent, this);
-//        }
+        if (WeiXinBaoStrategy.getInstance(this) != null) {
+            WeiXinBaoStrategy.getInstance(this).getWXApi().handleIntent(intent, this);
+        }
 
     }
 
@@ -113,7 +116,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 break;
         }
         Log.i(TAG, "onReq: ");
-        finish();
+//        finish();
     }
 
     @Override
@@ -125,7 +128,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 result = R.string.errcode_success;
                 if (resp.getType() == RETURN_MSG_TYPE_LOGIN) {
                     String code = ((SendAuth.Resp) resp).code;
-                    Log.i(TAG, "onResp: code:"+code);
+                    Log.i(TAG, "onResp: code:" + code);
                     SPHelper.setStringSF(getApplicationContext(), Constant.WEIXINCODE, code);
                 }
                 break;
@@ -181,14 +184,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             Toast.makeText(this, text, Toast.LENGTH_LONG).show();
         }
 
-        if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+        if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {/*登录成功以后获取个人信息*/
             SendAuth.Resp authResp = (SendAuth.Resp) resp;
             final String code = authResp.code;
-/*
-            NetworkUtil.sendWxAPI(handler, String.format("https://api.weixin.qq.com/sns/oauth2/access_token?" +
-                            "appid=%s&secret=%s&code=%s&grant_type=authorization_code", "wxd930ea5d5a258f4f",
-                    "1d6d1d57a3dd063b36d917bc0b44d964", code), NetworkUtil.GET_TOKEN);
-*/
+//            NetworkUtil.sendWxAPI(handler, String.format("https://api.weixin.qq.com/sns/oauth2/access_token?" +
+//                            "appid=%s&secret=%s&code=%s&grant_type=authorization_code", "wxd930ea5d5a258f4f",
+//                    "1d6d1d57a3dd063b36d917bc0b44d964", code), NetworkUtil.GET_TOKEN);
         }
         Log.i(TAG, "onResp: ");
         finish();

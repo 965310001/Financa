@@ -104,12 +104,29 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 String description = jsonObject.getString("summary");
                 description = description.replace("\n", "");
 
+                mResourceId = jsonObject.getLong("id");
 
-//                mResourceId = jsonObject.get;
+
                 mShareCode = jsonObject.getString("shareCode");
                 mShareContent = description;
                 mResourceType = "ARTICLE";
                 mAuthor = jsonObject.getString("author");
+                mTitle = title;
+                mUrl = jsonObject.getString("shareUrl");
+
+                switch (jsonObject.getInt("top")) {
+                    case 0:
+                        mAdPosition = "0";
+                        break;
+                    case 1:
+                        mAdPosition = "1";
+                        break;
+                    case 2:
+                        mAdPosition = "2";
+                        break;
+                }
+
+                mAdContent=jsonObject.getString("content");
 
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
@@ -151,6 +168,10 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     private String mForwardChannel = "OTHER";
     private String mResourceType;
     private String mAuthor;
+    private String mTitle;
+    private String mUrl;
+    private String mAdPosition;
+    private String mAdContent;
 
     private void shareSuccess() {
         JSONObject jsonObject = new JSONObject();
@@ -163,16 +184,15 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
             JSONObject shareContent = new JSONObject();
             shareContent.putOpt("articleAd", "");
-            shareContent.putOpt("author", "");
-            shareContent.putOpt("content", "");
-            shareContent.putOpt("title", "");
-            shareContent.putOpt("url", "");
+            shareContent.putOpt("author", mAuthor);
+            shareContent.putOpt("content", mShareContent);
+            shareContent.putOpt("title", mTitle);
+            shareContent.putOpt("url", mUrl);
             jsonObject.putOpt("shareContent ", shareContent);
 
-
             JSONObject articleAd = new JSONObject();
-            articleAd.putOpt("adContent", "");
-            articleAd.putOpt("adPosition", "");
+            articleAd.putOpt("adContent", mAdContent);
+            articleAd.putOpt("adPosition", mAdPosition);
             jsonObject.putOpt("shareContent ", articleAd);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -237,6 +257,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
         public void onPaySuccess() {
             ToastUtil.show("分享成功！");
             shareSuccess();
+            Log.i(TAG, "onPaySuccess: ");
         }
 
         @Override

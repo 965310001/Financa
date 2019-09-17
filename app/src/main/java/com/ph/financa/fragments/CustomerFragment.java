@@ -33,7 +33,6 @@ import java.util.Map;
 
 import tech.com.commoncore.base.BaseTitleFragment;
 import tech.com.commoncore.constant.ApiConstant;
-import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
@@ -78,7 +77,7 @@ public class CustomerFragment extends BaseTitleFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
     }
 
     class AndroidInterface extends Object {

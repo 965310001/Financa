@@ -3,6 +3,8 @@ package com.ph.financa.fragments;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.ph.financa.R;
@@ -26,7 +28,6 @@ public class MessageFragment extends BaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        Log.i(TAG, "initView: ");
         EaseConversationListFragment fragment = new EaseConversationListFragment();
         fragment.hideTitleBar();
         fragment.setConversationListItemClickListener(conversation -> {
@@ -37,6 +38,9 @@ public class MessageFragment extends BaseFragment {
             bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
             FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
         });
-        getFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+        getChildFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+
+        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+        Log.i(TAG, "initView:聊天记录 "+conversations.size());
     }
 }

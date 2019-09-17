@@ -44,11 +44,11 @@ public class WeiXinBaoStrategy implements Strategy {
         this.mContext = mContext;
     }
 
-    public static WeiXinBaoStrategy getInstance(Activity context) {
+    public static WeiXinBaoStrategy getInstance(Activity activity) {
         if (mWeiXinPay == null) {
             synchronized (WeiXinBaoStrategy.class) {
                 if (mWeiXinPay == null) {
-                    mWeiXinPay = new WeiXinBaoStrategy(context);
+                    mWeiXinPay = new WeiXinBaoStrategy(activity.getApplication());
                 }
             }
         }

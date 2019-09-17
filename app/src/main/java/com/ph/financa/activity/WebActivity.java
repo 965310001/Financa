@@ -30,7 +30,7 @@ public class WebActivity extends BaseTitleActivity {
             mTitleBar.setTitleMainText(intent.getStringExtra("title"));
         } else {
             mTitleBar.setVisibility(View.GONE);
-            StatusBarCompat.setStatusBarColor(mContext, getColor(R.color.white));
+            StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
         }
 

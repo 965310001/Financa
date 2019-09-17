@@ -46,11 +46,9 @@ public class ApiConstant {
 //
 //
 //    public static final String ISREGISTER = "user/isRegister";//是否注册
-//
-//
 
-    public static final String AGREEMENT = "http://protocol.bybigdata.com/index.html#/agreement";//隐私政策
-    public static final String PROTOCOL = "http://protocol.bybigdata.com/index.html#/protocol";//用户协议
+    public static final String AGREEMENT = "xxx";//隐私政策
+    public static final String PROTOCOL = "xxx";//用户协议
 
     /*首页*/
     public static final String H5 = "h5/";/*首页URL：*/

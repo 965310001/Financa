@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -29,6 +28,7 @@ import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseSmileUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.GlideManager;
 import com.hyphenate.easeui.widget.EaseConversationList.EaseConversationListHelper;
 import com.hyphenate.easeui.widget.EaseImageView;
 import com.hyphenate.util.DateUtils;
@@ -133,13 +133,18 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
         try {
             Map<String, Object> map = message.ext();
             Log.i(TAG, "onSetMessageAttributes: " + map.get("UserPortrait"));
-//            Log.i(TAG, "onSetMessageAttributes: " + map.get("nickName"));
-//
-//            Log.i(TAG, "onSetMessageAttributes: " + map.get("otherUserPortrait"));
-//            Log.i(TAG, "onSetMessageAttributes: " + map.get("otherUserNickName"));
 
             holder.name.setText(map.get("otherUserNickName").toString());
-            Glide.with(getContext()).load(map.get("otherUserPortrait")).into(holder.avatar);
+            String otherUserPortrait = map.get("otherUserPortrait").toString();
+            if (!TextUtils.isEmpty(otherUserPortrait)) {
+                if (otherUserPortrait.equals("客服")) {
+                    GlideManager.loadCircleImg(R.drawable.ic_service, holder.avatar);
+                } else {
+                    GlideManager.loadCircleImg(otherUserPortrait, holder.avatar);
+                }
+            } else {
+                GlideManager.loadCircleImg(R.drawable.ic_service, holder.avatar);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

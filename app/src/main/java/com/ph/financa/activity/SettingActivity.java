@@ -1,6 +1,8 @@
 package com.ph.financa.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ import com.hyphenate.chat.EMClient;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.dialog.MessageAlertDialog;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
@@ -26,6 +29,8 @@ import tech.com.commoncore.utils.ToastUtil;
  * 设置
  */
 public class SettingActivity extends BaseTitleActivity {
+
+    private MessageAlertDialog messageAlertDialog;
 
     @Override
     public void setTitleBar(TitleBarView titleBar) {
@@ -74,13 +79,26 @@ public class SettingActivity extends BaseTitleActivity {
                 break;
             case R.id.tv_quit:
                 // TODO: 2019/9/9 退出登录
-                quitUser();
+                messageAlertDialog = MessageAlertDialog.show(getSupportFragmentManager(), "", "是否退出本账号", "",
+                        index -> {
+                            messageAlertDialog.dismiss();
+                            switch (index) {
+                                case 1:
+                                    quitUser();
+                                    break;
+                            }
+                        });
                 break;
         }
     }
 
     private void quitUser() {
         showLoading();
+//        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.USERID, ""));
+//        //获取此会话的所有消息
+//        List<EMMessage> messages = conversation.getAllMessages();
+//        EMClient.getInstance().chatManager().importMessages(messages);/*同步到数据库*/
+
         ViseHttp.POST(String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.LOGINOUT))
                 .request(new ACallback<BaseTResp2>() {
                     @Override
@@ -108,11 +126,7 @@ public class SettingActivity extends BaseTitleActivity {
 
             @Override
             public void onSuccess() {
-
-                hideLoading();
-                SPHelper.clearShareprefrence(mContext);
-                FastUtil.startActivity(mContext, LoginActivity.class);
-                finish();
+                mHandler.sendEmptyMessage(0);
             }
 
             @Override
@@ -121,10 +135,27 @@ public class SettingActivity extends BaseTitleActivity {
 
             @Override
             public void onError(int code, String message) {
-                hideLoading();
-                ToastUtil.show(message);
+                mHandler.hasMessages(2, message);
             }
         }));
     }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            hideLoading();
+            switch (msg.what) {
+                case 0:
+                    SPHelper.clearShareprefrence(mContext);
+                    FastUtil.startActivity(mContext, LoginActivity.class);
+                    finish();
+                    break;
+                case 2:
+                    ToastUtil.show(msg.obj.toString());
+                    break;
+            }
+        }
+    };
 
 }

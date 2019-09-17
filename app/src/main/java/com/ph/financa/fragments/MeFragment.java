@@ -13,6 +13,7 @@ import com.ph.financa.activity.SettingActivity;
 import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.ease.FriendTable;
 
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
@@ -136,6 +137,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.ll_service:
                 // TODO: 2019/9/9 我的客服
                 bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
+
+                bundle.putString(FriendTable.FRIEND_NAME, "我的客服");
+                bundle.putString(FriendTable.FRIEND_HEAD, "客服");
+
                 goActivity(CustomerActivity.class, bundle);
                 break;
             case R.id.ll_setting:

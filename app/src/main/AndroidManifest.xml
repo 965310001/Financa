@@ -29,15 +29,28 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
-        <activity android:name=".activity.ChangePhoneActivity"></activity>
-        <activity android:name=".activity.VipActivity" />
+        <activity
+            android:name=".activity.ChangePhoneActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.VipActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait" />
+        <!--聊天-->
         <activity
             android:name=".activity.CustomerActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity android:name=".activity.WriteArticleActivity" />
-        <activity android:name=".activity.SettingActivity" />
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+        <activity
+            android:name=".activity.WriteArticleActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.WebActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
@@ -57,7 +70,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden">
+            android:theme="@style/AppTheme.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,16 +83,19 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" /> <!-- android:taskAffinity="net.sourceforge.simcpux" -->
-        <!-- <activity -->
-        <!-- android:name=".WXEntryActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:launchMode="singleTask" -->
-        <!-- android:theme="@android:style/Theme.Translucent" /> -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent" />
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wx7faa69a8d98bfb10" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"

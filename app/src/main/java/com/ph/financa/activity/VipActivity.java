@@ -346,6 +346,7 @@ public class VipActivity extends BaseTitleActivity {
                 String text = tv.getText().toString().trim();
                 for (int i = 0; i < titles.length; i++) {
                     if (text.equals(titles[i])) {
+                        Log.i(TAG, "onClick: ");
                         switch (i) {
                             case 0:
                                 break;

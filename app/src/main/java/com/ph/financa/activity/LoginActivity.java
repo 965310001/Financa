@@ -164,6 +164,7 @@ public class LoginActivity extends BaseActivity {
                         params.put("province", data.getProvince());
                         params.put("city", data.getCity());
                         params.put("openId", data.getOpenid());
+
                         JSONObject jsonObject = new JSONObject(params);
                         ViseHttp.POST(ApiConstant.LOGIN)
                                 .setJson(jsonObject)

@@ -11,6 +11,7 @@ import com.aries.ui.view.title.TitleBarView;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.http.NetworkUtil;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
@@ -73,26 +74,44 @@ public class SendCodeActivity extends BaseTitleActivity {
     /*发送验证码*/
     private void sendCode() {
         showLoading();
-        String phone = getPhone();
-        ViseHttp.POST(ApiConstant.SEND_CODE)
-                .addParam("phone", phone)
-                .request(new ACallback<BaseTResp2>() {
-                    @Override
-                    public void onSuccess(BaseTResp2 data) {
-                        hideLoading();
-                        if (data.isSuccess()) {
-                            countdownTime();
-                        } else {
-                            ToastUtil.show(data.getMsg());
-                        }
-                    }
 
-                    @Override
-                    public void onFail(int errCode, String errMsg) {
-                        hideLoading();
-                        ToastUtil.show(errMsg);
-                    }
-                });
+        NetworkUtil.sendCode(getPhone(), new ACallback<BaseTResp2>() {
+            @Override
+            public void onSuccess(BaseTResp2 data) {
+                hideLoading();
+                if (data.isSuccess()) {
+                    countdownTime();
+                } else {
+                    ToastUtil.show(data.getMsg());
+                }
+            }
+
+            @Override
+            public void onFail(int errCode, String errMsg) {
+                hideLoading();
+                ToastUtil.show(errMsg);
+            }
+        });
+
+//        ViseHttp.POST(ApiConstant.SEND_CODE)
+//                .addParam("phone", phone)
+//                .request(new ACallback<BaseTResp2>() {
+//                    @Override
+//                    public void onSuccess(BaseTResp2 data) {
+//                        hideLoading();
+//                        if (data.isSuccess()) {
+//                            countdownTime();
+//                        } else {
+//                            ToastUtil.show(data.getMsg());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFail(int errCode, String errMsg) {
+//                        hideLoading();
+//                        ToastUtil.show(errMsg);
+//                    }
+//                });
     }
 
     private void countdownTime() {

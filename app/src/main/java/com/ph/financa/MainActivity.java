@@ -39,7 +39,7 @@ import tech.com.commoncore.utils.FastUtil;
  */
 public class MainActivity extends BaseActivity {
 
-    private EasyNavigationBar navigationBar;
+    private EasyNavigationBar mNavigationBar;
 
     private String[] tabText = {"首页", "谁看了我", "", "客户", "我的"};
 
@@ -51,9 +51,10 @@ public class MainActivity extends BaseActivity {
     private List<Fragment> fragments;
 
     private AddDialog mAddDialog;
+    private HomeFragment mHomeFragment;
 
     public EasyNavigationBar getNavigationBar() {
-        return navigationBar;
+        return mNavigationBar;
     }
 
     @Override
@@ -84,15 +85,16 @@ public class MainActivity extends BaseActivity {
         }, Manifest.permission.READ_CONTACTS, Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_FINE_LOCATION);
 
 
-        navigationBar = findViewById(R.id.navigationBar);
+        mNavigationBar = findViewById(R.id.navigationBar);
 
         fragments = new ArrayList<>();
-        fragments.add(new HomeFragment());
+        mHomeFragment = new HomeFragment();
+        fragments.add(mHomeFragment);
         fragments.add(new SeeFragment());
         fragments.add(new CustomerFragment());
         fragments.add(new MeFragment());
 
-        navigationBar.titleItems(tabText)
+        mNavigationBar.titleItems(tabText)
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)
@@ -126,7 +128,7 @@ public class MainActivity extends BaseActivity {
                 .anim(Anim.ZoomIn)
                 .build();
 
-        navigationBar.setAddViewLayout(createView());
+        mNavigationBar.setAddViewLayout(createView());
 
         //注册一个监听连接状态的listener
         EMClient.getInstance().addConnectionListener(new ConnectionListener());
@@ -190,8 +192,8 @@ public class MainActivity extends BaseActivity {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 int x = NavigationUtil.getScreenWidth(this) / 2;
                 int y = (NavigationUtil.getScreenHeith(this) - NavigationUtil.dip2px(this, 25));
-                Animator animator = ViewAnimationUtils.createCircularReveal(navigationBar.getAddViewLayout(), x,
-                        y, navigationBar.getAddViewLayout().getHeight(), 0);
+                Animator animator = ViewAnimationUtils.createCircularReveal(mNavigationBar.getAddViewLayout(), x,
+                        y, mNavigationBar.getAddViewLayout().getHeight(), 0);
                 animator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -200,7 +202,7 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        navigationBar.getAddViewLayout().setVisibility(View.GONE);
+                        mNavigationBar.getAddViewLayout().setVisibility(View.GONE);
                         //dismiss();
                     }
                 });
@@ -212,5 +214,33 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
+//    @Override
+//    public void onBackPressed() {
+////        quitApp();
+//        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
+//            case 0:
+//                Log.i(TAG, "onBackPressed: " + mHomeFragment.back());
+//                break;
+//        }
+//    }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
+//            case 0:
+//                if (!mHomeFragment.back()){
+//                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+//                        Intent home = new Intent(Intent.ACTION_MAIN);
+//                        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        home.addCategory(Intent.CATEGORY_HOME);
+//                        startActivity(home);
+//                        return true;
+//                    }
+//                }
+//                break;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 }

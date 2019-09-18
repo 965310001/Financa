@@ -13,6 +13,7 @@ import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
+import com.ph.financa.utils.AndroidBug5497Workaround;
 
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.utils.SPHelper;
@@ -25,6 +26,7 @@ public class CustomerActivity extends BaseTitleActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+        AndroidBug5497Workaround.assistActivity(this);
 
         Intent intent = getIntent();
         if (intent.hasExtra(FriendTable.FRIEND_NAME)) {
@@ -32,6 +34,8 @@ public class CustomerActivity extends BaseTitleActivity {
         } else {
             mTitleBar.setTitleMainText("我的客服");
         }
+
+
 
 //       /* String id;
 //        if (intent.hasExtra("id")) {

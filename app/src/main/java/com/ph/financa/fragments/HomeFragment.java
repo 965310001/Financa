@@ -6,7 +6,6 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 
-import com.google.gson.Gson;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
@@ -43,9 +42,13 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     private String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
             SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
             SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
+
     private AgentWeb mAgentWeb;
 
     private WbShareHandler mShareHandler;
+
+    private long mResourceId;
+    private String mShareCode, mShareContent, mShareChannel = "OTHER", mResourceType, mAuthor, mTitle, mUrl, mAdPosition, mAdContent;
 
     @Override
     public int getContentLayout() {
@@ -55,6 +58,8 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     @Override
     public void initView(Bundle savedInstanceState) {
         Log.i(TAG, "initView: " + URL);
+//        mContentView.setPadding(0, 0, 0, 0);
+//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.bg_loading));
 
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
@@ -109,27 +114,19 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 mResourceId = jsonObject.getLong("id");
 
                 mShareCode = jsonObject.getString("shareCode");
-                mShareContent = description;
+                mShareContent = jsonObject.getString("content");
                 mResourceType = "ARTICLE";
                 mAuthor = jsonObject.getString("author");
                 mTitle = title;
-                mUrl = jsonObject.getString("shareUrl");
+                mUrl = shareLink;
 
-                mAdPosition = jsonObject.getString("top");
+                if (jsonObject.has("positionState")) {
+                    mAdPosition = jsonObject.getString("positionState");
+                }
 
-//                switch (jsonObject.getInt("top")) {
-//                    case 0:
-//                        mAdPosition = "0";
-//                        break;
-//                    case 1:
-//                        mAdPosition = "1";
-//                        break;
-//                    case 2:
-//                        mAdPosition = "2";
-//                        break;
-//                }
-
-                mAdContent = jsonObject.getString("content");
+                if (jsonObject.has("production")) {
+                    mAdContent = jsonObject.getString("production");
+                }
 
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
@@ -150,7 +147,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 0, map, listener);
                 break;
             case "shareToCircle":/*朋友圈*/
-                mShareChannel = "WECHAT_CIRCLE ";
+                mShareChannel = "WECHAT_CIRCLE";
                 map = new HashMap<>();
                 map.put("url", shareLink);
                 map.put("imageurl", imgUrl);
@@ -165,17 +162,6 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
         }
     }
 
-    private long mResourceId;
-    private String mShareCode;
-    private String mShareContent;
-    private String mShareChannel = "OTHER";
-    private String mResourceType;
-    private String mAuthor;
-    private String mTitle;
-    private String mUrl;
-    private String mAdPosition;
-    private String mAdContent;
-//    private String mShareChannel;
 
     private void shareSuccess() {
         JSONObject jsonObject = new JSONObject();
@@ -196,11 +182,8 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
             shareContent.putOpt("content", mShareContent);
             shareContent.putOpt("title", mTitle);
             shareContent.putOpt("url", mUrl);
-            jsonObject.putOpt("shareContent ", shareContent);
+            jsonObject.putOpt("shareContent", shareContent);
             shareContent.putOpt("articleAd", jsonArray);
-
-            Gson gson = new Gson();
-            Log.i(TAG, "shareSuccess: " + jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -291,5 +274,9 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
             mAgentWeb.getWebLifeCycle().onDestroy();
         }
         super.onDestroy();
+    }
+
+    public boolean back() {
+        return mAgentWeb.back();
     }
 }

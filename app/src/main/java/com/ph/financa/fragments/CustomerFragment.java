@@ -52,19 +52,6 @@ public class CustomerFragment extends BaseTitleFragment {
     @Override
     public void loadData() {
         super.loadData();
-        Log.i(TAG, "loadData: " + URL);
-        if (!TextUtils.isEmpty(URL)) {
-            mAgentWeb = AgentWeb.with(this)
-                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
-                    .useDefaultIndicator()
-                    .createAgentWeb()
-                    .ready()
-                    .go(URL);
-
-//            mAgentWeb.getJsAccessEntrace().quickCallJs("callJS");
-
-            mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
-        }
     }
 
     @Override
@@ -77,7 +64,18 @@ public class CustomerFragment extends BaseTitleFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+
+        if (!TextUtils.isEmpty(URL)) {
+            mAgentWeb = AgentWeb.with(this)
+                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
+                    .useDefaultIndicator()
+                    .createAgentWeb()
+                    .ready()
+                    .go(URL);
+
+            mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
+        }
     }
 
     class AndroidInterface extends Object {

@@ -39,11 +39,7 @@ public class WebActivity extends BaseTitleActivity {
         }
 
         Log.i(TAG, "initView: " + mUrl);
-    }
 
-    @Override
-    public void loadData() {
-        super.loadData();
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()

@@ -41,9 +41,8 @@
         <!--聊天-->
         <activity
             android:name=".activity.CustomerActivity"
-            android:configChanges="keyboardHidden|screenLayout|orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activity.WriteArticleActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"

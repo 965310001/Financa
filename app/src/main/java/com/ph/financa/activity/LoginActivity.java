@@ -114,6 +114,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onPayCancel() {
+                ToastUtil.show("取消登录！");
             }
 
             @Override

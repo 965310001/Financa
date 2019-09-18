@@ -17,16 +17,14 @@ import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessView;
 import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessWebview;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import tech.com.commoncore.utils.SPHelper;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private static String TAG = "WXENTRYACTIVITY";
 
-    private IWXAPI api;
+//    private IWXAPI api;
     //    private MyHandler handler;
     private static final int RETURN_MSG_TYPE_LOGIN = 1; //登录
 
@@ -69,16 +67,15 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        api = WXAPIFactory.createWXAPI(this, Constant.WECHATAPPKEY, false);
-//        api.registerApp(Constant.WECHATAPPKEY);
-//        handler = new MyHandler(this);
-
-        try {
-            Intent intent = getIntent();
-            api.handleIntent(intent, this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        api = WXAPIFactory.createWXAPI(this, Constant.WECHATAPPKEY, false);
+////        api.registerApp(Constant.WECHATAPPKEY);
+////        handler = new MyHandler(this);
+//        try {
+//            Intent intent = getIntent();
+//            api.handleIntent(intent, this);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         if (WeiXinBaoStrategy.getInstance(this) != null) {
             WeiXinBaoStrategy.getInstance(this).getWXApi().handleIntent(getIntent(), this);
@@ -93,9 +90,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.i(TAG, "onNewIntent: ");
-        setIntent(intent);
-        api.handleIntent(intent, this);
+//        Log.i(TAG, "onNewIntent: ");
+//        setIntent(intent);
+//        api.handleIntent(intent, this);
 
         if (WeiXinBaoStrategy.getInstance(this) != null) {
             WeiXinBaoStrategy.getInstance(this).getWXApi().handleIntent(intent, this);
@@ -122,7 +119,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp resp) {
         int result = 0;
-
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 result = R.string.errcode_success;
@@ -149,7 +145,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 result = R.string.errcode_unknown;
                 break;
         }
-        Log.i(TAG, "onResp: " + ((SendAuth.Resp) resp).code);
+        Log.i(TAG, "onResp: "+getString(result));
         resp.errStr = getString(result);
         WeiXinBaoStrategy.getInstance(this).onResp(resp.errCode, resp.errStr);
 

@@ -1,5 +1,6 @@
 package com.ph.financa;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
@@ -24,6 +25,8 @@ import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
 import com.ph.financa.fragments.SeeFragment;
+import com.vise.xsnow.permission.OnPermissionCallback;
+import com.vise.xsnow.permission.PermissionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +65,23 @@ public class MainActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
         /*测试*/
         /*FastUtil.startActivity(mContext, LoginActivity.class);*/
+
+        PermissionManager.instance().request(mContext, new OnPermissionCallback() {
+            @Override
+            public void onRequestAllow(String permissionName) {
+                Log.i(TAG, "onRequestAllow: " + permissionName);
+            }
+
+            @Override
+            public void onRequestRefuse(String permissionName) {
+                Log.i(TAG, "onRequestRefuse: " + permissionName);
+            }
+
+            @Override
+            public void onRequestNoAsk(String permissionName) {
+                Log.i(TAG, "onRequestNoAsk: " + permissionName);
+            }
+        }, Manifest.permission.READ_CONTACTS, Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_FINE_LOCATION);
 
 
         navigationBar = findViewById(R.id.navigationBar);

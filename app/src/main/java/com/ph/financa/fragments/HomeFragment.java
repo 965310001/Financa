@@ -6,6 +6,7 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 
+import com.google.gson.Gson;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
@@ -21,6 +22,7 @@ import com.sina.weibo.sdk.share.WbShareHandler;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -106,7 +108,6 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
                 mResourceId = jsonObject.getLong("id");
 
-
                 mShareCode = jsonObject.getString("shareCode");
                 mShareContent = description;
                 mResourceType = "ARTICLE";
@@ -114,19 +115,21 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 mTitle = title;
                 mUrl = jsonObject.getString("shareUrl");
 
-                switch (jsonObject.getInt("top")) {
-                    case 0:
-                        mAdPosition = "0";
-                        break;
-                    case 1:
-                        mAdPosition = "1";
-                        break;
-                    case 2:
-                        mAdPosition = "2";
-                        break;
-                }
+                mAdPosition = jsonObject.getString("top");
 
-                mAdContent=jsonObject.getString("content");
+//                switch (jsonObject.getInt("top")) {
+//                    case 0:
+//                        mAdPosition = "0";
+//                        break;
+//                    case 1:
+//                        mAdPosition = "1";
+//                        break;
+//                    case 2:
+//                        mAdPosition = "2";
+//                        break;
+//                }
+
+                mAdContent = jsonObject.getString("content");
 
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
@@ -138,7 +141,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     private void share(String target, String shareLink, String imgUrl, String title, String description) {
         switch (target) {
             case "shareToFriend":/*微信*/
-                mForwardChannel = "WECHAT";
+                mShareChannel = "WECHAT";
                 Map<String, String> map = new HashMap<>();
                 map.put("url", shareLink);
                 map.put("imageurl", imgUrl);
@@ -147,7 +150,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 0, map, listener);
                 break;
             case "shareToCircle":/*朋友圈*/
-                mForwardChannel = "WECHAT_CIRCLE ";
+                mShareChannel = "WECHAT_CIRCLE ";
                 map = new HashMap<>();
                 map.put("url", shareLink);
                 map.put("imageurl", imgUrl);
@@ -156,7 +159,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 1, map, listener);
                 break;
             case "shareToSina":/*新浪微博*/
-                mForwardChannel = "SINA_WEIBO";
+                mShareChannel = "SINA_WEIBO";
                 wbShare(shareLink, imgUrl, title, description);
                 break;
         }
@@ -165,35 +168,39 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     private long mResourceId;
     private String mShareCode;
     private String mShareContent;
-    private String mForwardChannel = "OTHER";
+    private String mShareChannel = "OTHER";
     private String mResourceType;
     private String mAuthor;
     private String mTitle;
     private String mUrl;
     private String mAdPosition;
     private String mAdContent;
+//    private String mShareChannel;
 
     private void shareSuccess() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("resourceId", mResourceId);
-            jsonObject.put("shareCode", mShareCode);
-            jsonObject.put("shareContent", mShareContent);
-            jsonObject.put("forwardChannel", mForwardChannel);
-            jsonObject.put("resourceType", mResourceType);
+            jsonObject.putOpt("resourceId", mResourceId);
+            jsonObject.putOpt("shareCode", mShareCode);
+            jsonObject.putOpt("shareChannel", mShareChannel);
+            jsonObject.putOpt("resourceType", mResourceType);
+
+            JSONArray jsonArray = new JSONArray();
+            JSONObject articleAd = new JSONObject();
+            articleAd.putOpt("adContent", mAdContent);
+            articleAd.putOpt("adPosition", mAdPosition);
+            jsonArray.put(articleAd);
 
             JSONObject shareContent = new JSONObject();
-            shareContent.putOpt("articleAd", "");
             shareContent.putOpt("author", mAuthor);
             shareContent.putOpt("content", mShareContent);
             shareContent.putOpt("title", mTitle);
             shareContent.putOpt("url", mUrl);
             jsonObject.putOpt("shareContent ", shareContent);
+            shareContent.putOpt("articleAd", jsonArray);
 
-            JSONObject articleAd = new JSONObject();
-            articleAd.putOpt("adContent", mAdContent);
-            articleAd.putOpt("adPosition", mAdPosition);
-            jsonObject.putOpt("shareContent ", articleAd);
+            Gson gson = new Gson();
+            Log.i(TAG, "shareSuccess: " + jsonObject.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -202,6 +209,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 .request(new ACallback<BaseTResp2>() {
                     @Override
                     public void onSuccess(BaseTResp2 data) {
+                        Log.i(TAG, "onSuccess: " + data.getMsg());
                         if (data.isSuccess()) {
                             ToastUtil.show("分享成功");
                         } else {
@@ -211,6 +219,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
+                        Log.i(TAG, "onFail: " + errMsg);
                         ToastUtil.show(errMsg);
                     }
                 });

@@ -83,7 +83,7 @@
                 android:textSize="18sp"
                 android:imeOptions="actionSend"/>
 
-            <RelativeLayout 
+            <RelativeLayout
                 android:id="@+id/rl_face"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/ease_chatting_biaoqing_btn_enable"
                 android:visibility="invisible" />
-            
+
             </RelativeLayout>
         </RelativeLayout>
 

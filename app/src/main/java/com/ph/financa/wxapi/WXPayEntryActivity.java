@@ -49,7 +49,7 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
 
     @Override
     public void onResp(BaseResp resp) {
-        Log.i("", resp.getType() + " " + resp.errCode + " " + resp.errStr + " " + resp.transaction + " " + resp.openId);
+        Log.i("TAG", resp.getType() + " " + resp.errCode + " " + resp.errStr + " " + resp.transaction + " " + resp.openId);
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (WeiXinBaoStrategy.getInstance(this) != null) {
                 if (resp.errStr != null) {
@@ -69,18 +69,6 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
                 WeiXinBaoStrategy.getInstance(this).onResp(resp.errCode, resp.errStr);
                 /*finish();*/
             }
-           /* switch (resp.errCode) {
-                case 0:
-                    QLog.i("成功");
-                    break;
-                case -1:
-                    QLog.i("可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等。\n");
-                    Toast.makeText(this, "可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等。!", Toast.LENGTH_SHORT).show();
-                    break;
-                case -2:
-                    Toast.makeText(this, "您已取消付款!", Toast.LENGTH_SHORT).show();
-                    break;
-            }*/
         }
         finish();
     }

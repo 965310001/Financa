@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.tencent.mm.opensdk.constants.Build;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -76,7 +77,7 @@ public class WeiXinBaoStrategy implements Strategy {
      * @param appId
      */
     public void init(String appId) {
-        mIWXAPI = WXAPIFactory.createWXAPI(mContext, appId);
+        mIWXAPI = WXAPIFactory.createWXAPI(mContext, appId, true);
         mIWXAPI.registerApp(appId);
     }
 
@@ -149,6 +150,7 @@ public class WeiXinBaoStrategy implements Strategy {
      */
     public void wechatShare(String appId, final int flag, final Map<String, String> map, JPayListener listener) {
         init(appId);
+        mJPayListener = listener;
         if (!checkWx()) {
             if (listener != null) {
                 listener.onPayError(WEIXIN_VERSION_LOW, "未安装微信或者微信版本过低");
@@ -231,6 +233,9 @@ public class WeiXinBaoStrategy implements Strategy {
         } else if (error_code == -2) {
             //支付取消
             mJPayListener.onPayCancel();
+        }else if(error_code== BaseResp.ErrCode.ERR_AUTH_DENIED){
+            //发送取消
+            mJPayListener.onPayError(BaseResp.ErrCode.ERR_AUTH_DENIED, message);
         }
 
         mJPayListener = null;

@@ -38,6 +38,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView mTvMessage;//消息
 
     @Override
+    public void onResume() {
+        super.onResume();
+//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.ce6454a));
+//        StatusBarUtils.setPadding(mContext,mContentView);
+    }
+
+    @Override
     public void initView(Bundle savedInstanceState) {
         mIcHead = mContentView.findViewById(R.id.ic_head);
         mTvName = mContentView.findViewById(R.id.tv_name);
@@ -65,7 +73,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 , SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, ""),
                 SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
     }
-
 
     private void setData(String name, String companyName, String head) {
         if (!TextUtils.isEmpty(name)) {

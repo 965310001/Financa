@@ -33,6 +33,7 @@ import java.util.Map;
 
 import tech.com.commoncore.base.BaseTitleFragment;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
@@ -50,11 +51,6 @@ public class CustomerFragment extends BaseTitleFragment {
     private AgentWeb mAgentWeb;
 
     @Override
-    public void loadData() {
-        super.loadData();
-    }
-
-    @Override
     public void onDestroy() {
         if (null != mAgentWeb) {
             mAgentWeb.getWebLifeCycle().onDestroy();
@@ -63,9 +59,15 @@ public class CustomerFragment extends BaseTitleFragment {
     }
 
     @Override
-    public void initView(Bundle savedInstanceState) {
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+    public void onResume() {
+        super.onResume();
 
+        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+    }
+
+    @Override
+    public void initView(Bundle savedInstanceState) {
         if (!TextUtils.isEmpty(URL)) {
             mAgentWeb = AgentWeb.with(this)
                     .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))

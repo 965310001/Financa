@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">资讯雷达</string>
+    <string name="app_name">咨询雷达</string>
 
     <string name="errcode_success">发送成功</string>
     <string name="errcode_cancel">发送取消</string>

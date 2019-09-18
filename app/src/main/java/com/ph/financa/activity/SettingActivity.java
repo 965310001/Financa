@@ -68,7 +68,7 @@ public class SettingActivity extends BaseTitleActivity {
         switch (view.getId()) {
             case R.id.rl_feedback:
                 // TODO: 2019/9/9 反馈
-                FastUtil.startActivity(mContext, null);
+//                FastUtil.startActivity(mContext, null);
                 break;
             case R.id.rl_version:
                 // TODO: 2019/9/9 版本

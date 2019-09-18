@@ -138,6 +138,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(WXAccessTokenBean data) {
                         if (TextUtils.isEmpty(data.getAccess_token()) || TextUtils.isEmpty(data.getOpenid())) {
+                            hideLoading();
                             ToastUtil.show(data.getErrmsg());
                         } else {
                             getWXUserInfo(data.getAccess_token(), data.getOpenid());

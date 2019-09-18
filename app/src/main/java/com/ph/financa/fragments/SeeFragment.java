@@ -16,6 +16,7 @@ import com.ph.financa.R;
 import java.util.ArrayList;
 
 import tech.com.commoncore.base.BaseFragment;
+import tech.com.commoncore.utils.DisplayUtil;
 
 /**
  * 谁看了我
@@ -34,9 +35,15 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.ce6454a));
+        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//        StatusBarUtils.setPadding(mContext,mContentView);
+    }
+
+    @Override
     public void initView(Bundle savedInstanceState) {
-//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-//        StatusBarCompat.setStatusBarColor(mContext, getContext().getColor(R.color.white));
 
         mContentView.findViewById(R.id.tv_vip).setOnClickListener(this);
         for (int i = 0; i < titles.length; i++) {

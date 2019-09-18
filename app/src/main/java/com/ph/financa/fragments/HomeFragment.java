@@ -30,6 +30,7 @@ import java.util.Map;
 
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
@@ -55,9 +56,18 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
         return R.layout.fragment_home;
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//    }
+
     @Override
     public void initView(Bundle savedInstanceState) {
         Log.i(TAG, "initView: " + URL);
+
+
+//        StatusBarUtils.setPaddingSmart(mContext, mContentView);
 //        mContentView.setPadding(0, 0, 0, 0);
 //        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.bg_loading));
 
@@ -218,6 +228,9 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
     @Override
     public void onResume() {
+        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+
         if (null != mAgentWeb) {
             mAgentWeb.getWebLifeCycle().onResume();
         }

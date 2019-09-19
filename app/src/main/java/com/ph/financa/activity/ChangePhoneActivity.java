@@ -1,7 +1,6 @@
 package com.ph.financa.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -19,11 +18,11 @@ import com.vise.xsnow.http.callback.ACallback;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
-import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.RegUtils;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
@@ -45,49 +44,30 @@ public class ChangePhoneActivity extends BaseTitleActivity {
         mTvErrCode = findViewById(R.id.tv_code_err);
         mTvTime = findViewById(R.id.tv_time);
 
-
         TextView tvCurrentPhone = findViewById(R.id.tv_current_phone);
-        tvCurrentPhone.setText(String.format("当前手机号：%s", getAsteriskPhone()));
+        tvCurrentPhone.setText(String.format("当前手机号：%s", SPHelper.getStringSF(mContext, Constant.USERPHONE, "")));
     }
 
-    /*获取星号收获吗*/
-    private String getAsteriskPhone() {
-        String phone = SPHelper.getStringSF(mContext, Constant.USERPHONE, "");
-        if (!TextUtils.isEmpty(phone)) {
-            if (RegUtils.isMobile(phone)) {
-                // TODO: 2019/9/9 手机号码使用星号代替
-            }
-        }
-        return phone;
-    }
-
-    @Override
-    public void setTitleBar(TitleBarView titleBar) {
-        titleBar.setTitleMainText("更换手机号");
-    }
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.activity_change_phone;
-    }
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_send_code:// TODO: 2019/9/6 发送验证码
-                if (!checkPhone()) {
-                    return;
-                }
-                sendCode();
+//                if (!checkPhone()) {
+//                    return;
+//                }
+//                sendCode();
+                Observable.just(checkPhone()).takeWhile(aBoolean -> aBoolean).subscribe(aBoolean -> sendCode());
                 break;
 
             case R.id.btn_next:// TODO: 2019/9/6 下一步
-                if (!checkPhone()) {
-                    return;
-                }
-                if (!checkCode()) {
-                    return;
-                }
-                doGet();
+                Observable.just(checkPhone() && checkCode()).takeWhile(aBoolean -> aBoolean).subscribe(aBoolean -> doGet());
+//                if (!checkPhone()) {
+//                    return;
+//                }
+//                if (!checkCode()) {
+//                    return;
+//                }
+//                doGet();
                 break;
         }
     }
@@ -95,9 +75,8 @@ public class ChangePhoneActivity extends BaseTitleActivity {
     /*发送验证码*/
     private void sendCode() {
         showLoading();
-        String phone = getPhone();
 
-        NetworkUtil.sendCode(phone, new ACallback<BaseTResp2>() {
+        NetworkUtil.sendCode(getPhone(), new ACallback<BaseTResp2>() {
             @Override
             public void onSuccess(BaseTResp2 data) {
                 hideLoading();
@@ -114,36 +93,16 @@ public class ChangePhoneActivity extends BaseTitleActivity {
                 ToastUtil.show(errMsg);
             }
         });
-
-//        ViseHttp.POST(ApiConstant.SEND_CODE)
-//                .addParam("phone", phone)
-//                .request(new ACallback<BaseTResp2>() {
-//                    @Override
-//                    public void onSuccess(BaseTResp2 data) {
-//                        hideLoading();
-//                        if (data.isSuccess()) {
-//                            countdownTime();
-//                        } else {
-//                            ToastUtil.show(data.getMsg());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFail(int errCode, String errMsg) {
-//                        hideLoading();
-//                        ToastUtil.show(errMsg);
-//                    }
-//                });
     }
 
     private void countdownTime() {
-        mTvSendCode.setVisibility(View.GONE);
-        mTvTime.setVisibility(View.VISIBLE);
-
         mdDisposable = Flowable.intervalRange(1, 61, 0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(aLong -> {
-                    mTvTime.setText(String.format("%ds", (61 - aLong)));
+                .map(aLong -> 61 - aLong)
+                .doOnNext(aLong -> mTvTime.setText(String.format("%ds", aLong)))
+                .doOnSubscribe(subscription -> {
+                    mTvSendCode.setVisibility(View.GONE);
+                    mTvTime.setVisibility(View.VISIBLE);
                 })
                 .doOnComplete(() -> {
                     mTvSendCode.setVisibility(View.VISIBLE);
@@ -158,7 +117,7 @@ public class ChangePhoneActivity extends BaseTitleActivity {
 
         String phone = getPhone();
         String code = getCode();
-        ViseHttp.POST(ApiConstant.VERIFICATION_CODE)
+        ViseHttp.POST(ApiConstant.UPDATE_PHONE)
                 .addParam("phone", phone)
                 .addParam("code", code)
                 .request(new ACallback<BaseTResp2>() {
@@ -167,7 +126,8 @@ public class ChangePhoneActivity extends BaseTitleActivity {
                         hideLoading();
                         if (data.isSuccess()) {
                             SPHelper.setStringSF(mContext, Constant.USERPHONE, phone);
-                            FastUtil.startActivity(mContext, EditCompanyActivity.class);
+                            /*FastUtil.startActivity(mContext, EditCompanyActivity.class);*/
+                            finish();
                         } else if (data.getCode() == 500) {/*验证码失败*/
                             hideErrCode(false);
                             ToastUtil.show(data.getMsg());
@@ -186,7 +146,7 @@ public class ChangePhoneActivity extends BaseTitleActivity {
     }
 
     private boolean checkPhone() {
-        if (!RegUtils.isMobile(mEtPhone.getText().toString().trim())) {
+        if (!RegUtils.isMobile(getPhone())) {
             ToastUtil.show("请填写正确的手机号码");
             return false;
         }
@@ -198,7 +158,7 @@ public class ChangePhoneActivity extends BaseTitleActivity {
     }
 
     private boolean checkCode() {
-        if (!RegUtils.isValidateVCode(mEtCode.getText().toString().trim())) {
+        if (!RegUtils.isValidateVCode(getCode())) {
             ToastUtil.show("请填写正确的验证码");
             return false;
         }
@@ -221,4 +181,13 @@ public class ChangePhoneActivity extends BaseTitleActivity {
         }
     }
 
+    @Override
+    public void setTitleBar(TitleBarView titleBar) {
+        titleBar.setTitleMainText("更换手机号");
+    }
+
+    @Override
+    public int getContentLayout() {
+        return R.layout.activity_change_phone;
+    }
 }

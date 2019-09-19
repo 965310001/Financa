@@ -19,13 +19,17 @@ import com.hyphenate.util.NetUtils;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
-import com.ph.financa.activity.SettingActivity;
 import com.ph.financa.activity.WriteArticleActivity;
+import com.ph.financa.activity.bean.BaseTResp2;
+import com.ph.financa.activity.bean.UserBean;
+import com.ph.financa.constant.Constant;
 import com.ph.financa.dialog.AddDialog;
 import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
 import com.ph.financa.fragments.SeeFragment;
+import com.vise.xsnow.http.ViseHttp;
+import com.vise.xsnow.http.callback.ACallback;
 import com.vise.xsnow.permission.OnPermissionCallback;
 import com.vise.xsnow.permission.PermissionManager;
 
@@ -33,7 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.com.commoncore.base.BaseActivity;
+import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
+import tech.com.commoncore.utils.SPHelper;
+import tech.com.commoncore.utils.ToastUtil;
 
 /**
  * 首页
@@ -66,7 +73,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
 
-        FastUtil.startActivity(mContext, SettingActivity.class);
+        /*FastUtil.startActivity(mContext, SettingActivity.class);*/
         /*测试*/
 //        View decorView = getWindow().getDecorView();
 //        int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -85,6 +92,7 @@ public class MainActivity extends BaseActivity {
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
 //        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+
 
         PermissionManager.instance().request(mContext, new OnPermissionCallback() {
             @Override
@@ -153,20 +161,38 @@ public class MainActivity extends BaseActivity {
         EMClient.getInstance().addConnectionListener(new ConnectionListener());
 
 
-//        StatusBarUtil.setRootViewFitsSystemWindows(this,true);
-//        //设置状态栏透明
-//        StatusBarUtil.setTranslucentStatus(this);
-//        //一般的手机的状态栏文字和图标都是白色的, 可如果你的应用也是纯白色的, 或导致状态栏文字看不清
-//        //所以如果你是这种情况,请使用以下代码, 设置状态使用深色文字图标风格, 否则你可以选择性注释掉这个if内容
-//        if (!StatusBarUtil.setStatusBarDarkTheme(this, true)) {
-//            //如果不支持设置深色风格 为了兼容总不能让状态栏白白的看不清, 于是设置一个状态栏颜色为半透明,
-//            //这样半透明+白=灰, 状态栏的文字能看得清
-////            StatusBarUtil.setStatusBarColor(this,0x55000000);
-//        }
+        getUserInfo();
+    }
 
-//        StatusBarUtils.setPaddingSmart(this, mNavigationBar);
-//        mNavigationBar.setPadding(0, DisplayUtil.getStatusBarHeight(),0,0);
+    /*获取用户信息*/
+    private void getUserInfo() {
+        ViseHttp.GET(ApiConstant.GET_USER)
+                .request(new ACallback<BaseTResp2<UserBean>>() {
+                    @Override
+                    public void onSuccess(BaseTResp2<UserBean> data) {
+                        UserBean bean = data.data;
+                        if (null != bean) {
+                            saveUser(bean);
+                        }
 
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        ToastUtil.show(errMsg);
+                    }
+                });
+    }
+
+    /*保存用户信息*/
+    private void saveUser(UserBean data) {
+        if (null != data) {
+            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
+            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
+            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
+            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
+            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
+        }
     }
 
     //实现ConnectionListener接口

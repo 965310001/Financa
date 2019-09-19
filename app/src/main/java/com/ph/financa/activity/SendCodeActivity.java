@@ -18,7 +18,6 @@ import com.vise.xsnow.http.callback.ACallback;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import tech.com.commoncore.base.BaseTitleActivity;
@@ -61,15 +60,12 @@ public class SendCodeActivity extends BaseTitleActivity {
                 break;
 
             case R.id.btn_next:// TODO: 2019/9/6 下一步
-
-                Observable.just(!checkPhone(),!checkCode()).takeWhile(aBoolean -> aBoolean).subscribe(aBoolean -> doGet());
-
-//                if (!checkPhone()) {
-//                    return;
-//                }
-//                if (!checkCode()) {
-//                    return;
-//                }
+                if (!checkPhone()) {
+                    return;
+                }
+                if (!checkCode()) {
+                    return;
+                }
                 doGet();
                 break;
         }
@@ -110,8 +106,7 @@ public class SendCodeActivity extends BaseTitleActivity {
                 .doOnComplete(() -> {
                     mTvSendCode.setVisibility(View.VISIBLE);
                     mTvTime.setVisibility(View.GONE);
-                })
-                .subscribe();
+                }).subscribe();
     }
 
     /*执行下一步*/

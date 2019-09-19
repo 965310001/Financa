@@ -153,4 +153,10 @@ public class ApiConstant {
 
     /*分享文章成功回调接口*/
     public static final String SHARE_SUCCESS = "api/cms/share/success";
+
+    /*更换手机号*/
+    public static final String UPDATE_PHONE = "api/phone/update";
+
+    /*获取用户信息接口*/
+    public static final String GET_USER = "api/user/get";
 }

@@ -31,6 +31,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
@@ -100,6 +105,27 @@ public class LoginActivity extends BaseActivity {
         weiXinBaoStrategy.login(Constant.WECHATAPPKEY, new JPayListener() {
             @Override
             public void onPaySuccess() {
+
+//                /*Log.i(TAG, "onPaySuccess: " + SPHelper.getStringSF(mContext, "WEIXIN_USER"));*/
+//                String userInfo = SPHelper.getStringSF(mContext, "WEIXIN_USER", "");
+//                Log.i(TAG, "onPaySuccess: " + userInfo);
+//                if (!TextUtils.isEmpty(userInfo)) {
+//                    try {
+//                        JSONObject data = new JSONObject(userInfo);
+//                        Map<String, String> params = new HashMap<>();
+//                        params.put("nickname", data.getString("nickname"));
+//                        params.put("headImgUrl", data.getString("headImgUrl"));
+//                        params.put("country", data.getString("country"));
+//                        params.put("province", data.getString("province"));
+//                        params.put("city", data.getString("city"));
+//                        params.put("openId", data.getString("openId"));
+//                        loginUser(params);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                /*SPHelper.getStringSF(mContext,"WEIXIN_USER");*/
+
                 String code = SPHelper.getStringSF(mContext, Constant.WEIXINCODE, "");
                 if (!TextUtils.isEmpty(code)) {
                     getAccessToken(code);
@@ -119,9 +145,37 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onUUPay(String dataOrg, String sign, String mode) {
-
             }
         });
+    }
+
+    /*登录*/
+    private void loginUser(Map<String, String> params) {
+        showLoading();
+        JSONObject jsonObject = new JSONObject(params);
+        ViseHttp.POST(ApiConstant.LOGIN)
+                .setJson(jsonObject)
+                .request(new ACallback<BaseTResp2<UserBean>>() {
+                    @Override
+                    public void onSuccess(BaseTResp2<UserBean> data) {
+                        hideLoading();
+                        UserBean bean = data.data;
+                        if (null != bean) {
+                            saveUser(bean);
+                        }
+                        if (data.isSuccess() || data.getCode() == 40102002) {
+                            loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
+                        } else {
+                            ToastUtil.show(data.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        hideLoading();
+                        ToastUtil.show(errMsg);
+                    }
+                });
     }
 
     private void getAccessToken(String code) {
@@ -159,6 +213,7 @@ public class LoginActivity extends BaseActivity {
                 .request(new ACallback<WXAccessTokenBean>() {
                     @Override
                     public void onSuccess(WXAccessTokenBean data) {
+
                         Map<String, String> params = new HashMap<>();
                         params.put("nickname", data.getNickname());
                         params.put("headImgUrl", data.getHeadimgurl());
@@ -177,9 +232,8 @@ public class LoginActivity extends BaseActivity {
                                         if (null != bean) {
                                             saveUser(bean);
                                         }
-                                        if (data.getCode() == 40102002) {/*手机号未认证*/
-                                            loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
-                                        } else if (data.isSuccess()) {
+
+                                        if (data.isSuccess() || data.getCode() == 40102002) {
                                             loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
                                         } else {
                                             ToastUtil.show(data.getMsg());
@@ -188,6 +242,7 @@ public class LoginActivity extends BaseActivity {
 
                                     @Override
                                     public void onFail(int errCode, String errMsg) {
+                                        hideLoading();
                                         ToastUtil.show(errMsg);
                                     }
                                 });
@@ -202,39 +257,63 @@ public class LoginActivity extends BaseActivity {
 
     /*登录环信*/
     private void loginEaseMob(String id, String password, int code) {
-        EMClient.getInstance().login(id, password, new EMCallBack() {
+        Observable.create(subscriber -> EMClient.getInstance().login(id, password, new EMCallBack() {
             @Override
             public void onSuccess() {
-                Log.i(TAG, "onSuccess: 环信登录成功");
-                EMClient.getInstance().chatManager().loadAllConversations();
-                EMClient.getInstance().groupManager().loadAllGroups();
-
-                EMClient.getInstance().pushManager().updatePushNickname(
-                        SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
-                if (code == 40102002) {
-                    SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, true);
-                    FastUtil.startActivity(mContext, SendCodeActivity.class);
-                    finish();
-                } else if (code == 200) {
-                    SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, true);
-                    SPHelper.setBooleanSF(mContext, Constant.ISVERIFPHONE, true);
-
-                    FastUtil.startActivity(mContext, MainActivity.class);
-                    finish();
-                }
-
+                subscriber.onNext(200);
+                subscriber.onComplete();
             }
 
             @Override
             public void onError(int i, String s) {
-                /*showLoading();*/
-                ToastUtil.show(s);
-                Log.i(TAG, "环信登录失败:" + s + i);
+                subscriber.onNext(s);
+                subscriber.onComplete();
             }
 
             @Override
             public void onProgress(int i, String s) {
-                Log.i(TAG, "onProgress: 正在请求 : " + s);
+            }
+        })).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Object>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onNext(Object obj) {
+                if (obj instanceof Integer) {
+                    hideLoading();
+                    Log.i(TAG, "onSuccess: 环信登录成功");
+                    EMClient.getInstance().chatManager().loadAllConversations();
+                    EMClient.getInstance().groupManager().loadAllGroups();
+
+                    EMClient.getInstance().pushManager().updatePushNickname(
+                            SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
+
+                    SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, true);
+                    if (code == 40102002) {
+                        FastUtil.startActivity(mContext, SendCodeActivity.class);
+                        finish();
+                    } else if (code == 200) {
+                        SPHelper.setBooleanSF(mContext, Constant.ISVERIFPHONE, true);
+
+                        FastUtil.startActivity(mContext, MainActivity.class);
+                        finish();
+                    }
+                } else {
+                    hideLoading();
+                    ToastUtil.show(obj.toString());
+                    Log.i(TAG, "环信登录失败:" + obj.toString());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtil.show(e.toString());
+            }
+
+            @Override
+            public void onComplete() {
+
             }
         });
     }

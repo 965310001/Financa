@@ -29,6 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        tools:overrideLibrary="androidx.appcompat"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
         <activity
             android:name=".activity.ChangePhoneActivity"
@@ -95,8 +96,8 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.WxTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

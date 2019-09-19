@@ -19,7 +19,9 @@ import com.vise.xsnow.http.callback.ACallback;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
@@ -152,7 +154,7 @@ public class SettingActivity extends BaseTitleActivity {
                 subscriber.onNext(message);
                 subscriber.onComplete();
             }
-        })).subscribe(new Observer<Object>() {
+        })).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Object>() {
             @Override
             public void onSubscribe(Disposable d) {
             }
@@ -170,7 +172,7 @@ public class SettingActivity extends BaseTitleActivity {
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtil.show(e.toString());
             }
 
             @Override

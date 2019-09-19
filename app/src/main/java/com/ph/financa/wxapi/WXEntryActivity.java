@@ -3,10 +3,12 @@ package com.ph.financa.wxapi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.WXAccessTokenBean;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -18,13 +20,22 @@ import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessView;
 import com.tencent.mm.opensdk.modelbiz.WXOpenBusinessWebview;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.vise.xsnow.http.ViseHttp;
+import com.vise.xsnow.http.callback.ACallback;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import tech.com.commoncore.utils.SPHelper;
+import tech.com.commoncore.utils.ToastUtil;
+import tech.com.commoncore.utils.Utils;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private static String TAG = "WXENTRYACTIVITY";
 
-//    private IWXAPI api;
+    //    private IWXAPI api;
     //    private MyHandler handler;
     private static final int RETURN_MSG_TYPE_LOGIN = 1; //登录
 
@@ -145,7 +156,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 result = R.string.errcode_unknown;
                 break;
         }
-        Log.i(TAG, "onResp: "+getString(result));
+        Log.i(TAG, "onResp: " + getString(result));
         resp.errStr = getString(result);
         WeiXinBaoStrategy.getInstance(this).onResp(resp.errCode, resp.errStr);
 
@@ -186,10 +197,95 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //            NetworkUtil.sendWxAPI(handler, String.format("https://api.weixin.qq.com/sns/oauth2/access_token?" +
 //                            "appid=%s&secret=%s&code=%s&grant_type=authorization_code", "wxd930ea5d5a258f4f",
 //                    "1d6d1d57a3dd063b36d917bc0b44d964", code), NetworkUtil.GET_TOKEN);
+//            getAccessToken(code);
+        } else {
         }
-        Log.i(TAG, "onResp: ");
         finish();
+        Log.i(TAG, "onResp: ");
     }
+
+    private void getAccessToken(String code) {
+        /*showLoading();*/
+        Map<String, String> params = new HashMap();
+        params.put("appid", Constant.WECHATAPPKEY);
+        params.put("secret", Constant.WECHATAPPSECRET);
+        params.put("code", code);
+        params.put("grant_type", "authorization_code");
+        ViseHttp.GET("sns/oauth2/access_token")
+                .baseUrl("https://api.weixin.qq.com/")
+                .addParams(params)
+                .request(new ACallback<WXAccessTokenBean>() {
+                    @Override
+                    public void onSuccess(WXAccessTokenBean data) {
+                        if (TextUtils.isEmpty(data.getAccess_token()) || TextUtils.isEmpty(data.getOpenid())) {
+                            /*hideLoading();*/
+                            ToastUtil.show(data.getErrmsg());
+                        } else {
+                            getWXUserInfo(data.getAccess_token(), data.getOpenid());
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        ToastUtil.show(errMsg);
+                    }
+                });
+    }
+
+    private void getWXUserInfo(String token, final String openid) {
+        ViseHttp.GET("sns/userinfo").baseUrl("https://api.weixin.qq.com/")
+                .addParam("access_token", token)
+                .addParam("openid", openid)
+                .request(new ACallback<WXAccessTokenBean>() {
+                    @Override
+                    public void onSuccess(WXAccessTokenBean data) {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("nickname", data.getNickname());
+                        params.put("headImgUrl", data.getHeadimgurl());
+                        params.put("country", data.getCountry());
+                        params.put("province", data.getProvince());
+                        params.put("city", data.getCity());
+                        params.put("openId", data.getOpenid());
+                        JSONObject jsonObject = new JSONObject(params);
+
+                        SPHelper.setStringSF(Utils.getContext(), "WEIXIN_USER", jsonObject.toString());
+
+
+                        Log.i(TAG, "onSuccess: " + jsonObject.toString());
+
+                        finish();
+//                        ViseHttp.POST(ApiConstant.LOGIN)
+//                                .setJson(jsonObject)
+//                                .request(new ACallback<BaseTResp2<UserBean>>() {
+//                                    @Override
+//                                    public void onSuccess(BaseTResp2<UserBean> data) {
+////                                        UserBean bean = data.data;
+////                                        if (null != bean) {
+////                                            saveUser(bean);
+////                                        }
+////
+////                                        if (data.isSuccess() || data.getCode() == 40102002) {
+////                                            loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
+////                                        } else {
+////                                            ToastUtil.show(data.getMsg());
+////                                        }
+//                                    }
+//
+//                                    @Override
+//                                    public void onFail(int errCode, String errMsg) {
+//                                        /*hideLoading();*/
+//                                        ToastUtil.show(errMsg);
+//                                    }
+//                                });
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        ToastUtil.show(errMsg);
+                    }
+                });
+    }
+
 
 //    private void goToGetMsg() {
 //       /* Intent intent = new Intent(this, GetFromWXActivity.class);

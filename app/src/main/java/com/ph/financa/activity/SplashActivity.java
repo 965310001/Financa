@@ -37,8 +37,6 @@ public class SplashActivity extends BaseActivity {
             } else {
                 FastUtil.startActivity(mContext, LoginActivity.class);
             }
-
-            /*FastUtil.startActivity(mContext, ChangePhoneActivity.class);*/
             finish();
         }, 1500);
     }

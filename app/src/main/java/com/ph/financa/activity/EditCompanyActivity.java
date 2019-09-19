@@ -63,12 +63,13 @@ public class EditCompanyActivity extends BaseTitleActivity {
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
-
+                        ToastUtil.show(errMsg);
                     }
                 });
     }
 
     private void goMainActivity() {
+        /*SPHelper.setBooleanSF(mContext, Constant.ISCOMPANY, true);*/
         FastUtil.startActivity(mContext, MainActivity.class);
     }
 

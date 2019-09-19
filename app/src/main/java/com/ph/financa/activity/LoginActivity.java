@@ -175,12 +175,12 @@ public class LoginActivity extends BaseActivity {
                                     public void onSuccess(BaseTResp2<UserBean> data) {
                                         UserBean bean = data.data;
                                         if (null != bean) {
-                                            saveUser(data.data);
+                                            saveUser(bean);
                                         }
-                                        if (data.getCode() == 40102002) {
-                                            loginEaseMob(String.valueOf(data.data.getId()), "123456", data.getCode());
+                                        if (data.getCode() == 40102002) {/*手机号未认证*/
+                                            loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
                                         } else if (data.isSuccess()) {
-                                            loginEaseMob(String.valueOf(data.data.getId()), "123456", data.getCode());
+                                            loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
                                         } else {
                                             ToastUtil.show(data.getMsg());
                                         }
@@ -212,11 +212,13 @@ public class LoginActivity extends BaseActivity {
                 EMClient.getInstance().pushManager().updatePushNickname(
                         SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
                 if (code == 40102002) {
-                    SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
+                    SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, true);
                     FastUtil.startActivity(mContext, SendCodeActivity.class);
                     finish();
                 } else if (code == 200) {
-                    SPHelper.setStringSF(mContext, Constant.ISLOGIN, "true");
+                    SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, true);
+                    SPHelper.setBooleanSF(mContext, Constant.ISVERIFPHONE, true);
+
                     FastUtil.startActivity(mContext, MainActivity.class);
                     finish();
                 }
@@ -245,12 +247,14 @@ public class LoginActivity extends BaseActivity {
             globalHeaders.put("openId", openId);
             globalHeaders.put("userId", String.valueOf(data.getId()));
             ViseHttp.CONFIG().globalHeaders(globalHeaders);
+
             SPHelper.setStringSF(mContext, Constant.WXOPENID, openId);
 
             SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
             SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
             SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
             SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
+            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
         }
     }
 

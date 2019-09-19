@@ -28,8 +28,8 @@ public class NetworkUtil {
         params.put("phone", phone);
         doPost(ApiConstant.SEND_CODE, params, callback);
 
-        ViseHttp.POST(ApiConstant.SEND_CODE)
-                .addParams(params).request(callback);
+//        ViseHttp.POST(ApiConstant.SEND_CODE)
+//                .addParams(params).request(callback);
     }
 
 

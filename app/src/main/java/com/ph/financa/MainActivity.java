@@ -19,6 +19,7 @@ import com.hyphenate.util.NetUtils;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.ph.financa.activity.SettingActivity;
 import com.ph.financa.activity.WriteArticleActivity;
 import com.ph.financa.dialog.AddDialog;
 import com.ph.financa.fragments.CustomerFragment;
@@ -64,7 +65,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//
+
+        FastUtil.startActivity(mContext, SettingActivity.class);
         /*测试*/
 //        View decorView = getWindow().getDecorView();
 //        int option = View.SYSTEM_UI_FLAG_FULLSCREEN;

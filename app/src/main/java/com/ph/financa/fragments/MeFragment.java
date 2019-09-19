@@ -37,13 +37,13 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView mTvShare;//分享
     private TextView mTvMessage;//消息
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.ce6454a));
-//        StatusBarUtils.setPadding(mContext,mContentView);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+////        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+////        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.ce6454a));
+////        StatusBarUtils.setPadding(mContext,mContentView);
+//    }
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -144,10 +144,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.ll_service:
                 // TODO: 2019/9/9 我的客服
                 bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
-
                 bundle.putString(FriendTable.FRIEND_NAME, "我的客服");
                 bundle.putString(FriendTable.FRIEND_HEAD, "客服");
-
                 goActivity(CustomerActivity.class, bundle);
                 break;
             case R.id.ll_setting:

@@ -40,7 +40,6 @@ import tech.com.commoncore.manager.GlideManager;
 import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
-import tech.com.commoncore.utils.ToastUtils;
 import tech.com.commoncore.widget.CircleImageView;
 
 public class VipActivity extends BaseTitleActivity {
@@ -65,7 +64,7 @@ public class VipActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        StatusBarCompat.setStatusBarColor(mContext, getColor(R.color.white));
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         mIvHead = findViewById(R.id.iv_head);
         mTvName = findViewById(R.id.tv_name);
         mTvVip = findViewById(R.id.tv_vip);
@@ -427,17 +426,17 @@ public class VipActivity extends BaseTitleActivity {
     private JPayListener jPayListener = new JPayListener() {
         @Override
         public void onPaySuccess() {
-            ToastUtils.showLong("支付成功");
+            ToastUtil.show("支付成功");
         }
 
         @Override
         public void onPayError(int error_code, String message) {
-            ToastUtils.showLong(error_code + " " + message);
+            ToastUtil.show(message);
         }
 
         @Override
         public void onPayCancel() {
-            ToastUtils.showLong("支付取消");
+            ToastUtil.show("支付取消");
         }
 
         @Override

@@ -50,6 +50,7 @@
         <activity
             android:name=".activity.SettingActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.WebActivity"
@@ -95,7 +96,8 @@
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.WxTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -141,7 +143,8 @@
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" /> <!-- 解决 9.0 手机的通讯问题 -->
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <!-- 解决 9.0 手机的通讯问题 -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" /> <!-- 适配7.0系统拍照 -->

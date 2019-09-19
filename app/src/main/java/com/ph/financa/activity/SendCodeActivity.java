@@ -18,6 +18,7 @@ import com.vise.xsnow.http.callback.ACallback;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import tech.com.commoncore.base.BaseTitleActivity;
@@ -60,12 +61,15 @@ public class SendCodeActivity extends BaseTitleActivity {
                 break;
 
             case R.id.btn_next:// TODO: 2019/9/6 下一步
-                if (!checkPhone()) {
-                    return;
-                }
-                if (!checkCode()) {
-                    return;
-                }
+
+                Observable.just(!checkPhone(),!checkCode()).takeWhile(aBoolean -> aBoolean).subscribe(aBoolean -> doGet());
+
+//                if (!checkPhone()) {
+//                    return;
+//                }
+//                if (!checkCode()) {
+//                    return;
+//                }
                 doGet();
                 break;
         }
@@ -82,7 +86,7 @@ public class SendCodeActivity extends BaseTitleActivity {
                 if (data.isSuccess()) {
                     countdownTime();
                 } else {
-                    ToastUtil.show(data.getMsg());
+                    ToastUtil.show(data.getDetailMsg());
                 }
             }
 
@@ -92,26 +96,6 @@ public class SendCodeActivity extends BaseTitleActivity {
                 ToastUtil.show(errMsg);
             }
         });
-
-//        ViseHttp.POST(ApiConstant.SEND_CODE)
-//                .addParam("phone", phone)
-//                .request(new ACallback<BaseTResp2>() {
-//                    @Override
-//                    public void onSuccess(BaseTResp2 data) {
-//                        hideLoading();
-//                        if (data.isSuccess()) {
-//                            countdownTime();
-//                        } else {
-//                            ToastUtil.show(data.getMsg());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFail(int errCode, String errMsg) {
-//                        hideLoading();
-//                        ToastUtil.show(errMsg);
-//                    }
-//                });
     }
 
     private void countdownTime() {
@@ -144,6 +128,8 @@ public class SendCodeActivity extends BaseTitleActivity {
                     public void onSuccess(BaseTResp2 data) {
                         hideLoading();
                         if (data.isSuccess()) {
+                            SPHelper.setBooleanSF(mContext, Constant.ISVERIFPHONE, true);
+
                             SPHelper.setStringSF(mContext, Constant.USERPHONE, phone);
                             FastUtil.startActivity(mContext, EditCompanyActivity.class);
                         } else if (data.getCode() == 500) {/*验证码失败*/
@@ -193,7 +179,6 @@ public class SendCodeActivity extends BaseTitleActivity {
 
     @Override
     public void setTitleBar(TitleBarView titleBar) {
-
     }
 
     @Override

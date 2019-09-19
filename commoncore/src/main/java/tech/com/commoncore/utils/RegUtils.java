@@ -1,5 +1,7 @@
 package tech.com.commoncore.utils;
 
+import android.text.TextUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,10 +61,25 @@ public class RegUtils {
 //        Pattern p = Pattern.compile("^1(3[0-9]|5[012356789]|8[0256789]|7[01678])\\d{8}$");
 //        Matcher m = p.matcher(mobiles);
 //        return m.matches();
-        if(mobiles.startsWith("1")&&mobiles.length()==11){
+        if (mobiles.startsWith("1") && mobiles.length() == 11) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 把 手机号变成星号
+     *
+     * @param phone 手机号码使用星号代替
+     * @return
+     */
+    public static String isAsterisk(String phone) {
+        if (!TextUtils.isEmpty(phone)) {
+            if (RegUtils.isMobile(phone)) {
+                phone = phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+            }
+        }
+        return phone;
     }
 
     /**

@@ -61,7 +61,7 @@
 
         <TextView
             android:id="@+id/tv_version"
-            android:layout_width="93dp"
+            android:layout_width="wrap_content"
             android:layout_height="22dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_43"
@@ -104,11 +104,11 @@
 
         <TextView
             android:id="@+id/tv_phone"
-            android:layout_width="93dp"
+            android:layout_width="wrap_content"
             android:layout_height="22dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_43"
-            android:gravity="right"
+            android:gravity="left"
             android:text="130****5427"
             android:textColor="#ff999999"
             android:textSize="16sp" />

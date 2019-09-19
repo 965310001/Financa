@@ -26,8 +26,11 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
         if (WeiXinBaoStrategy.getInstance(this) != null) {
             WeiXinBaoStrategy.getInstance(this).getWXApi().handleIntent(getIntent(), this);
         } else {
-            finish();
+            /*finish();*/
         }
+        overridePendingTransition(0, 0);
+        finish();
+
     }
 
     @Override
@@ -70,6 +73,8 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
                 /*finish();*/
             }
         }
+        overridePendingTransition(0, 0);
         finish();
+
     }
 }

@@ -5,6 +5,13 @@ public interface Constant {
     /*是否登录*/
     String ISLOGIN = "LOGIN";
 
+    /*是否验证手机号*/
+    String ISVERIFPHONE = "ISVERIFPHONE";
+
+    /*是否验证公司*/
+    String ISCOMPANY = "ISCOMPANY";
+
+
     /*用户Id*/
     String USERID = "USERID";
 

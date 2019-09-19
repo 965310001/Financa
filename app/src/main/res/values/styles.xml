@@ -8,7 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
 
 
-
         <item name="windowNoTitle">true</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowNoDisplay">false</item>
@@ -28,5 +27,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
-    
+    <style name="AppTheme.WxTheme" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+    </style>
+
+
 </resources>

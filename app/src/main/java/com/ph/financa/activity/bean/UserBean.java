@@ -36,7 +36,7 @@ public class UserBean implements Serializable {
     private Object picture;
     private Object jobTitle;
     private String intro;
-    private Object telephone;
+    private String telephone;
     private Object email;
     private Object wechatNumber;
     private String country;
@@ -115,11 +115,11 @@ public class UserBean implements Serializable {
         this.intro = intro;
     }
 
-    public Object getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(Object telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 

@@ -137,8 +137,8 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:scrollbars="none"
                 android:layout_height="wrap_content"
+                android:scrollbars="none"
                 tools:background="@color/colorAccent">
 
                 <LinearLayout
@@ -151,12 +151,12 @@
             </HorizontalScrollView>
 
             <com.ph.financa.view.HorizontalListView
-                android:visibility="gone"
                 android:id="@+id/hl_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:minHeight="128dp" />
+                android:minHeight="128dp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="74dp"
@@ -189,12 +189,11 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_privilege1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_236"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_17"
-                android:minHeight="@dimen/dp_223"
-                android:src="@color/colorAccent" />
+                android:src="@mipmap/ic_bg_vip1" />
 
 
             <TextView
@@ -218,14 +217,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_privilege2"
-
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_236"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_17"
-                android:minHeight="@dimen/dp_223"
-                android:src="@color/colorAccent" />
+                android:src="@mipmap/ic_bg_vip2" />
 
             <TextView
                 android:layout_width="132dp"
@@ -248,14 +245,13 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_privilege3"
-
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_236"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_17"
                 android:minHeight="@dimen/dp_223"
-                android:src="@color/colorAccent" />
+                android:src="@mipmap/ic_bg_vip3" />
 
             <TextView
                 android:layout_width="132dp"
@@ -280,12 +276,12 @@
                 android:id="@+id/iv_privilege4"
 
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_236"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_17"
                 android:minHeight="@dimen/dp_223"
-                android:src="@color/colorAccent" />
+                android:src="@mipmap/ic_bg_vip4" />
 
             <TextView
                 android:layout_width="132dp"
@@ -308,14 +304,13 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_privilege5"
-
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_236"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_17"
                 android:minHeight="@dimen/dp_223"
-                android:src="@color/colorAccent" />
+                android:src="@mipmap/ic_bg_vip5" />
 
             <TextView
                 android:layout_width="132dp"
@@ -339,12 +334,12 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_privilege6"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_236"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginRight="@dimen/dp_17"
                 android:minHeight="@dimen/dp_223"
-                android:src="@color/colorAccent" />
+                android:src="@mipmap/ic_bg_vip6" />
             <!--end-->
 
 
@@ -377,9 +372,9 @@
                     android:layout_width="0dp"
                     android:layout_height="25dp"
                     android:layout_weight="1"
-                    tools:text="￥388"
                     android:textColor="#fff5ba68"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:text="￥388" />
 
                 <TextView
                     android:id="@+id/tv_open"

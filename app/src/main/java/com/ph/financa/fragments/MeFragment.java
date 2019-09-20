@@ -85,7 +85,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         if (!TextUtils.isEmpty(companyName)) {
             mTvCompanyName.setText(companyName);
         } else {
-            mTvCompanyName.setText("公司名字");
+//            mTvCompanyName.setText("公司名字");
         }
 
         if (!TextUtils.isEmpty(head)) {

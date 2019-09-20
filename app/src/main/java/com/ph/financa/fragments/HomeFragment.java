@@ -6,9 +6,9 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 
+import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
-import com.ph.financa.activity.LoginActivity;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.wxapi.pay.JPayListener;
@@ -32,7 +32,6 @@ import java.util.Map;
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
-import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
@@ -62,11 +61,11 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     public void initView(Bundle savedInstanceState) {
         Log.i(TAG, "initView: " + URL);
 
-        FastUtil.startActivity(mContext, LoginActivity.class);
-
+//        FastUtil.startActivity(mContext, LoginActivity.class);
 //        StatusBarUtils.setPaddingSmart(mContext, mContentView);
 //        mContentView.setPadding(0, 0, 0, 0);
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.bg_loading));
+
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))

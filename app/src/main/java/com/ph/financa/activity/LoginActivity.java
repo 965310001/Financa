@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity {
 
     private void goActivity(String title, String url) {
         Bundle bundle = new Bundle();
-//        bundle.putString("title", title);
+        bundle.putString("title", title);
         bundle.putString("url", url);
         FastUtil.startActivity(mContext, WebActivity.class, bundle);
     }

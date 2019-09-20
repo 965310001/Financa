@@ -89,6 +89,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
         if (!TextUtils.isEmpty(head)) {
             GlideManager.loadCircleImg(head, mIcHead);
+        } else {
+            GlideManager.loadCircleImg(R.mipmap.ic_user_head, mIcHead);
         }
     }
 

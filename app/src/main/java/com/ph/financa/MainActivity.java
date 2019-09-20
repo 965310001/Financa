@@ -124,6 +124,7 @@ public class MainActivity extends BaseActivity {
                                     break;
                                 case 1:
                                     // TODO: 2019/9/10 粘贴文章链接
+                                    mAddDialog.dismiss();
                                     FastUtil.startActivity(mContext, PasteArticleActivity.class);
                                     break;
                                 case 2:

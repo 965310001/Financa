@@ -56,6 +56,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mContentView.findViewById(R.id.ic_open).setOnClickListener(this);
 
         mContentView.findViewById(R.id.ll_card).setOnClickListener(this);
+        mContentView.findViewById(R.id.ic_head).setOnClickListener(this);
         mContentView.findViewById(R.id.ll_collection).setOnClickListener(this);
         mContentView.findViewById(R.id.ll_products).setOnClickListener(this);
         mContentView.findViewById(R.id.ll_share).setOnClickListener(this);
@@ -110,14 +111,16 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 // TODO: 2019/9/9 会员权益
                 goActivity(null, null);
                 break;
-            case R.id.tv_receive:
-                // TODO: 2019/9/9 新会员专享688/两年 立即领取
-                goActivity(null, null);
-                break;
+//            case R.id.tv_receive:
+//                // TODO: 2019/9/9 新会员专享688/两年 立即领取
+//                goActivity(null, null);
+//                break;
             case R.id.ic_open:
                 // TODO: 2019/9/9 开通688会员
                 goActivity(VipActivity.class, null);
                 break;
+            case R.id.tv_receive:
+            case R.id.ic_head:
             case R.id.ll_card:
                 // TODO: 2019/9/9 我的名片
                 bundle.putString("url", getUrl(ApiConstant.MY_CARD));

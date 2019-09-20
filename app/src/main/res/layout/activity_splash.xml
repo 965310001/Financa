@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/ic_bg_splash"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activity.SplashActivity">
@@ -14,7 +15,8 @@
         android:gravity="center"
         android:text="logo"
         android:textColor="#ffffffff"
-        android:textSize="28sp" />
+        android:textSize="28sp"
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,5 +25,6 @@
         android:layout_marginBottom="@dimen/dp_60"
         android:text="AI财富大师"
         android:textColor="#ff333333"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="gone" />
 </LinearLayout>

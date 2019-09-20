@@ -216,9 +216,9 @@ public class LoginActivity extends BaseActivity {
                         Map<String, String> params = new HashMap<>();
                         params.put("nickname", data.getNickname());
                         params.put("headImgUrl", data.getHeadimgurl());
-                        params.put("country", data.getCountry());
-                        params.put("province", data.getProvince());
-                        params.put("city", data.getCity());
+                        params.put("country", "");
+                        params.put("province", "");
+                        params.put("city", "");
                         params.put("openId", data.getUnionid());
 
                         JSONObject jsonObject = new JSONObject(params);

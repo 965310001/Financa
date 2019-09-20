@@ -159,4 +159,7 @@ public class ApiConstant {
 
     /*获取用户信息接口*/
     public static final String GET_USER = "api/user/get";
+
+    /*套餐申请模块-体验和团购发起申请接口*/
+    public static final String PACKAGE_APPLY_APPLY = "api/package_apply/apply";
 }

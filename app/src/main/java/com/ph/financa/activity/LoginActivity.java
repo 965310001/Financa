@@ -213,14 +213,13 @@ public class LoginActivity extends BaseActivity {
                 .request(new ACallback<WXAccessTokenBean>() {
                     @Override
                     public void onSuccess(WXAccessTokenBean data) {
-
                         Map<String, String> params = new HashMap<>();
                         params.put("nickname", data.getNickname());
                         params.put("headImgUrl", data.getHeadimgurl());
                         params.put("country", data.getCountry());
                         params.put("province", data.getProvince());
                         params.put("city", data.getCity());
-                        params.put("openId", data.getOpenid());
+                        params.put("openId", data.getUnionid());
 
                         JSONObject jsonObject = new JSONObject(params);
                         ViseHttp.POST(ApiConstant.LOGIN)

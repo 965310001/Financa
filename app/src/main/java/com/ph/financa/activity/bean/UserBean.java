@@ -50,6 +50,7 @@ public class UserBean implements Serializable {
     private int advantageStatus;
     private Object advantage;
     private Object updateTime;
+    private String uid;
 
     public long getId() {
         return id;
@@ -227,4 +228,11 @@ public class UserBean implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 }

@@ -19,6 +19,7 @@ import com.ph.financa.activity.bean.PayBean;
 import com.ph.financa.activity.bean.SelectBean;
 import com.ph.financa.activity.bean.VipBean;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.dialog.ApplyDialog;
 import com.ph.financa.dialog.PayDialog;
 import com.ph.financa.wxapi.pay.Context;
 import com.ph.financa.wxapi.pay.JPayListener;
@@ -49,6 +50,8 @@ public class VipActivity extends BaseTitleActivity {
     private TextView mTvVip;
     private TextView mTvThreeDays;
     private TextView mTvPrice;
+    private TextView mTvPayType;
+    private TextView mTvOpen;
     private LinearLayout mLLPrivilege, mLLPrivilegeOne, mLLPrivilegeTwo;
 
     private String[] titles1 = {"智能名片", "小程序", "人脉追踪", "获客分析"};
@@ -61,6 +64,7 @@ public class VipActivity extends BaseTitleActivity {
     private long mServiceId;/*服务模板ID*/
 
     private String[] PAYTYPE = {"wxpay", "alipay"};
+    private String mTypeName;
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -70,6 +74,8 @@ public class VipActivity extends BaseTitleActivity {
         mTvVip = findViewById(R.id.tv_vip);
         mTvThreeDays = findViewById(R.id.tv_three_days);
         mTvPrice = findViewById(R.id.tv_price);
+        mTvPayType = findViewById(R.id.tv_type_name);
+        mTvOpen = findViewById(R.id.tv_open);
         mLLPrivilege = findViewById(R.id.ll_privilege);
 
         mLLPrivilegeOne = findViewById(R.id.ll_privilege_one);
@@ -198,8 +204,9 @@ public class VipActivity extends BaseTitleActivity {
 
                         for (SelectBean datum : data) {
                             if (text.equals(datum.getName())) {
-                                setPrice(datum.getPrice());
+                                setPrice(datum.getPrice(), datum.getName());
                                 mServiceId = datum.getId();
+                                mTypeName = datum.getName();
                             }
                         }
                     }
@@ -216,7 +223,7 @@ public class VipActivity extends BaseTitleActivity {
             mOldView = mLLRecommend.getChildAt(0);
             mOldView.setBackgroundResource(R.drawable.shape_bg_recommend_select);
             SelectBean bean = data.get(0);
-            setPrice(bean.getPrice());
+            setPrice(bean.getPrice(), "");
             mServiceId = bean.getId();
         }
     }
@@ -337,12 +344,17 @@ public class VipActivity extends BaseTitleActivity {
                 break;
 
             case R.id.tv_open:
-                showPayDialog();
+                String text = mTvOpen.getText().toString();
+                if (text.contains("立即开通")) {
+                    showPayDialog();
+                } else if (text.contains("立即申请")) {
+                    getPackageApply("");
+                }
                 break;
 
             case R.id.ll:
                 TextView tv = view.findViewById(R.id.tv_text);
-                String text = tv.getText().toString().trim();
+                text = tv.getText().toString().trim();
                 for (int i = 0; i < titles.length; i++) {
                     if (text.equals(titles[i])) {
                         Log.i(TAG, "onClick: ");
@@ -400,6 +412,41 @@ public class VipActivity extends BaseTitleActivity {
         }
     }
 
+    private void getPackageApply(String applyType) {
+        if (!TextUtils.isEmpty(mTypeName)) {
+            if (mTypeName.contains("体验")) {
+                applyType = "1";
+            } else if (mTypeName.contains("团购")) {
+                applyType = "2";
+            }
+            Map<String, String> params = new HashMap<>();
+            params.put("headImgUrl", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
+            params.put("name", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
+            params.put("companyName", SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, ""));
+            params.put("telephone", SPHelper.getStringSF(mContext, Constant.USERPHONE, ""));
+            params.put("applyType", applyType);
+            ViseHttp.POST(ApiConstant.PACKAGE_APPLY_APPLY)
+                    .setJson(new JSONObject(params)).request(new ACallback<BaseTResp2<String>>() {
+                @Override
+                public void onSuccess(BaseTResp2<String> data) {
+                    if (data.isSuccess()) {
+                        mTypeName = "";
+                        ApplyDialog.show(getSupportFragmentManager());
+                    } else {
+                        ToastUtil.show(data.getDetailMsg());
+                    }
+                }
+
+                @Override
+                public void onFail(int errCode, String errMsg) {
+                    ToastUtil.show(errMsg);
+                }
+            });
+        } else {
+            ToastUtil.show("只有团购和体验才能使用");
+        }
+    }
+
     private void weiXinPay(JSONObject jsonObject) {
         Context context = new Context(WeiXinBaoStrategy.getInstance(this));
         Map<String, String> map = new HashMap<>();
@@ -453,11 +500,23 @@ public class VipActivity extends BaseTitleActivity {
         return price;
     }
 
-    private void setPrice(String price) {
+    private void setPrice(String price, String type) {
         mTvPrice.setText(String.format("￥%s", price));
+
+        if (!TextUtils.isEmpty(type)) {
+            if (type.contains("团购") || type.contains("体验")) {
+                mTvPayType.setText("团购价：");
+                mTvOpen.setText("立即申请(3人起)");
+            } else {
+                mTvPayType.setText("总价：");
+                mTvOpen.setText("立即开通");
+            }
+        } else {
+            mTvPayType.setText("总价：");
+            mTvOpen.setText("立即开通");
+        }
         SPHelper.setStringSF(mContext, Constant.PRICE, price);
     }
-
 
     @Override
     public int getContentLayout() {

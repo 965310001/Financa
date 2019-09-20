@@ -360,7 +360,8 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="56dp"
+                    android:id="@+id/tv_type_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="@dimen/dp_16"
                     android:text="总价："
@@ -378,7 +379,8 @@
 
                 <TextView
                     android:id="@+id/tv_open"
-                    android:layout_width="@dimen/dp_144"
+                    android:layout_width="wrap_content"
+                    android:minWidth="@dimen/dp_144"
                     android:layout_height="match_parent"
                     android:background="#F5BA68"
                     android:gravity="center"

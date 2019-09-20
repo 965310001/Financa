@@ -41,8 +41,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
+            android:digits="1234567890"
             android:hint="请输入手机号"
-            android:inputType="number"
+            android:inputType="phone|number"
+            android:maxLength="11"
             android:paddingLeft="@dimen/dp_12"
             android:textSize="@dimen/textSize_16" />
 

@@ -11,7 +11,6 @@ public interface Constant {
     /*是否验证公司*/
     String ISCOMPANY = "ISCOMPANY";
 
-
     /*用户Id*/
     String USERID = "USERID";
 

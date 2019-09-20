@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -73,7 +74,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
 
-        /*FastUtil.startActivity(mContext, SettingActivity.class);*/
+        /*FastUtil.startActivity(mContext, VipActivity.class);*/
         /*测试*/
 //        View decorView = getWindow().getDecorView();
 //        int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -125,6 +126,8 @@ public class MainActivity extends BaseActivity {
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)
+                .selectTextColor(Color.parseColor("#407DFC"))
+                .normalTextColor(Color.parseColor("#777777"))
                 .fragmentManager(getSupportFragmentManager())
                 .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(100)

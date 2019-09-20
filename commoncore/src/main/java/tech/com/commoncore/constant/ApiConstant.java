@@ -9,8 +9,8 @@ public interface ApiConstant {
 
     String BASE_URL_ZP = "http://wealth.phscitech.com/";
 
-    String AGREEMENT = "h5/privacy-policy";//隐私政策
-    String PROTOCOL = "h5/user-agreement";//用户协议
+    String AGREEMENT = "h5/user-agreement";//隐私政策
+    String PROTOCOL = "h5/privacy-policy";//用户协议
 
     /*首页*/
     String H5 = "h5/";/*首页URL：*/

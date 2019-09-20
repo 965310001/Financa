@@ -74,20 +74,20 @@ public class LoginActivity extends BaseActivity {
     private ClickableSpan mProtocolClick = new ClickableSpan() {
         @Override
         public void onClick(View view) {
-            goActivity("用户协议", ApiConstant.PROTOCOL);
+            goActivity("用户协议", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.PROTOCOL));
         }
     };
 
     private ClickableSpan mPrivacyClick = new ClickableSpan() {
         @Override
         public void onClick(View view) {
-            goActivity("隐私政策", ApiConstant.AGREEMENT);
+            goActivity("隐私政策", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.AGREEMENT));
         }
     };
 
     private void goActivity(String title, String url) {
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
+//        bundle.putString("title", title);
         bundle.putString("url", url);
         FastUtil.startActivity(mContext, WebActivity.class, bundle);
     }

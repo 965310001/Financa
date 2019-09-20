@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/shape_bg_recommend_nomar"
     android:gravity="center"
+    android:minWidth="@dimen/dp_104"
+    android:minHeight="@dimen/dp_128"
     android:orientation="vertical">
 
     <TextView

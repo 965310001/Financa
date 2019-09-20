@@ -52,6 +52,7 @@ public class VipActivity extends BaseTitleActivity {
     private TextView mTvPrice;
     private TextView mTvPayType;
     private TextView mTvOpen;
+    private TextView mTvDate;
     private LinearLayout mLLPrivilege, mLLPrivilegeOne, mLLPrivilegeTwo;
 
     private String[] titles1 = {"智能名片", "小程序", "人脉追踪", "获客分析"};
@@ -76,6 +77,7 @@ public class VipActivity extends BaseTitleActivity {
         mTvPrice = findViewById(R.id.tv_price);
         mTvPayType = findViewById(R.id.tv_type_name);
         mTvOpen = findViewById(R.id.tv_open);
+        mTvDate = findViewById(R.id.tv_date);
         mLLPrivilege = findViewById(R.id.ll_privilege);
 
         mLLPrivilegeOne = findViewById(R.id.ll_privilege_one);
@@ -147,7 +149,6 @@ public class VipActivity extends BaseTitleActivity {
         }
     }
 
-
     @Override
     public void loadData() {
         super.loadData();
@@ -182,6 +183,7 @@ public class VipActivity extends BaseTitleActivity {
     private void createRecommendView(List<SelectBean> data) {
         if (null != data && data.size() > 0) {
             int index = 0;
+            mLLRecommend.removeAllViews();
             for (SelectBean bean : data) {
                 LinearLayout itemView = (LinearLayout) View.inflate(mContext, R.layout.item_recommend, null);
 
@@ -189,7 +191,7 @@ public class VipActivity extends BaseTitleActivity {
                 TextView tvPrice = itemView.findViewById(R.id.tv_price);
                 TextView tvOldPrice = itemView.findViewById(R.id.tv_old_price);
 
-                setRecommendData(bean.getName(), bean.getPrice(), bean.getOriginalPrice(), tvYear, tvPrice, tvOldPrice);
+                setRecommendData(bean.getName(), transformationPrice(bean.getPrice()), transformationPrice(bean.getOriginalPrice()), tvYear, tvPrice, tvOldPrice);
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 params.weight = 1;
@@ -228,6 +230,11 @@ public class VipActivity extends BaseTitleActivity {
         }
     }
 
+    private String transformationPrice(String price) {
+//        return String.format("%.2f", Double.parseDouble(price));
+        return price;
+    }
+
     /*套餐模块-判断是否已开通vip套餐服务*/
     private void isVip() {
         ViseHttp.GET(ApiConstant.IS_VIP)
@@ -238,7 +245,13 @@ public class VipActivity extends BaseTitleActivity {
                             VipBean bean = data.getData();
                             if (bean.isIsEnable()) {
                                 mTvVip.setText("您是VIP会员");
+                                mTvDate.setVisibility(View.VISIBLE);
+
+                                if (!TextUtils.isEmpty(bean.getEndTime())) {
+                                    mTvDate.setText(String.format("截止日期：%s", bean.getEndTime()));
+                                }
                             } else {
+                                mTvDate.setVisibility(View.GONE);
                                 mTvVip.setText("您还不是VIP会员");
                             }
                         } else {
@@ -341,6 +354,8 @@ public class VipActivity extends BaseTitleActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_three_days:
+                mTypeName = "体验";
+                getPackageApply();
                 break;
 
             case R.id.tv_open:
@@ -348,7 +363,7 @@ public class VipActivity extends BaseTitleActivity {
                 if (text.contains("立即开通")) {
                     showPayDialog();
                 } else if (text.contains("立即申请")) {
-                    getPackageApply("");
+                    getPackageApply();
                 }
                 break;
 
@@ -412,8 +427,9 @@ public class VipActivity extends BaseTitleActivity {
         }
     }
 
-    private void getPackageApply(String applyType) {
+    private void getPackageApply() {
         if (!TextUtils.isEmpty(mTypeName)) {
+            String applyType = "";
             if (mTypeName.contains("体验")) {
                 applyType = "1";
             } else if (mTypeName.contains("团购")) {
@@ -432,6 +448,7 @@ public class VipActivity extends BaseTitleActivity {
                     if (data.isSuccess()) {
                         mTypeName = "";
                         ApplyDialog.show(getSupportFragmentManager());
+                        loadData();
                     } else {
                         ToastUtil.show(data.getDetailMsg());
                     }

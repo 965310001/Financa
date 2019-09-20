@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -31,6 +30,7 @@
         android:usesCleartextTraffic="true"
         tools:overrideLibrary="androidx.appcompat"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
+        <activity android:name=".activity.PasteArticleActivity"></activity>
         <activity
             android:name=".activity.ChangePhoneActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
@@ -38,8 +38,7 @@
         <activity
             android:name=".activity.VipActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
-            android:screenOrientation="portrait" />
-        <!--聊天-->
+            android:screenOrientation="portrait" /> <!-- 聊天 -->
         <activity
             android:name=".activity.CustomerActivity"
             android:screenOrientation="portrait"
@@ -91,7 +90,6 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
-
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
@@ -144,8 +142,7 @@
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <!-- 解决 9.0 手机的通讯问题 -->
+            android:windowSoftInputMode="adjustResize|stateHidden" /> <!-- 解决 9.0 手机的通讯问题 -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" /> <!-- 适配7.0系统拍照 -->

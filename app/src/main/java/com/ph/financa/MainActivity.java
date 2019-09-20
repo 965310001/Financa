@@ -20,6 +20,7 @@ import com.hyphenate.util.NetUtils;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
+import com.ph.financa.activity.PasteArticleActivity;
 import com.ph.financa.activity.WriteArticleActivity;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.UserBean;
@@ -62,10 +63,6 @@ public class MainActivity extends BaseActivity {
     private AddDialog mAddDialog;
     private HomeFragment mHomeFragment;
 
-    public EasyNavigationBar getNavigationBar() {
-        return mNavigationBar;
-    }
-
     @Override
     public int getContentLayout() {
         return R.layout.activity_main;
@@ -75,26 +72,8 @@ public class MainActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
 
         /*FastUtil.startActivity(mContext, VipActivity.class);*/
+
         /*测试*/
-//        View decorView = getWindow().getDecorView();
-//        int option = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(option);
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.hide();
-
-
-//        StatusBarUtil.setRootViewFitsSystemWindows(this, false);
-
-//        getWindow()
-//                .getDecorView()
-//                .setSystemUiVisibility(
-//                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        /*FastUtil.startActivity(mContext, LoginActivity.class);*/
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
-
-
         PermissionManager.instance().request(mContext, new OnPermissionCallback() {
             @Override
             public void onRequestAllow(String permissionName) {
@@ -145,6 +124,7 @@ public class MainActivity extends BaseActivity {
                                     break;
                                 case 1:
                                     // TODO: 2019/9/10 粘贴文章链接
+                                    FastUtil.startActivity(mContext, PasteArticleActivity.class);
                                     break;
                                 case 2:
                                     mAddDialog.dismiss();
@@ -230,10 +210,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         Log.i(TAG, "onNewIntent: 分享回调来这里了———————-");
     }
-
 
     private View createView() {
         ViewGroup view = (ViewGroup) View.inflate(mContext, R.layout.dialog_add, null);
@@ -261,7 +239,7 @@ public class MainActivity extends BaseActivity {
                 animator.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-                        //							layout.setVisibility(View.GONE);
+//                        layout.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -279,16 +257,18 @@ public class MainActivity extends BaseActivity {
     }
 
 
-//    @Override
-//    public void onBackPressed() {
-////        quitApp();
-//        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
-//            case 0:
-//                Log.i(TAG, "onBackPressed: " + mHomeFragment.back());
-//                break;
-//        }
-//    }
-
+    @Override
+    public void onBackPressed() {
+//        quitApp();
+        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
+            case 0:
+                if (!mHomeFragment.back()){
+                    finish();
+                }
+                Log.i(TAG, "onBackPressed: " + mHomeFragment.back());
+                break;
+        }
+    }
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        switch (mNavigationBar.getmViewPager().getCurrentItem()) {

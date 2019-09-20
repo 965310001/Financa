@@ -56,12 +56,6 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
         return R.layout.fragment_home;
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-//    }
-
     @Override
     public void initView(Bundle savedInstanceState) {
         Log.i(TAG, "initView: " + URL);

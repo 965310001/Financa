@@ -45,9 +45,8 @@ public class ChangePhoneActivity extends BaseTitleActivity {
         mTvTime = findViewById(R.id.tv_time);
 
         TextView tvCurrentPhone = findViewById(R.id.tv_current_phone);
-        tvCurrentPhone.setText(String.format("当前手机号：%s", SPHelper.getStringSF(mContext, Constant.USERPHONE, "")));
+        tvCurrentPhone.setText(String.format("当前手机号：%s", RegUtils.isAsterisk(SPHelper.getStringSF(mContext, Constant.USERPHONE, ""))));
     }
-
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -107,8 +106,7 @@ public class ChangePhoneActivity extends BaseTitleActivity {
                 .doOnComplete(() -> {
                     mTvSendCode.setVisibility(View.VISIBLE);
                     mTvTime.setVisibility(View.GONE);
-                })
-                .subscribe();
+                }).subscribe();
     }
 
     /*执行下一步*/

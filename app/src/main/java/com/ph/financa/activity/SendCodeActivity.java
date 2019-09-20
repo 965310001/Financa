@@ -124,7 +124,6 @@ public class SendCodeActivity extends BaseTitleActivity {
                         hideLoading();
                         if (data.isSuccess()) {
                             SPHelper.setBooleanSF(mContext, Constant.ISVERIFPHONE, true);
-
                             SPHelper.setStringSF(mContext, Constant.USERPHONE, phone);
                             FastUtil.startActivity(mContext, EditCompanyActivity.class);
                         } else if (data.getCode() == 500) {/*验证码失败*/

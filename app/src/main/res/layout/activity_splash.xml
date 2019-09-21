@@ -1,30 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/fl"
     android:layout_height="match_parent"
     android:background="@mipmap/ic_bg_splash"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".activity.SplashActivity">
-
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/shape_bg_logo"
-        android:gravity="center"
-        android:text="logo"
-        android:textColor="#ffffffff"
-        android:textSize="28sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_60"
-        android:text="AI财富大师"
-        android:textColor="#ff333333"
-        android:textSize="14sp"
-        android:visibility="gone" />
-</LinearLayout>
+    tools:context=".activity.SplashActivity" />

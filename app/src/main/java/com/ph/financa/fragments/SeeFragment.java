@@ -1,6 +1,7 @@
 package com.ph.financa.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.githang.statusbar.StatusBarCompat;
 import com.ph.financa.R;
 
 import java.util.ArrayList;
@@ -35,15 +37,19 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.ce6454a));
-        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-//        StatusBarUtils.setPadding(mContext,mContentView);
+    protected void onVisibleChanged(boolean isVisibleToUser) {
+        if (null!=mContentView) {
+            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+            StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+        }
+        super.onVisibleChanged(isVisibleToUser);
+        Log.i(TAG, "onVisibleChanged: ");
     }
+
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        /*mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);*/
 
         mContentView.findViewById(R.id.tv_vip).setOnClickListener(this);
         for (int i = 0; i < titles.length; i++) {

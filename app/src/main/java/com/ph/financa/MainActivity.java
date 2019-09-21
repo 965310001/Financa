@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.githang.statusbar.StatusBarCompat;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
@@ -70,8 +71,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
-        /*FastUtil.startActivity(mContext, VipActivity.class);*/
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
         /*测试*/
         PermissionManager.instance().request(mContext, new OnPermissionCallback() {
@@ -260,16 +260,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-//        quitApp();
-        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
-            case 0:
-                if (!mHomeFragment.back()){
-                    finish();
-                }
-                Log.i(TAG, "onBackPressed: " + mHomeFragment.back());
-                break;
-        }
+//        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
+//            case 0:
+//                if (!mHomeFragment.back()){
+//                }
+//                break;
+//        }
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
     }
+
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        switch (mNavigationBar.getmViewPager().getCurrentItem()) {

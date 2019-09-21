@@ -14,6 +14,7 @@ import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
+import com.ph.financa.utils.StatusBarUtils;
 
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
@@ -37,16 +38,18 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView mTvShare;//分享
     private TextView mTvMessage;//消息
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-////        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.ce6454a));
-////        StatusBarUtils.setPadding(mContext,mContentView);
-//    }
+    @Override
+    protected void onVisibleChanged(boolean isVisibleToUser) {
+        if (mContentView != null) {
+            mContentView.setPadding(0, 0, 0, 0);
+            StatusBarUtils.immersive(getActivity(), false);
+        }
+        super.onVisibleChanged(isVisibleToUser);
+    }
 
     @Override
     public void initView(Bundle savedInstanceState) {
+
         mIcHead = mContentView.findViewById(R.id.ic_head);
         mTvName = mContentView.findViewById(R.id.tv_name);
         mTvCompanyName = mContentView.findViewById(R.id.tv_company_name);
@@ -54,6 +57,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mContentView.findViewById(R.id.tv_rights).setOnClickListener(this);
         mContentView.findViewById(R.id.tv_receive).setOnClickListener(this);
         mContentView.findViewById(R.id.ic_open).setOnClickListener(this);
+        mContentView.findViewById(R.id.ic_crown_open).setOnClickListener(this);
 
         mContentView.findViewById(R.id.ll_card).setOnClickListener(this);
         mContentView.findViewById(R.id.ic_head).setOnClickListener(this);
@@ -107,19 +111,19 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
-            case R.id.tv_rights:
-                // TODO: 2019/9/9 会员权益
-                goActivity(null, null);
-                break;
-//            case R.id.tv_receive:
-//                // TODO: 2019/9/9 新会员专享688/两年 立即领取
+//            case R.id.tv_rights:
+//                // TODO: 2019/9/9 会员权益
 //                goActivity(null, null);
 //                break;
+
+            case R.id.tv_rights:
+            case R.id.tv_receive:
+            case R.id.ic_crown_open:
             case R.id.ic_open:
                 // TODO: 2019/9/9 开通688会员
                 goActivity(VipActivity.class, null);
                 break;
-            case R.id.tv_receive:
+
             case R.id.ic_head:
             case R.id.ll_card:
                 // TODO: 2019/9/9 我的名片

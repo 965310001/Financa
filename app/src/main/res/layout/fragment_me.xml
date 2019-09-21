@@ -82,7 +82,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ic_head" />
 
             <ImageView
-                android:id="@id/ic_open"
+                android:id="@+id/ic_crown_open"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_78"
                 android:layout_marginTop="@dimen/dp_47"
@@ -103,7 +103,6 @@
                 android:layout_height="@dimen/dp_76"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="@mipmap/ic_grouping" />
-
         </FrameLayout>
 
         <LinearLayout

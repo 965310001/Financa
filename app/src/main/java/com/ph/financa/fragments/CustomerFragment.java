@@ -12,6 +12,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 
 import com.aries.ui.view.title.TitleBarView;
+import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
@@ -51,6 +52,16 @@ public class CustomerFragment extends BaseTitleFragment {
     private AgentWeb mAgentWeb;
 
     @Override
+    protected void onVisibleChanged(boolean isVisibleToUser) {
+        if (null!=mContentView) {
+            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+            StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+        }
+        super.onVisibleChanged(isVisibleToUser);
+        Log.i(TAG, "onVisibleChanged: ");
+    }
+
+    @Override
     public void onDestroy() {
         if (null != mAgentWeb) {
             mAgentWeb.getWebLifeCycle().onDestroy();
@@ -58,13 +69,6 @@ public class CustomerFragment extends BaseTitleFragment {
         super.onDestroy();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
-    }
 
     @Override
     public void initView(Bundle savedInstanceState) {

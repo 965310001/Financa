@@ -24,13 +24,14 @@
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
+        android:launchMode="singleInstance"
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:overrideLibrary="androidx.appcompat"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
-        <activity android:name=".activity.PasteArticleActivity"></activity>
+        <activity android:name=".activity.PasteArticleActivity" />
         <activity
             android:name=".activity.ChangePhoneActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"

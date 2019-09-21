@@ -1,7 +1,9 @@
 package com.ph.financa.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 
 import com.just.agentweb.AgentWeb;
@@ -22,22 +24,6 @@ public class VisitorsFragment extends BaseFragment {
             SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""), SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
     private AgentWeb mAgentWeb;
 
-    /*  @Override
-      public void onPause() {
-          if (null != mAgentWeb) {
-              mAgentWeb.getWebLifeCycle().onPause();
-          }
-          super.onPause();
-      }
-
-      @Override
-      public void onResume() {
-          if (null != mAgentWeb) {
-              mAgentWeb.getWebLifeCycle().onResume();
-          }
-          super.onResume();
-      }
-  */
     @Override
     public int getContentLayout() {
         return R.layout.fragment_visitors;
@@ -52,6 +38,31 @@ public class VisitorsFragment extends BaseFragment {
                 .createAgentWeb()
                 .ready()
                 .go(URL);
+        mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
     }
 
+    class AndroidInterface extends Object {
+
+        private AgentWeb agent;
+        private Context context;
+
+        public AndroidInterface(AgentWeb agent, Context context) {
+            this.agent = agent;
+            this.context = context;
+        }
+
+        @JavascriptInterface
+        public void toVisitDetail(String content) {
+            Log.i(TAG, "前往访客详情页面: " + content);
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
+    }
 }

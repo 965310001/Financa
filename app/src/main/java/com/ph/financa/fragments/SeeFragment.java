@@ -14,11 +14,13 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.githang.statusbar.StatusBarCompat;
 import com.ph.financa.R;
+import com.ph.financa.constant.Constant;
 
 import java.util.ArrayList;
 
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.utils.DisplayUtil;
+import tech.com.commoncore.utils.SPHelper;
 
 /**
  * 谁看了我
@@ -38,7 +40,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
-        if (null!=mContentView) {
+        if (null != mContentView) {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         }
@@ -46,12 +48,20 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
         Log.i(TAG, "onVisibleChanged: ");
     }
 
-
     @Override
     public void initView(Bundle savedInstanceState) {
-        /*mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);*/
+        View tvVip = mContentView.findViewById(R.id.tv_vip);
+        tvVip.setOnClickListener(this);
 
-        mContentView.findViewById(R.id.tv_vip).setOnClickListener(this);
+        switch (SPHelper.getIntergerSF(mContext, Constant.ISVIP, 0)) {
+            case 0:
+                tvVip.setVisibility(View.GONE);
+                break;
+            case 1:
+                tvVip.setVisibility(View.VISIBLE);
+                break;
+        }
+
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[0], mIconSelectIds[0]));
         }

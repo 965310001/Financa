@@ -49,7 +49,7 @@ public class WebActivity extends BaseTitleActivity {
                 .ready()
                 .go(mUrl);
 
-//        mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, mContext));
+        mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, mContext));
     }
 
     class AndroidInterface extends Object {
@@ -63,45 +63,17 @@ public class WebActivity extends BaseTitleActivity {
         }
 
         @JavascriptInterface
-        public void fallBack() {
-            if (!agent.back()) {
-                finish();
-            }
-
-//            Log.i(TAG, "shareArticleData: " + content);
-//            try {
-//                JSONObject jsonObject = new JSONObject(content);
-//                String target = jsonObject.getString("target");
-//                String imgUrl = jsonObject.getString("imgUrl");
-//                String shareLink = jsonObject.getString("shareLink");
-//
-//                jsonObject = jsonObject.getJSONObject("sourceData");
-//                String title = jsonObject.getString("title");
-//                String description = jsonObject.getString("summary");
-//                description = description.replace("\n", "");
-//
-//                mResourceId = jsonObject.getLong("id");
-//
-//                mShareCode = jsonObject.getString("shareCode");
-//                mShareContent = jsonObject.getString("content");
-//                mResourceType = "ARTICLE";
-//                mAuthor = jsonObject.getString("author");
-//                mTitle = title;
-//                mUrl = shareLink;
-//
-//                if (jsonObject.has("positionState")) {
-//                    mAdPosition = jsonObject.getString("positionState");
-//                }
-//
-//                if (jsonObject.has("production")) {
-//                    mAdContent = jsonObject.getString("production");
-//                }
-//
-//                share(target, shareLink, imgUrl, title, description);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+        public void fallBack(String content) {
+            runOnUiThread(() -> {
+                if (!agent.back()) {
+                    finish();
+                }
+            });
         }
+
+        // TODO: 2019/9/21 上传照片
+        
+        // TODO: 2019/9/21 上传二维码
     }
 
 

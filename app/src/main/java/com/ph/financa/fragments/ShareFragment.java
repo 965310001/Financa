@@ -1,7 +1,9 @@
 package com.ph.financa.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 
 import com.just.agentweb.AgentWeb;
@@ -47,12 +49,37 @@ public class ShareFragment extends BaseFragment {
     public void initView(Bundle savedInstanceState) {
         Log.i(TAG, "initView: " + URL);
         mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent((FrameLayout) mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
+                .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
                 .createAgentWeb()
                 .ready()
                 .go(URL);
+
+        mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
     }
 
+    class AndroidInterface extends Object {
+
+        private AgentWeb agent;
+        private Context context;
+
+        public AndroidInterface(AgentWeb agent, Context context) {
+            this.agent = agent;
+            this.context = context;
+        }
+
+        @JavascriptInterface
+        public void toShareDetail(String content) {
+            Log.i(TAG, "前往分享详情页面: " + content);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
+    }
 
 }

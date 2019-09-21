@@ -59,7 +59,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
-        if (null!=mContentView) {
+        if (null != mContentView) {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         }
@@ -68,9 +68,17 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     }
 
     @Override
+    public void loadData() {
+        super.loadData();
+        if (null != mAgentWeb) {
+            while (mAgentWeb.back()) {
+            }
+        }
+    }
+
+    @Override
     public void initView(Bundle savedInstanceState) {
         Log.i(TAG, "initView: " + URL);
-        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
 
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))

@@ -52,14 +52,14 @@ public class SendCodeActivity extends BaseTitleActivity {
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_send_code:// TODO: 2019/9/6 发送验证码
+            case R.id.tv_send_code:/*发送验证码*/
                 if (!checkPhone()) {
                     return;
                 }
                 sendCode();
                 break;
 
-            case R.id.btn_next:// TODO: 2019/9/6 下一步
+            case R.id.btn_next:/*下一步*/
                 if (!checkPhone()) {
                     return;
                 }

@@ -44,7 +44,7 @@ public class UserBean implements Serializable {
     private String city;
     private Object wechatCode;
     private String openId;
-    private int userType;
+    private Integer userType;
     private int userStatus;
     private int cardShowStatus;
     private int advantageStatus;
@@ -180,11 +180,11 @@ public class UserBean implements Serializable {
         this.openId = openId;
     }
 
-    public int getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(int userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 

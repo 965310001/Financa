@@ -227,6 +227,14 @@ public class EaseConversationListFragment extends EaseBaseFragment {
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }
+        /*去掉客服*/
+        if (list.size() > 0) {
+            for (EMConversation emConversation : list) {
+                if (emConversation.conversationId().equals("1173549052970016768")) {
+                    list.remove(emConversation);
+                }
+            }
+        }
         return list;
     }
 

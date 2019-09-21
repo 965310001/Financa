@@ -111,7 +111,10 @@ public class MainActivity extends BaseActivity {
                 .addLayoutRule(EasyNavigationBar.RULE_BOTTOM)
                 .addLayoutBottom(100)
                 .onTabClickListener((view, position) -> {
-                    if (position == 4) {
+                    if (position == 0) {
+                        Log.i(TAG, "initView: ");
+                        mHomeFragment.loadData();
+                    } else if (position == 4) {
                         /*Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();*/
                         //return true则拦截事件、不进行页面切换
 //                            return true;
@@ -176,6 +179,8 @@ public class MainActivity extends BaseActivity {
             SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
             SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
             SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
+
+            SPHelper.setIntergerSF(mContext, Constant.ISVIP, data.getUserType());
         }
     }
 

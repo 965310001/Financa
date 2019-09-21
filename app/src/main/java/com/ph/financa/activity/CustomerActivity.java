@@ -66,7 +66,7 @@ public class CustomerActivity extends BaseTitleActivity {
 //            }
 //        });
 
-        // TODO: 2019/9/12 聊天
+        /*聊天*/
         EaseChatFragment chatFragment = new EaseChatFragment();
         Bundle args = new Bundle();
         if (intent.hasExtra(EaseConstant.EXTRA_USER_ID)) {

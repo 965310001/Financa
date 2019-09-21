@@ -5,6 +5,9 @@ public interface Constant {
     /*是否登录*/
     String ISLOGIN = "LOGIN";
 
+    /*是否是vip*/
+    String ISVIP = "IS_VIP";
+
     /*是否验证手机号*/
     String ISVERIFPHONE = "ISVERIFPHONE";
 
@@ -72,4 +75,6 @@ public interface Constant {
 
     /*客服id*/
     String CUSTOMSERVICE = "1173549052970016768";
+
+
 }

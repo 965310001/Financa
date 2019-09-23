@@ -18,10 +18,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
 
     <!--相机 SD卡权限-->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
@@ -192,10 +193,10 @@
         <!-- User defined. 用户自定义 Receiver 接收被拉起回调-->
         <!-- 自定义 Receiver 组件，继承cn.jpush.android.service.WakedResultReceiver类,复写onWake(int wakeType)或 onWake(Context context, int wakeType)方法以监听被拉起 -->
         <!--<receiver android:name="xx.xx.xx.MyWakedResultReceiver">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="cn.jpush.android.intent.WakedReceiver" />-->
-                <!--<category android:name="${applicationId}" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="cn.jpush.android.intent.WakedReceiver" />-->
+        <!--<category android:name="${applicationId}" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
 
         <!--Required SDK核心功能 since 3.3.0-->

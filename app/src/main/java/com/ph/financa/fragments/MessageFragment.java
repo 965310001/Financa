@@ -46,12 +46,16 @@ public class MessageFragment extends BaseFragment {
         EaseConversationListFragment fragment = new EaseConversationListFragment();
         fragment.hideTitleBar();
         fragment.setConversationListItemClickListener(conversation -> {
-            Bundle bundle = new Bundle();
-            Map<String, Object> ext = conversation.getLastMessage().ext();
-            bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
-            bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
-            bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
-            FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
+            try {
+                Bundle bundle = new Bundle();
+                Map<String, Object> ext = conversation.getLastMessage().ext();
+                bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
+                bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
+                bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
+                FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
+            } catch (Exception e) {
+                Log.i(TAG, "initView: " + e.toString());
+            }
         });
         getChildFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
 

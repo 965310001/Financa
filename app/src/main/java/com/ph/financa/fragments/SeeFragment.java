@@ -49,6 +49,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
         Log.i(TAG, "onVisibleChanged: ");
     }
 
+
     @Override
     public void initView(Bundle savedInstanceState) {
         View tvVip = mContentView.findViewById(R.id.tv_vip);

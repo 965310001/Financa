@@ -2,6 +2,7 @@ package com.ph.financa.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
@@ -155,6 +156,9 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                     mAdContent = jsonObject.getString("production");
                 }
 
+                if (TextUtils.isEmpty(description)) {
+                    description=title;
+                }
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
                 e.printStackTrace();

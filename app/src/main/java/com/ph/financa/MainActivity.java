@@ -16,10 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.githang.statusbar.StatusBarCompat;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMultiDeviceListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.NetUtils;
 import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
@@ -45,6 +47,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
@@ -81,7 +88,6 @@ public class MainActivity extends BaseActivity {
         super.onResume();
     }
 
-
     @Override
     protected void onPause() {
         isForeground = false;
@@ -96,31 +102,24 @@ public class MainActivity extends BaseActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
     }
 
-
     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
     }
 
-    @Override
-    public int getContentLayout() {
-        return R.layout.activity_main;
-    }
-
     // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
     private void init() {
         JPushInterface.init(getApplicationContext());
-        Log.i(TAG, "init: " + JPushInterface.getRegistrationID(mContext));
-        JPushManager.getInstance().setAlias(mContext, "186");
+        JPushManager.getInstance().setAlias(mContext, SPHelper.getStringSF(mContext, Constant.USERID, ""));
     }
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+
         registerMessageReceiver();  // used for receive msg
         init();
-        /*Log.i(TAG, "initView: " + JPushInterface.getRegistrationID(this));*/
-        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
         /*测试*/
         PermissionManager.instance().request(mContext, new OnPermissionCallback() {
@@ -195,11 +194,83 @@ public class MainActivity extends BaseActivity {
         mNavigationBar.setAddViewLayout(createView());
 
         //注册一个监听连接状态的listener
-        EMClient.getInstance().addConnectionListener(new ConnectionListener());
         EMClient.getInstance().addMultiDeviceListener(new MyMultiDeviceListener());
+        EMClient.getInstance().addConnectionListener(new ConnectionListener());
 
         getUserInfo();
     }
+
+    private void loginEaseMob(String id, String password) {
+        try {
+            List<String> selfIds = EMClient.getInstance().contactManager().getSelfIdsOnOtherPlatform();
+            for (String selfId : selfIds) {
+                Log.i(TAG, "loginEaseMob: " + selfId);
+            }
+        } catch (HyphenateException e) {
+            e.printStackTrace();
+        }
+
+        Observable.create(subscriber -> EMClient.getInstance().login(id, password, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                subscriber.onNext(200);
+                subscriber.onComplete();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                subscriber.onNext(s);
+                subscriber.onComplete();
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+            }
+        })).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Object>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onNext(Object obj) {
+                if (obj instanceof Integer) {
+//                    hideLoading();
+                    Log.i(TAG, "onSuccess: 环信登录成功");
+                    EMClient.getInstance().groupManager().loadAllGroups();
+                    EMClient.getInstance().chatManager().loadAllConversations();
+//                    EMClient.getInstance().pushManager().updatePushNickname(
+//                            SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
+
+//                    SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, true);
+//                    if (code == 40102002) {
+//                        FastUtil.startActivity(mContext, SendCodeActivity.class);
+//                        finish();
+//                    } else if (code == 200) {
+//                        SPHelper.setBooleanSF(mContext, Constant.ISVERIFPHONE, true);
+//
+//                        FastUtil.startActivity(mContext, MainActivity.class);
+//                        finish();
+//                    }
+//                } else {
+//                    hideLoading();
+//                    ToastUtil.show(obj.toString());
+//                    Log.i(TAG, "环信登录失败:" + obj.toString());
+//                }
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtil.show(e.toString());
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
 
     class MyMultiDeviceListener implements EMMultiDeviceListener {
 
@@ -226,8 +297,8 @@ public class MainActivity extends BaseActivity {
                         UserBean bean = data.data;
                         if (null != bean) {
                             saveUser(bean);
+                            loginEaseMob(String.valueOf(bean.getId()), "123456");
                         }
-
                     }
 
                     @Override
@@ -266,9 +337,11 @@ public class MainActivity extends BaseActivity {
                 } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     // 显示帐号在其他设备登录
                     Log.i(TAG, "onDisconnected: 显示帐号在其他设备登录");
+                    loginEaseMob(SPHelper.getStringSF(mContext, Constant.USERID, ""), "123456");
                 } else {
                     if (NetUtils.hasNetwork(mContext)) {
                         //连接不到聊天服务器
+//                        loginEaseMob(SPHelper.getStringSF(mContext, Constant.USERID, ""), "123456");
                         Log.i(TAG, "onDisconnected: 连接不到聊天服务器" + error);
                     } else {
                         //当前网络不可用，请检查网络设置
@@ -328,6 +401,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public int getContentLayout() {
+        return R.layout.activity_main;
+    }
 
     @Override
     public void onBackPressed() {

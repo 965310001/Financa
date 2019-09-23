@@ -15,6 +15,7 @@ import com.lzy.okgo.cookie.store.DBCookieStore;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.jpush.JPushManager;
 import com.vise.log.ViseLog;
 import com.vise.log.inner.LogcatTree;
 import com.vise.xsnow.http.ViseHttp;
@@ -86,6 +87,13 @@ public class MyApplication extends BaseApplication {
                 .setQuitAppControl(impl);
 
         /*FeedbackAPI.init(application, "27866243", "e70f595bb8a857d1d0ec31bacea76db1");*/
+
+        initJPush();
+    }
+
+    /*极光*/
+    private void initJPush() {
+        JPushManager.getInstance().initJPush(getApplicationContext(), Constant.ISDEBUG);
     }
 
     private void initEase() {

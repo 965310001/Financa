@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,10 +13,12 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
+import com.hyphenate.EMMultiDeviceListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.NetUtils;
 import com.next.easynavigation.constant.Anim;
@@ -31,6 +34,8 @@ import com.ph.financa.fragments.CustomerFragment;
 import com.ph.financa.fragments.HomeFragment;
 import com.ph.financa.fragments.MeFragment;
 import com.ph.financa.fragments.SeeFragment;
+import com.ph.financa.jpush.JPushManager;
+import com.ph.financa.jpush.MessageReceiver;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 import com.vise.xsnow.permission.OnPermissionCallback;
@@ -39,6 +44,7 @@ import com.vise.xsnow.permission.PermissionManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
@@ -49,6 +55,10 @@ import tech.com.commoncore.utils.ToastUtil;
  * 首页
  */
 public class MainActivity extends BaseActivity {
+
+    /*极光*/
+    public static boolean isForeground = false;
+    private MessageReceiver mMessageReceiver;
 
     private EasyNavigationBar mNavigationBar;
 
@@ -64,33 +74,73 @@ public class MainActivity extends BaseActivity {
     private AddDialog mAddDialog;
     private HomeFragment mHomeFragment;
 
+
+    @Override
+    protected void onResume() {
+        isForeground = true;
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }
+
+    public void registerMessageReceiver() {
+        mMessageReceiver = new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        filter.addAction(Constant.MESSAGE_RECEIVED_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
     @Override
     public int getContentLayout() {
         return R.layout.activity_main;
     }
 
+    // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
+    private void init() {
+        JPushInterface.init(getApplicationContext());
+        Log.i(TAG, "init: " + JPushInterface.getRegistrationID(mContext));
+        JPushManager.getInstance().setAlias(mContext, "186");
+    }
+
     @Override
     public void initView(Bundle savedInstanceState) {
+        registerMessageReceiver();  // used for receive msg
+        init();
+        /*Log.i(TAG, "initView: " + JPushInterface.getRegistrationID(this));*/
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
         /*测试*/
         PermissionManager.instance().request(mContext, new OnPermissionCallback() {
-            @Override
-            public void onRequestAllow(String permissionName) {
-                Log.i(TAG, "onRequestAllow: " + permissionName);
-            }
+                    @Override
+                    public void onRequestAllow(String permissionName) {
+                        Log.i(TAG, "onRequestAllow: " + permissionName);
+                    }
 
-            @Override
-            public void onRequestRefuse(String permissionName) {
-                Log.i(TAG, "onRequestRefuse: " + permissionName);
-            }
+                    @Override
+                    public void onRequestRefuse(String permissionName) {
+                        Log.i(TAG, "onRequestRefuse: " + permissionName);
+                    }
 
-            @Override
-            public void onRequestNoAsk(String permissionName) {
-                Log.i(TAG, "onRequestNoAsk: " + permissionName);
-            }
-        }, Manifest.permission.READ_CONTACTS, Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_FINE_LOCATION);
-
+                    @Override
+                    public void onRequestNoAsk(String permissionName) {
+                        Log.i(TAG, "onRequestNoAsk: " + permissionName);
+                    }
+                }, Manifest.permission.READ_CONTACTS, Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         mNavigationBar = findViewById(R.id.navigationBar);
 
@@ -146,9 +196,25 @@ public class MainActivity extends BaseActivity {
 
         //注册一个监听连接状态的listener
         EMClient.getInstance().addConnectionListener(new ConnectionListener());
-
+        EMClient.getInstance().addMultiDeviceListener(new MyMultiDeviceListener());
 
         getUserInfo();
+    }
+
+    class MyMultiDeviceListener implements EMMultiDeviceListener {
+
+        @Override
+        public void onContactEvent(int event, String target, String ext) {
+            Log.i(TAG, "onContactEvent: " + event + " " + target + " " + ext);
+        }
+
+        @Override
+        public void onGroupEvent(int event, String target, List<String> usernames) {
+            for (String username : usernames) {
+                Log.i(TAG, "onGroupEvent: " + username);
+            }
+            Log.i(TAG, "onGroupEvent: " + event + " " + target);
+        }
     }
 
     /*获取用户信息*/
@@ -203,7 +269,7 @@ public class MainActivity extends BaseActivity {
                 } else {
                     if (NetUtils.hasNetwork(mContext)) {
                         //连接不到聊天服务器
-                        Log.i(TAG, "onDisconnected: 连接不到聊天服务器");
+                        Log.i(TAG, "onDisconnected: 连接不到聊天服务器" + error);
                     } else {
                         //当前网络不可用，请检查网络设置
                         Log.i(TAG, "onDisconnected: 当前网络不可用，请检查网络设置");

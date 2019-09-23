@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
+import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.wxapi.pay.JPayListener;
@@ -32,6 +33,7 @@ import java.util.Map;
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
+import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
@@ -114,6 +116,12 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
         public AndroidInterface(AgentWeb agent, Context context) {
             this.agent = agent;
             this.context = context;
+        }
+
+        @JavascriptInterface
+        public void toViperPage(String content) {
+            Log.i(TAG, "toViperPage: " + content);
+            FastUtil.startActivity(mContext, VipActivity.class);
         }
 
         @JavascriptInterface

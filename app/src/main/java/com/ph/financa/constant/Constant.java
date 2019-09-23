@@ -77,4 +77,12 @@ public interface Constant {
     String CUSTOMSERVICE = "1173549052970016768";
 
 
+    /*极光推送*/
+    String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
+    String KEY_TITLE = "title";
+    String KEY_MESSAGE = "message";
+    String KEY_EXTRAS = "extras";
+
+
+    boolean ISDEBUG = true;
 }

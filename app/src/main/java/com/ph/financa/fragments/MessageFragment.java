@@ -3,14 +3,18 @@ package com.ph.financa.fragments;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.flyco.tablayout.CommonTabLayout;
+import com.flyco.tablayout.listener.CustomTabEntity;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.ph.financa.R;
 import com.ph.financa.activity.CustomerActivity;
+import com.ph.financa.activity.bean.TabEntity;
 import com.ph.financa.ease.FriendTable;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import tech.com.commoncore.base.BaseFragment;
@@ -21,13 +25,24 @@ import tech.com.commoncore.utils.FastUtil;
  */
 public class MessageFragment extends BaseFragment {
 
-    @Override
-    public int getContentLayout() {
-        return R.layout.fragment_message;
-    }
+    private CommonTabLayout mTabLayoutMessage;
+
+    private String[] titles = {"本周", "上周", "一月内", "半年内"};
+    private int[] mIconSelectIds = {
+            R.mipmap.ic_home_selected};
+
+    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     @Override
     public void initView(Bundle savedInstanceState) {
+
+        mTabLayoutMessage = mContentView.findViewById(R.id.tab_message);
+
+        for (int i = 0; i < titles.length; i++) {
+            mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[0], mIconSelectIds[0]));
+        }
+        mTabLayoutMessage.setTabData(mTabEntities);
+
         EaseConversationListFragment fragment = new EaseConversationListFragment();
         fragment.hideTitleBar();
         fragment.setConversationListItemClickListener(conversation -> {
@@ -41,6 +56,11 @@ public class MessageFragment extends BaseFragment {
         getChildFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
 
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
-        Log.i(TAG, "initView:聊天记录 "+conversations.size());
+        Log.i(TAG, "initView:聊天记录 " + conversations.size());
+    }
+
+    @Override
+    public int getContentLayout() {
+        return R.layout.fragment_message;
     }
 }

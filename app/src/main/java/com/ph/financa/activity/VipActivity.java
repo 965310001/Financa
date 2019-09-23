@@ -184,7 +184,16 @@ public class VipActivity extends BaseTitleActivity {
         if (null != data && data.size() > 0) {
             int index = 0;
             mLLRecommend.removeAllViews();
+
+            for (SelectBean datum : data) {
+                if (datum.getName().contains("体验三天")) {
+                    data.remove(datum);
+                }
+            }
+
+
             for (SelectBean bean : data) {
+
                 LinearLayout itemView = (LinearLayout) View.inflate(mContext, R.layout.item_recommend, null);
 
                 TextView tvYear = itemView.findViewById(R.id.tv_year);

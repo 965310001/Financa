@@ -53,7 +53,7 @@ public class CustomerFragment extends BaseTitleFragment {
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
-        if (null!=mContentView) {
+        if (null != mContentView) {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         }

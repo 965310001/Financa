@@ -77,7 +77,7 @@ public interface ApiConstant {
     /*产品详情*/
     String product_detail = "h5/product-detail";
     /*资料库*/
-    String data_lib = "h5/data-lib";
+    String DATA_LIB = "h5/data-lib";
     /*怎么上传——帮助*/
     String how_to_upload = "h5/how-to-upload";
 

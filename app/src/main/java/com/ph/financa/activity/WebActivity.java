@@ -1,5 +1,6 @@
 package com.ph.financa.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -21,16 +23,36 @@ import com.aries.ui.view.title.TitleBarView;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.wxapi.pay.JPayListener;
+import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.share.WbShareHandler;
+import com.vise.xsnow.http.ViseHttp;
+import com.vise.xsnow.http.callback.ACallback;
+import com.vise.xsnow.permission.OnPermissionCallback;
+import com.vise.xsnow.permission.PermissionManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
+import tech.com.commoncore.utils.FastUtil;
+import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
+import tech.com.commoncore.utils.Utils;
 
 public class WebActivity extends BaseTitleActivity {
 
@@ -98,7 +120,8 @@ public class WebActivity extends BaseTitleActivity {
                     // (2)该方法回调时说明版本API < 21，此时将结果赋值给 mUploadCallbackBelow，使之 != null
                     mUploadCallbackBelow = uploadMsg;
                     Log.i(TAG, "openFileChooser:指定拍照存储位置的方式调起相机 ");
-                    takePhoto();
+//                    takePhoto();
+                    requestPermission();
                 }
 
                 /**
@@ -127,11 +150,49 @@ public class WebActivity extends BaseTitleActivity {
                     Log.e("WangJ", "运行方法 onShowFileChooser");
                     // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
                     mUploadCallbackAboveL = filePathCallback;
-                    takePhoto();
+//                    takePhoto();
+                    requestPermission();
                     Log.i(TAG, "onShowFileChooser:指定拍照存储位置的方式调起相机 ");
                     return true;
                 }
             });
+        }
+    }
+
+    /**
+     * 请求权限
+     */
+    private void requestPermission() {
+        PermissionManager.instance().request(this, new OnPermissionCallback() {
+            @Override
+            public void onRequestAllow(String permissionName) {
+                takePhoto();
+            }
+
+            @Override
+            public void onRequestRefuse(String permissionName) {
+                Log.i(TAG, "onRequestRefuse: " + permissionName);
+                cancelFilePathCallback();
+            }
+
+            @Override
+            public void onRequestNoAsk(String permissionName) {
+                Log.i(TAG, "onRequestNoAsk: " + permissionName);
+                cancelFilePathCallback();
+            }
+        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    /**
+     * 取消mFilePathCallback回调
+     */
+    private void cancelFilePathCallback() {
+        if (mUploadCallbackBelow != null) {
+            mUploadCallbackBelow.onReceiveValue(null);
+            mUploadCallbackBelow = null;
+        } else if (mUploadCallbackAboveL != null) {
+            mUploadCallbackAboveL.onReceiveValue(null);
+            mUploadCallbackAboveL = null;
         }
     }
 
@@ -179,7 +240,7 @@ public class WebActivity extends BaseTitleActivity {
                 chooseAbove(resultCode, data);
             } else {
 //                Toast.makeText(this, "发生错误", Toast.LENGTH_SHORT).show();
-                ToastUtil.show("发生错误");
+//                ToastUtil.show("发生错误");
             }
         }
     }
@@ -278,9 +339,206 @@ public class WebActivity extends BaseTitleActivity {
             });
         }
 
-        // TODO: 2019/9/21 上传照片
+        @JavascriptInterface
+        public void toFileLib(String content) {
+            Log.i(TAG, "toFileLib: 前往资料库页面方法");
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.URL, String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP,
+                    ApiConstant.DATA_LIB,
+                    SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                    SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
+            FastUtil.startActivity(mContext, WebActivity.class, bundle);
+        }
 
-        // TODO: 2019/9/21 上传二维码
+        /*名片分享的 方法*/
+        @JavascriptInterface
+        public void shareMyCard(String content) {
+            Log.i(TAG, "shareMyCard: " + content);
+
+            try {
+                JSONObject jsonObject = new JSONObject(content);
+                String target = jsonObject.getString("target");
+                String imgUrl = jsonObject.getString("imgUrl");
+                String shareLink = jsonObject.getString("shareLink");
+
+                jsonObject = jsonObject.getJSONObject("sourceData");
+                jsonObject = jsonObject.getJSONObject("userInfo");
+
+                mResourceId = jsonObject.getLong("id");
+
+                mShareCode = jsonObject.getString("shareCode");
+                mResourceType = "ARTICLE";
+                mAuthor = jsonObject.getString("name");
+                mTitle = String.format("%s的名片", mAuthor);
+
+                mShareContent = mTitle;
+                mUrl = shareLink;
+
+                String description = mTitle;
+                share(target, shareLink, imgUrl, mTitle, description);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /*这是分享产品的*/
+        @JavascriptInterface
+        public void shareMyProduct(String content) {
+            Log.i(TAG, "shareMyProduct: " + content);
+            try {
+                JSONObject jsonObject = new JSONObject(content);
+                String target = jsonObject.getString("target");
+                String imgUrl = jsonObject.getString("imgUrl");
+                String shareLink = jsonObject.getString("shareLink");
+
+                jsonObject = jsonObject.getJSONObject("sourceData");
+                jsonObject = jsonObject.getJSONObject("userInfo");
+                mResourceId = jsonObject.getLong("id");
+                mShareCode = jsonObject.getString("shareCode");
+                mAuthor = jsonObject.getString("name");
+
+
+                String title = jsonObject.getString("title");
+                String description = jsonObject.getString("summary");
+                description = description.replace("\n", "");
+
+                mShareContent = jsonObject.getString("content");
+                mResourceType = "ARTICLE";
+
+                mTitle = title;
+                mUrl = shareLink;
+
+                if (jsonObject.has("positionState")) {
+                    mAdPosition = jsonObject.getString("positionState");
+                }
+
+                if (jsonObject.has("production")) {
+                    mAdContent = jsonObject.getString("production");
+                }
+
+                if (TextUtils.isEmpty(description)) {
+                    description = title;
+                }
+                share(target, shareLink, imgUrl, title, description);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private WbShareHandler mShareHandler;
+
+    private long mResourceId;
+    private String mShareCode, mShareContent, mShareChannel = "OTHER", mResourceType, mAuthor, mTitle, mShareUrl, mAdPosition, mAdContent;
+
+    private void share(String target, String shareLink, String imgUrl, String title, String description) {
+        switch (target) {
+            case "shareToFriend":/*微信*/
+                mShareChannel = "WECHAT";
+                Map<String, String> map = new HashMap<>();
+                map.put("url", shareLink);
+                map.put("imageurl", imgUrl);
+                map.put("title", title);
+                map.put("description", description);
+                WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 0, map, listener);
+                break;
+            case "shareToCircle":/*朋友圈*/
+                mShareChannel = "WECHAT_CIRCLE";
+                map = new HashMap<>();
+                map.put("url", shareLink);
+                map.put("imageurl", imgUrl);
+                map.put("title", title);
+                map.put("description", description);
+                WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 1, map, listener);
+                break;
+            case "shareToSina":/*新浪微博*/
+                mShareChannel = "SINA_WEIBO";
+                wbShare(shareLink, imgUrl, title, description);
+                break;
+        }
+    }
+
+    /*微博分享*/
+    private void wbShare(String shareLink, String imgUrl, String title, String description) {
+        initWBSDK();
+
+        WeiboMultiMessage weiboMultiMessage = new WeiboMultiMessage();
+        TextObject textObject = new TextObject();
+        textObject.text = shareLink;
+        textObject.title = title;
+        textObject.description = description;
+        textObject.actionUrl = imgUrl;
+        weiboMultiMessage.textObject = textObject;
+        mShareHandler.shareMessage(weiboMultiMessage, false);
+    }
+
+    private void initWBSDK() {
+        WbSdk.install(mContext, new AuthInfo(mContext, Constant.APP_KEY, Constant.REDIRECT_URL, Constant.SCOPE));
+        mShareHandler = new WbShareHandler(mContext);
+        mShareHandler.registerApp();
+    }
+
+    private final JPayListener listener = new JPayListener() {
+        @Override
+        public void onPaySuccess() {
+            ToastUtil.show("分享成功！");
+            shareSuccess();
+            Log.i(TAG, "onPaySuccess: ");
+        }
+
+        @Override
+        public void onPayError(int error_code, String message) {
+            ToastUtil.show(message);
+        }
+
+        @Override
+        public void onPayCancel() {
+            ToastUtil.show("分享取消！");
+        }
+
+        @Override
+        public void onUUPay(String dataOrg, String sign, String mode) {
+
+        }
+    };
+
+    private void shareSuccess() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.putOpt("resourceId", mResourceId);
+            jsonObject.putOpt("shareCode", mShareCode);
+            jsonObject.putOpt("shareChannel", mShareChannel);
+            jsonObject.putOpt("resourceType", mResourceType);
+
+            JSONObject shareContent = new JSONObject();
+            shareContent.putOpt("author", mAuthor);
+            shareContent.putOpt("content", mShareContent);
+            shareContent.putOpt("title", mTitle);
+            shareContent.putOpt("url", mShareUrl);
+            jsonObject.putOpt("shareContent", shareContent);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ViseHttp.POST(ApiConstant.SHARE_SUCCESS)
+                .setJson(jsonObject)
+                .request(new ACallback<BaseTResp2>() {
+                    @Override
+                    public void onSuccess(BaseTResp2 data) {
+                        Log.i(TAG, "onSuccess: " + data.getMsg());
+                        if (data.isSuccess()) {
+                            ToastUtil.show("分享成功");
+                        } else {
+                            ToastUtil.show(data.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        Log.i(TAG, "onFail: " + errMsg);
+                        ToastUtil.show(errMsg);
+                    }
+                });
     }
 
 

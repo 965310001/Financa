@@ -88,4 +88,7 @@ public interface Constant {
     /*webview*/
     String TITLE = "title";
     String URL = "url";
+
+    /*过渡页*/
+    String ISGUIDE = "ISGUIDE";
 }

@@ -20,11 +20,11 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-import com.aries.ui.view.title.TitleBarView;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import tech.com.commoncore.base.BaseTitleFragment;
+import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.SPHelper;
@@ -60,7 +60,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * 客户
  */
-public class CustomerFragment extends BaseTitleFragment {
+public class CustomerFragment extends BaseFragment {
 
     private static final String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP,
             ApiConstant.CUSTOMER,
@@ -68,6 +68,10 @@ public class CustomerFragment extends BaseTitleFragment {
             SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
 
     private AgentWeb mAgentWeb;
+    private final int REQUEST_CODE = 1234;
+    private ValueCallback<Uri[]> mUploadCallbackAboveL;
+    private ValueCallback<Uri> mUploadCallbackBelow;
+    private Uri imageUri;
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
@@ -76,16 +80,8 @@ public class CustomerFragment extends BaseTitleFragment {
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         }
         super.onVisibleChanged(isVisibleToUser);
-        Log.i(TAG, "onVisibleChanged: ");
     }
 
-    @Override
-    public void onDestroy() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onDestroy();
-        }
-        super.onDestroy();
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -97,130 +93,96 @@ public class CustomerFragment extends BaseTitleFragment {
                 builder.detectFileUriExposure();
             }
 
+            mAgentWeb = AgentWeb.with(mContext)
+                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
+                    .useDefaultIndicator()
+                    .createAgentWeb()
+                    .ready()
+                    .go(URL);
+            mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
+            WebSettings settings = mAgentWeb.getWebCreator().getWebView().getSettings();
+            settings.setUseWideViewPort(true);
+            settings.setLoadWithOverviewMode(true);
+            settings.setDomStorageEnabled(true);
+            settings.setDefaultTextEncodingName("UTF-8");
+            settings.setAllowContentAccess(true); // 是否可访问Content Provider的资源，默认值 true
+            settings.setAllowFileAccess(true);    // 是否可访问本地文件，默认值 true
+            // 是否允许通过file url加载的Javascript读取本地文件，默认值 false
+            settings.setAllowFileAccessFromFileURLs(false);
+            // 是否允许通过file url加载的Javascript读取全部资源(包括文件,http,https)，默认值 false
+            settings.setAllowUniversalAccessFromFileURLs(false);
+            //开启JavaScript支持
+            settings.setJavaScriptEnabled(true);
+            // 支持缩放
+            settings.setSupportZoom(true);
+
+
+            mAgentWeb.getWebCreator().getWebView().setWebViewClient(client);
+            mAgentWeb.getWebCreator().getWebView().setWebChromeClient(chromeClient);
+
             Log.i(TAG, "initView: " + URL);
-            PermissionManager.instance().request(mContext, new OnPermissionCallback() {
-                @Override
-                public void onRequestAllow(String permissionName) {
-                    Log.i(TAG, "onRequestAllow: " + permissionName);
-                    mAgentWeb = AgentWeb.with(mContext)
-                            .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
-                            .useDefaultIndicator()
-//                            .setAgentWebWebSettings(new AbsAgentWebSettings() {
-//                                @Override
-//                                protected void bindAgentWebSupport(AgentWeb agentWeb) {
-//                                }
-//
-//                                @Override
-//                                public IAgentWebSettings toSetting(WebView webView) {
-//                                    IAgentWebSettings settings = super.toSetting(webView);
-//                                    webView.getSettings().setAllowContentAccess(true); // 是否可访问Content Provider的资源，默认值 true
-//                                    webView.getSettings().setAllowFileAccess(true);    // 是否可访问本地文件，默认值 true
-//                                    webView.getSettings().setAllowFileAccessFromFileURLs(false);
-//                                    webView.getSettings().setJavaScriptEnabled(true);
-//                                    webView.getSettings().setLoadWithOverviewMode(true);
-//                                    webView.getSettings().setJavaScriptEnabled(true); //允许加载javaScript
-////                                    webView.getSettings().setSupportZoom(true);       //是否允许缩放
-////                                    webView.getSettings().setUseWideViewPort(true);   //设置加载进来的页面自适应手机屏幕
-////                                    webView.getSettings().setLoadWithOverviewMode(true);
-////                                    webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-////                                    webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-////                                            webView.setWebChromeClient(new MyWebChromeClient());
-////                                    webView.setWebChromeClient(new BaseWebChromeClient(mContext));
-//
-//
-//                                    return settings;
-//                                }
-//                            })
-                            .createAgentWeb()
-                            .ready()
-                            .go(URL);
-                    mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
-
-                    mAgentWeb.getWebCreator().getWebView().setWebViewClient(new WebViewClient() {
-                        @Override
-                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                            view.loadUrl(url); // 在本WebView打开新的url请求
-                            return true;  // 标记新请求已经被处理笑话
-                            // 上边2行合起来，标识所有新链接都在本页面处理，不跳转别的浏览器
-                        }
-
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            super.onPageFinished(view, url);
-                        }
-                    });
-                    mAgentWeb.getWebCreator().getWebView().setWebChromeClient(new WebChromeClient() {
-
-                        /**
-                         * 8(Android 2.2) <= API <= 10(Android 2.3)回调此方法
-                         */
-                        public void openFileChooser(ValueCallback<Uri> uploadMsg) {
-                            Log.e("WangJ", "运行方法 openFileChooser-1");
-                            // (2)该方法回调时说明版本API < 21，此时将结果赋值给 mUploadCallbackBelow，使之 != null
-                            mUploadCallbackBelow = uploadMsg;
-                            Log.i(TAG, "openFileChooser:指定拍照存储位置的方式调起相机 ");
-                            takePhoto();
-                        }
-
-                        /**
-                         * 11(Android 3.0) <= API <= 15(Android 4.0.3)回调此方法
-                         */
-                        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
-                            Log.e("WangJ", "运行方法 openFileChooser-2 (acceptType: " + acceptType + ")");
-                            // 这里我们就不区分input的参数了，直接用拍照
-                            openFileChooser(uploadMsg);
-                        }
-
-                        /**
-                         * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
-                         */
-                        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
-                            Log.e("WangJ", "运行方法 openFileChooser-3 (acceptType: " + acceptType + "; capture: " + capture + ")");
-                            // 这里我们就不区分input的参数了，直接用拍照
-                            openFileChooser(uploadMsg);
-                        }
-
-                        /**
-                         * API >= 21(Android 5.0.1)回调此方法
-                         */
-                        @Override
-                        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                            Log.e("WangJ", "运行方法 onShowFileChooser");
-                            // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
-                            mUploadCallbackAboveL = filePathCallback;
-                            takePhoto();
-                            Log.i(TAG, "onShowFileChooser:指定拍照存储位置的方式调起相机 ");
-                            return true;
-                        }
-                    });
-
-//                    WebSettings webSettings = mAgentWeb.getAgentWebSettings().getWebSettings();
-//                    webSettings.setAllowContentAccess(true); // 是否可访问Content Provider的资源，默认值 true
-//                    webSettings.setAllowFileAccess(true);    // 是否可访问本地文件，默认值 true
-//                    webSettings.setAllowFileAccessFromFileURLs(false);
-//                    webSettings.setJavaScriptEnabled(true);
-//                    webSettings.setLoadWithOverviewMode(true);
-//                    webSettings.setJavaScriptEnabled(true); //允许加载javaScript
-//                    webSettings.setSupportZoom(true);       //是否允许缩放
-//                    webSettings.setUseWideViewPort(true);   //设置加载进来的页面自适应手机屏幕
-//                    webSettings.setLoadWithOverviewMode(true);
-//                    webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-//                    webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-
-                }
-
-                @Override
-                public void onRequestRefuse(String permissionName) {
-                    Log.i(TAG, "onRequestRefuse: " + permissionName);
-                }
-
-                @Override
-                public void onRequestNoAsk(String permissionName) {
-                    Log.i(TAG, "onRequestNoAsk: " + permissionName);
-                }
-            }, Manifest.permission.CAMERA);
         }
     }
+
+    final WebViewClient client = new WebViewClient() {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                            view.loadUrl(url); // 在本WebView打开新的url请求
+            return true;  // 标记新请求已经被处理笑话
+            // 上边2行合起来，标识所有新链接都在本页面处理，不跳转别的浏览器
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+        }
+    };
+
+    final WebChromeClient chromeClient = new WebChromeClient() {
+
+        /**
+         * 8(Android 2.2) <= API <= 10(Android 2.3)回调此方法
+         */
+        public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+            Log.e("WangJ", "运行方法 openFileChooser-1");
+            // (2)该方法回调时说明版本API < 21，此时将结果赋值给 mUploadCallbackBelow，使之 != null
+            mUploadCallbackBelow = uploadMsg;
+            Log.i(TAG, "openFileChooser:指定拍照存储位置的方式调起相机 ");
+//            takePhoto();
+            requestPermission();
+        }
+
+        /**
+         * 11(Android 3.0) <= API <= 15(Android 4.0.3)回调此方法
+         */
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
+            Log.e("WangJ", "运行方法 openFileChooser-2 (acceptType: " + acceptType + ")");
+            // 这里我们就不区分input的参数了，直接用拍照
+            openFileChooser(uploadMsg);
+        }
+
+        /**
+         * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
+         */
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+            Log.e("WangJ", "运行方法 openFileChooser-3 (acceptType: " + acceptType + "; capture: " + capture + ")");
+            // 这里我们就不区分input的参数了，直接用拍照
+            openFileChooser(uploadMsg);
+        }
+
+        /**
+         * API >= 21(Android 5.0.1)回调此方法
+         */
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            Log.e("WangJ", "运行方法 onShowFileChooser");
+            // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
+            mUploadCallbackAboveL = filePathCallback;
+            requestPermission();
+            Log.i(TAG, "onShowFileChooser:指定拍照存储位置的方式调起相机 ");
+            return true;
+        }
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,9 +194,21 @@ public class CustomerFragment extends BaseTitleFragment {
             } else if (mUploadCallbackAboveL != null) {
                 chooseAbove(resultCode, data);
             } else {
-//                Toast.makeText(this, "发生错误", Toast.LENGTH_SHORT).show();
-                ToastUtil.show("发生错误");
+//                ToastUtil.show("发生错误");
             }
+        }
+    }
+
+    /**
+     * 取消mFilePathCallback回调
+     */
+    private void cancelFilePathCallback() {
+        if (mUploadCallbackBelow != null) {
+            mUploadCallbackBelow.onReceiveValue(null);
+            mUploadCallbackBelow = null;
+        } else if (mUploadCallbackAboveL != null) {
+            mUploadCallbackAboveL.onReceiveValue(null);
+            mUploadCallbackAboveL = null;
         }
     }
 
@@ -313,10 +287,36 @@ public class CustomerFragment extends BaseTitleFragment {
     }
 
     /**
+     * 请求权限
+     */
+    private void requestPermission() {
+        PermissionManager.instance().request(getActivity(), new OnPermissionCallback() {
+            @Override
+            public void onRequestAllow(String permissionName) {
+//                takePhoto();
+            }
+
+            @Override
+            public void onRequestRefuse(String permissionName) {
+                Log.i(TAG, "onRequestRefuse: " + permissionName);
+                cancelFilePathCallback();
+            }
+
+            @Override
+            public void onRequestNoAsk(String permissionName) {
+                Log.i(TAG, "onRequestNoAsk: " + permissionName);
+                cancelFilePathCallback();
+            }
+        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        takePhoto();
+    }
+
+
+    /**
      * 调用相机
      */
     private void takePhoto() {
-        // 指定拍照存储位置的方式调起相机
         String filePath = Environment.getExternalStorageDirectory() + File.separator
                 + Environment.DIRECTORY_PICTURES + File.separator;
         String fileName = "IMG_" + DateFormat.format("yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
@@ -325,7 +325,6 @@ public class CustomerFragment extends BaseTitleFragment {
 //        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 //        startActivityForResult(intent, REQUEST_CODE);
-
 
         // 选择图片（不包括相机拍照）,则不用成功后发刷新图库的广播
 //        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
@@ -344,11 +343,6 @@ public class CustomerFragment extends BaseTitleFragment {
 
         startActivityForResult(chooserIntent, REQUEST_CODE);
     }
-
-    private int REQUEST_CODE = 1234;
-    private ValueCallback<Uri[]> mUploadCallbackAboveL;
-    private ValueCallback<Uri> mUploadCallbackBelow;
-    Uri imageUri;
 
 
     class AndroidInterface extends Object {
@@ -420,8 +414,6 @@ public class CustomerFragment extends BaseTitleFragment {
                         public void onSuccess(BaseTResp2 data) {
                             if (data.isSuccess()) {
                                 ToastUtil.show("上传成功！");
-                                /*loadData();*/
-                                /*mAgentWeb.back();*/
                                 mAgentWeb.getWebCreator().getWebView().reload();
                             } else {
                                 ToastUtil.show(data.getMsg());
@@ -438,10 +430,17 @@ public class CustomerFragment extends BaseTitleFragment {
         }
     }
 
-
     @Override
-    public void setTitleBar(TitleBarView titleBar) {
+    public void onDestroy() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
     }
+
+//    @Override
+//    public void setTitleBar(TitleBarView titleBar) {
+//    }
 
     @Override
     public int getContentLayout() {

@@ -30,16 +30,14 @@ public class SplashActivity extends BaseActivity {
             finish();
             return;
         }
-
     }
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//        FrameLayout fl = findViewById(R.id.fl);
-//        scaleImage(this, fl, R.mipmap.ic_bg_splash);
-
         new Handler().postDelayed(() -> {
-            if (SPHelper.getBooleanSF(mContext, Constant.ISLOGIN, false)) {
+            if (!SPHelper.getBooleanSF(mContext, Constant.ISGUIDE, false)) {
+                FastUtil.startActivity(mContext, WelcomeGuideActivity.class);
+            } else if (SPHelper.getBooleanSF(mContext, Constant.ISLOGIN, false)) {
                 if (!SPHelper.getBooleanSF(mContext, Constant.ISVERIFPHONE, false)) {/*填写手机号*/
                     FastUtil.startActivity(mContext, SendCodeActivity.class);
                 } else {

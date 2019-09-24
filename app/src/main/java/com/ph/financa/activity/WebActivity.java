@@ -12,6 +12,7 @@ import com.aries.ui.view.title.TitleBarView;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
+import com.ph.financa.constant.Constant;
 
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.utils.DisplayUtil;
@@ -28,16 +29,16 @@ public class WebActivity extends BaseTitleActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        if (intent.hasExtra("title")) {
-            mTitleBar.setTitleMainText(intent.getStringExtra("title"));
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+        if (intent.hasExtra(Constant.TITLE)) {
+            mTitleBar.setTitleMainText(intent.getStringExtra(Constant.TITLE));
         } else {
             mTitleBar.setVisibility(View.GONE);
-            StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
         }
 
-        if (intent.hasExtra("url")) {
-            mUrl = intent.getStringExtra("url");
+        if (intent.hasExtra(Constant.URL)) {
+            mUrl = intent.getStringExtra(Constant.URL);
         }
 
         Log.i(TAG, "initView: " + mUrl);
@@ -72,7 +73,7 @@ public class WebActivity extends BaseTitleActivity {
         }
 
         // TODO: 2019/9/21 上传照片
-        
+
         // TODO: 2019/9/21 上传二维码
     }
 

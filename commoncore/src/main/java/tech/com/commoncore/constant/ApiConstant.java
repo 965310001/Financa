@@ -34,13 +34,13 @@ public interface ApiConstant {
     /*转发*/
     String FORWARD = "h5/forward";
     /*转发详情*/
-//    String SHARE ="http://wealth.phscitech.com/h5/forward-detail";
+    String FORWARD_DETAIL ="h5/forward-detail";
     /*访客*/
     String VISIT = "h5/visit";
     /*访客画像*/
-//    String SHARE ="http://wealth.phscitech.com/h5/visit-picture";
+    String VISIT_PICTURE ="h5/visit-picture";
     /*浏览详情*/
-//    String SHARE ="http://wealth.phscitech.com/h5/browse-detail";
+    String SHARE_DETAIL = "h5/share-detail";
 
 
     /*客户*/

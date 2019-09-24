@@ -43,7 +43,7 @@ public interface Constant {
     int GET_INFO = 4;
     int GET_IMG = 5;
     /*支付宝APPID*/
-    CharSequence AI_APP_ID = "2019050964432158";
+    String AI_APP_ID = "2019050964432158";
 
 
     /*环信*/
@@ -83,6 +83,9 @@ public interface Constant {
     String KEY_MESSAGE = "message";
     String KEY_EXTRAS = "extras";
 
-
     boolean ISDEBUG = true;
+
+    /*webview*/
+    String TITLE = "title";
+    String URL = "url";
 }

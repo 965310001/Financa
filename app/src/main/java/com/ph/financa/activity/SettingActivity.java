@@ -54,7 +54,7 @@ public class SettingActivity extends BaseTitleActivity {
         /*手机号码*/
         TextView tvPhone = findViewById(R.id.tv_phone);
 
-        tvVersion.setText(FastUtil.getVersionName(mContext));
+        tvVersion.setText(String.format("v%s",FastUtil.getVersionName(mContext)));
 
         tvPhone.setText(RegUtils.isAsterisk(SPHelper.getStringSF(mContext, Constant.USERPHONE, "")));
     }

@@ -65,9 +65,11 @@ public class VisitorsFragment extends BaseFragment {
                 try {
                     JSONObject jsonObject = new JSONObject(content);
                     String readId = jsonObject.getString("readId");
+                    String readerOpenId = jsonObject.getString("readerOpenId");
                     Bundle bundle = new Bundle();
-                    String url = String.format("%s%s?readId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.VISIT_PICTURE, readId);
+                    String url = String.format("%s%s?readId=%s&readerOpenId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.VISIT_PICTURE, readId, readerOpenId);
                     bundle.putString(Constant.URL, url);
+                    bundle.putString(Constant.TITLE, "访客详情");
                     FastUtil.startActivity(mContext, WebActivity.class, bundle);
                 } catch (JSONException e) {
                     e.printStackTrace();

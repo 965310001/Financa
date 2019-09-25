@@ -65,7 +65,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp_43"
             android:gravity="right"
-            android:text="130****5427"
+            android:text="1.0.0.0"
             android:textColor="#ff999999"
             android:textSize="16sp" />
 

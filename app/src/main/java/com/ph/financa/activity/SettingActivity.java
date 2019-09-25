@@ -76,6 +76,14 @@ public class SettingActivity extends BaseTitleActivity {
                 // TODO: 2019/9/9 更改手机号
                 FastUtil.startActivity(mContext, ChangePhoneActivity.class);
                 break;
+            case R.id.rl_policy:
+                // TODO: 2019/9/9 用户协议
+                goActivity("用户协议", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.PROTOCOL));
+                break;
+            case R.id.rl_agreement:
+                // TODO: 2019/9/9 隐私协议
+                goActivity("隐私政策", String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.AGREEMENT));
+                break;
             case R.id.tv_quit:
                 // TODO: 2019/9/9 退出登录
                 messageAlertDialog = MessageAlertDialog.show(getSupportFragmentManager(), "", "是否退出本账号", "",
@@ -89,6 +97,13 @@ public class SettingActivity extends BaseTitleActivity {
                         });
                 break;
         }
+    }
+
+    private void goActivity(String title, String url) {
+        Bundle bundle = new Bundle();
+        bundle.putString("title", title);
+        bundle.putString("url", url);
+        FastUtil.startActivity(mContext, WebActivity.class, bundle);
     }
 
     private void quitUser() {

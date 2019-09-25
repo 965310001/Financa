@@ -25,6 +25,7 @@ import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.utils.AndroidBug5497Workaround;
 import com.ph.financa.wxapi.pay.JPayListener;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
 import com.sina.weibo.sdk.WbSdk;
@@ -71,6 +72,7 @@ public class WebActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        AndroidBug5497Workaround.assistActivity(this);
         Intent intent = getIntent();
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         if (intent.hasExtra(Constant.TITLE)) {

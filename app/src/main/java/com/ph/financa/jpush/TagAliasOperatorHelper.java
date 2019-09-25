@@ -3,6 +3,7 @@ package com.ph.financa.jpush;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.Locale;
@@ -233,6 +234,7 @@ public class TagAliasOperatorHelper {
         TagAliasBean tagAliasBean = (TagAliasBean)setActionCache.get(sequence);
         if(tagAliasBean == null){
             ExampleUtil.showToast("获取缓存记录失败", context);
+            Log.i(TAG, "onTagOperatorResult: 获取缓存记录失败");
             return;
         }
         if(jPushMessage.getErrorCode() == 0){
@@ -262,6 +264,8 @@ public class TagAliasOperatorHelper {
         TagAliasBean tagAliasBean = (TagAliasBean)setActionCache.get(sequence);
         if(tagAliasBean == null){
             ExampleUtil.showToast("获取缓存记录失败", context);
+            Log.i(TAG, "onTagOperatorResult: 获取缓存记录失败");
+
             return;
         }
         if(jPushMessage.getErrorCode() == 0){
@@ -286,6 +290,7 @@ public class TagAliasOperatorHelper {
         TagAliasBean tagAliasBean = (TagAliasBean)setActionCache.get(sequence);
         if(tagAliasBean == null){
             ExampleUtil.showToast("获取缓存记录失败", context);
+            Log.i(TAG, "onTagOperatorResult: 获取缓存记录失败");
             return;
         }
         if(jPushMessage.getErrorCode() == 0){

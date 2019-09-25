@@ -57,6 +57,58 @@ public class FileUtils {
     public static final int KB = 1024;
 
     /**
+     * 创建文件
+     *
+     * @param filePath
+     * @param fileName
+     * @return
+     */
+    public static File makeFilePath(String filePath, String fileName) {
+        File file = null;
+        makeRootDirectory(filePath);
+        try {
+            file = new File(filePath + fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    /**
+     * 创建文件夹
+     *
+     * @param filePath
+     */
+    public static void makeRootDirectory(String filePath) {
+        File file = null;
+        try {
+
+            file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+        } catch (Exception e) {
+            Log.i("error:", e + "");
+        }
+    }
+
+    /**
+     * 判断文件夹是否存在,如果不存在则创建文件夹
+     *
+     * @param path
+     */
+    public static boolean isExist(String path) {
+        File file = new File(path);
+        if (file.exists()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 得到SD卡根目录.
      */
     public static File getRootPath() {
@@ -1996,22 +2048,22 @@ public class FileUtils {
         }
     }
 
-    public static String file2Base64(String filePath){
+    public static String file2Base64(String filePath) {
         FileInputStream fis = null;
         String base64String = "";
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
             fis = new FileInputStream(filePath);
-            byte[] buffer = new byte[1024*100];
+            byte[] buffer = new byte[1024 * 100];
             int count = 0;
-            while ((count = fis.read(buffer)) != -1){
-                bos.write(buffer,0,count);
+            while ((count = fis.read(buffer)) != -1) {
+                bos.write(buffer, 0, count);
             }
             fis.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        base64String =  Base64.encodeToString(bos.toByteArray(), Base64.DEFAULT);
+        base64String = Base64.encodeToString(bos.toByteArray(), Base64.DEFAULT);
         return base64String;
 
     }
@@ -2131,20 +2183,21 @@ public class FileUtils {
 
     /**
      * 根据路径获取文件名
+     *
      * @param path 路径参数
      * @return 文件名字符串
      */
     public static String splitFileName(String path) {
-        if(path == null) {
+        if (path == null) {
             return "";
         }
 
-        int start=path.lastIndexOf("/");
-        int end=path.length();
+        int start = path.lastIndexOf("/");
+        int end = path.length();
 
-        if(start!=-1 && end!=-1){
-            return path.substring(start+1,end);//包含头不包含尾 , 故:头 + 1
-        }else{
+        if (start != -1 && end != -1) {
+            return path.substring(start + 1, end);//包含头不包含尾 , 故:头 + 1
+        } else {
             return "";
         }
     }

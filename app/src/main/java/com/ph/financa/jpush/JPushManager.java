@@ -304,6 +304,7 @@ public class JPushManager {
         TagAliasBean tagAliasBean = tagAliasActionCache.get(sequence);
         if (tagAliasBean == null) {
             Toast.makeText(context, "获取缓存记录失败", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "onTagOperatorResult: 获取缓存记录失败");
 
             return;
         }
@@ -333,6 +334,7 @@ public class JPushManager {
         TagAliasBean tagAliasBean = tagAliasActionCache.get(sequence);
         if (tagAliasBean == null) {
             Toast.makeText(context, "获取缓存记录失败", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "onTagOperatorResult: 获取缓存记录失败");
             return;
         }
         if (jPushMessage.getErrorCode() == 0) {

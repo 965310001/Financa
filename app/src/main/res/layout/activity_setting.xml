@@ -43,7 +43,6 @@
 
     <RelativeLayout
         android:id="@+id/rl_version"
-
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_52"
         android:background="@color/white"
@@ -120,6 +119,71 @@
             android:layout_marginRight="@dimen/dp_16"
             android:background="@mipmap/ic_chevron" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@drawable/shape_bg_line" />
+
+    <RelativeLayout
+        android:id="@+id/rl_policy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:background="@color/white"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:text="用户协议"
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_16"
+            app:srcCompat="@mipmap/ic_chevron" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@drawable/shape_bg_line" />
+
+    <RelativeLayout
+        android:id="@+id/rl_agreement"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_52"
+        android:background="@color/white"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:text="隐私协议"
+            android:textColor="#ff333333"
+            android:textSize="17sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_16"
+            app:srcCompat="@mipmap/ic_chevron" />
+    </RelativeLayout>
+
 
     <View
         android:layout_width="match_parent"

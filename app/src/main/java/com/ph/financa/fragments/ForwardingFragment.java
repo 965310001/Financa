@@ -83,7 +83,7 @@ public class ForwardingFragment extends BaseFragment {
                     String userId = jsonObject.getString("userId");
                     String resourceId = jsonObject.getString("resourceId");
                     Bundle bundle = new Bundle();
-                    bundle.putString(Constant.TITLE, "分享详情");
+                    bundle.putString(Constant.TITLE, "分享");
                     String url = String.format("%s%s?userId=%s&resourceId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.FORWARD_DETAIL, userId, resourceId);
                     bundle.putString(Constant.URL, url);
                     FastUtil.startActivity(mContext, WebActivity.class, bundle);

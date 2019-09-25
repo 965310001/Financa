@@ -378,7 +378,7 @@ public class WebActivity extends BaseTitleActivity {
                 mShareContent = mTitle;
                 mUrl = shareLink;
 
-                String description = mTitle;
+                String description = String.format("从事多年保险顾问，具有丰富的保险理财经验，能为您提供专业的保险服务！电话：%s", jsonObject.getString("telephone"));
                 share(target, shareLink, imgUrl, mTitle, description);
             } catch (JSONException e) {
                 e.printStackTrace();

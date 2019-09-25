@@ -71,7 +71,7 @@ public class VisitorsFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     String url = String.format("%s%s?readId=%s&readerOpenId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.VISIT_PICTURE, readId, readerOpenId);
                     bundle.putString(Constant.URL, url);
-                    bundle.putString(Constant.TITLE, "访客详情");
+                    bundle.putString(Constant.TITLE, "浏览详情/轨迹");
                     FastUtil.startActivity(mContext, WebActivity.class, bundle);
                 } catch (JSONException e) {
                     e.printStackTrace();

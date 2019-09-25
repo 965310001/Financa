@@ -499,6 +499,10 @@ public class VipActivity extends BaseTitleActivity {
     private JPayListener jPayListener = new JPayListener() {
         @Override
         public void onPaySuccess() {
+            if (null != mPayDialog && mPayDialog.getDialog().isShowing()) {
+                mPayDialog.dismiss();
+                loadData();
+            }
             ToastUtil.show("支付成功");
         }
 

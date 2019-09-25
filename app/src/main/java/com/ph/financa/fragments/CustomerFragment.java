@@ -28,6 +28,7 @@ import android.widget.FrameLayout;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.ContactColumnBean;
 import com.ph.financa.constant.Constant;
@@ -345,12 +346,13 @@ public class CustomerFragment extends BaseFragment {
     }
 
 
-    class AndroidInterface extends Object {
+    class AndroidInterface extends AndroidObject {
 
         private AgentWeb agent;
         private Context context;
 
         public AndroidInterface(AgentWeb agent, Context context) {
+            super(context);
             this.agent = agent;
             this.context = context;
         }

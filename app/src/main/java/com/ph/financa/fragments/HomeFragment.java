@@ -11,6 +11,7 @@ import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.VipActivity;
+import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.wxapi.pay.JPayListener;
@@ -109,12 +110,13 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
         ToastUtil.show("分享失败");
     }
 
-    class AndroidInterface extends Object {
+    class AndroidInterface extends AndroidObject {
 
         private AgentWeb agent;
         private Context context;
 
         public AndroidInterface(AgentWeb agent, Context context) {
+            super(context);
             this.agent = agent;
             this.context = context;
         }
@@ -157,13 +159,15 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 }
 
                 if (TextUtils.isEmpty(description)) {
-                    description=title;
+                    description = title;
                 }
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+
+
     }
 
     private void share(String target, String shareLink, String imgUrl, String title, String description) {

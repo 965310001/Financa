@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.WebActivity;
+import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.constant.Constant;
 
 import org.json.JSONException;
@@ -65,12 +66,13 @@ public class ShareFragment extends BaseFragment {
         mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
     }
 
-    class AndroidInterface extends Object {
+    class AndroidInterface extends AndroidObject {
 
         private AgentWeb agent;
         private Context context;
 
         public AndroidInterface(AgentWeb agent, Context context) {
+            super(context);
             this.agent = agent;
             this.context = context;
         }

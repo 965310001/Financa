@@ -23,6 +23,7 @@ import com.aries.ui.view.title.TitleBarView;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.utils.AndroidBug5497Workaround;
@@ -322,12 +323,13 @@ public class WebActivity extends BaseTitleActivity {
     }
 
 
-    class AndroidInterface extends Object {
+    class AndroidInterface extends AndroidObject {
 
         private AgentWeb agent;
         private Context context;
 
         public AndroidInterface(AgentWeb agent, Context context) {
+            super(context);
             this.agent = agent;
             this.context = context;
         }

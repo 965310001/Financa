@@ -41,7 +41,8 @@ public class BaseTitleDelegate {
         //默认的MD风格返回箭头icon如使用该风格可以不用设置
         Drawable mDrawable = FastUtil.getTintDrawable(context.getResources().getDrawable(R.drawable.common_icon_back),
                 context.getResources().getColor(R.color.text_tip));
-        final Activity activity = StackUtil.getInstance().getActivity(cls);
+//        final Activity activity = StackUtil.getInstance().getActivity(cls);
+        final Activity activity = StackUtil.getInstance().getCurrent();
         //设置TitleBarView 所有TextView颜色
         mTitleBar.setLeftTextDrawable(activity != null ? mDrawable : null)
                 .setOnLeftTextClickListener(activity == null ? null : new View.OnClickListener() {

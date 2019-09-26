@@ -7,13 +7,13 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.FrameLayout;
 
-import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.utils.StatusBarUtils;
 import com.ph.financa.wxapi.pay.JPayListener;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
 import com.sina.weibo.sdk.WbSdk;
@@ -45,9 +45,9 @@ import tech.com.commoncore.utils.Utils;
  */
 public class HomeFragment extends BaseFragment implements WbShareCallback {
 
-    private String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
+    private String URL = String.format("%s%s?userId=%s&openId=%s&stateheight=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
             SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
-            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
+            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""), String.valueOf((DisplayUtil.getStatusBarHeight())));
 
     private AgentWeb mAgentWeb;
 
@@ -64,8 +64,8 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
         if (null != mContentView) {
-            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-            StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+            mContentView.setPadding(0, 0, 0, 0);
+            StatusBarUtils.immersive(getActivity(), false);
         }
         super.onVisibleChanged(isVisibleToUser);
         Log.i(TAG, "onVisibleChanged: ");
@@ -82,7 +82,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        Log.i(TAG, "initView: " + URL);
+        Log.i(TAG, "initView: " + URL +" "+ DisplayUtil.getStatusBarHeight());
 
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
@@ -168,6 +168,11 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
         }
 
 
+        /*前往文章详情页面*/
+        @JavascriptInterface
+        public void articleDetail(String content) {
+            Log.i(TAG, "前往文章详情页面: " + content);
+        }
     }
 
     private void share(String target, String shareLink, String imgUrl, String title, String description) {

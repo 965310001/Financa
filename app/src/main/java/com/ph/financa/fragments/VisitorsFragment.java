@@ -43,6 +43,7 @@ public class VisitorsFragment extends BaseFragment {
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
+
                 .createAgentWeb()
                 .ready()
                 .go(URL);
@@ -67,9 +68,9 @@ public class VisitorsFragment extends BaseFragment {
                 try {
                     JSONObject jsonObject = new JSONObject(content);
                     String readId = jsonObject.getString("readId");
-                    String readerOpenId="";//= jsonObject.getString("readerOpenId");
+//                    String readerOpenId="";//= jsonObject.getString("readerOpenId");
                     Bundle bundle = new Bundle();
-                    String url = String.format("%s%s?readId=%s&readerOpenId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.VISIT_PICTURE, readId, readerOpenId);
+                    String url = String.format("%s%s?readId=%s&userId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.VISIT_PICTURE, readId,readId);
                     bundle.putString(Constant.URL, url);
                     bundle.putString(Constant.TITLE, "浏览详情/轨迹");
                     FastUtil.startActivity(mContext, WebActivity.class, bundle);

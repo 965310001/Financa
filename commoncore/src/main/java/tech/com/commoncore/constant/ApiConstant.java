@@ -34,11 +34,11 @@ public interface ApiConstant {
     /*转发*/
     String FORWARD = "h5/forward";
     /*转发详情*/
-    String FORWARD_DETAIL ="h5/forward-detail";
+    String FORWARD_DETAIL = "h5/forward-detail";
     /*访客*/
     String VISIT = "h5/visit";
     /*访客画像*/
-    String VISIT_PICTURE ="h5/visit-picture";
+    String VISIT_PICTURE = "h5/visit-picture";
     /*浏览详情*/
     String SHARE_DETAIL = "h5/share-detail";
 
@@ -51,6 +51,11 @@ public interface ApiConstant {
     String CUSTOMER_GROUP = "h5/customer-group";
     /*客户分组*/
     String visit_leading_in = "h5/visit-leading-in";
+
+
+    /*前往访客画像*/
+    String BROWSE_DETAIL = "h5/browse-detail";
+
 
     /*批量或单个删除客户*/
     String DELETE_BATCH = "api/customer/delete/batch";
@@ -127,4 +132,6 @@ public interface ApiConstant {
 
     /*粘贴文章链接*/
     String PASTEARTICLE = "h5/copy-article";
+
+
 }

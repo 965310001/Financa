@@ -61,7 +61,6 @@ public class WebActivity extends BaseTitleActivity {
     private String mUrl;
     private AgentWeb mAgentWeb;
 
-
     private int REQUEST_CODE = 1234;
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private ValueCallback<Uri> mUploadCallbackBelow;
@@ -336,6 +335,7 @@ public class WebActivity extends BaseTitleActivity {
 
         @JavascriptInterface
         public void fallBack(String content) {
+            Log.i(TAG, "fallBack: ");
             runOnUiThread(() -> {
                 if (!agent.back()) {
                     finish();
@@ -400,10 +400,10 @@ public class WebActivity extends BaseTitleActivity {
 
                 jsonObject = jsonObject.getJSONObject("sourceData");
                 jsonObject = jsonObject.getJSONObject("userInfo");
-                mResourceId = jsonObject.getLong("id");
-                mShareCode = jsonObject.getString("shareCode");
+                // TODO: 2019/9/26 如果错误修改这里
+                mResourceId = jsonObject.getJSONObject("productDetail").getLong("id");
+                mShareCode = jsonObject.getJSONObject("productDetail").getString("shareCode");
                 mAuthor = jsonObject.getString("name");
-
 
                 String title = jsonObject.getString("title");
                 String description = jsonObject.getString("summary");
@@ -429,6 +429,42 @@ public class WebActivity extends BaseTitleActivity {
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+        }
+
+        /*前往访客画像*/
+        @JavascriptInterface
+        public void toBrowsePicture(String content) throws JSONException {
+            Log.i(TAG, "toBrowsePicture: " + content);
+//            Log.i(TAG, "前往访客画像: " + content);
+            if (!TextUtils.isEmpty(content)) {
+                JSONObject jsonObject = new JSONObject(content);
+                String userId = jsonObject.getString("userId");
+                String readerOpenId = jsonObject.getString("readerOpenId");
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.URL, String.format("%s%s?userId=%s&readerOpenId=%s", ApiConstant.BASE_URL_ZP,
+                        ApiConstant.BROWSE_DETAIL, userId, readerOpenId));
+                bundle.putString(Constant.TITLE, "访客画像");
+                FastUtil.startActivity(mContext, WebActivity.class, bundle, true);
+            } else {
+                ToastUtil.show("内容为空");
+            }
+        }
+
+        /*前往新增客户*/
+        @JavascriptInterface
+        public void toAddCustomer(String content) throws JSONException {
+            Log.i(TAG, "前往新增客户: " + content);
+            if (!TextUtils.isEmpty(content)) {
+                JSONObject jsonObject = new JSONObject(content);
+                String userId = jsonObject.getString("userId");
+                String visitOpenId = jsonObject.getString("visitOpenId");
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.URL, String.format("%s%s?userId=%s&visitOpenId=%S", ApiConstant.BASE_URL_ZP,
+                        ApiConstant.ADD_CUSTOMER, userId, visitOpenId));
+                FastUtil.startActivity(mContext, WebActivity.class, bundle);
+            } else {
+                ToastUtil.show("内容为空");
             }
         }
 

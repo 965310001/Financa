@@ -53,9 +53,9 @@ public class VipActivity extends BaseTitleActivity {
     private TextView mTvName, mTvVip, mTvThreeDays, mTvPrice, mTvPayType, mTvOpen, mTvDate;
     private LinearLayout mLLPrivilege, mLLPrivilegeOne, mLLPrivilegeTwo;
 
-    private String[] titles1 = {"智能名片", "小程序", "人脉追踪", "获客分析"};
+    private String[] titles1 = {"智能名片", "文章编辑", "人脉追踪", "获客分析"};
     private String[] titles2 = {"客户喜好", "营销升级", "一键获客", "快速响应"};
-    private String[] titles = {"智能名片", "小程序", "人脉追踪", "获客分析", "客户喜好", "营销升级", "一键获客", "快速响应"};
+    private String[] titles = {"智能名片", "文章编辑", "人脉追踪", "获客分析", "客户喜好", "营销升级", "一键获客", "快速响应"};
     private PayDialog mPayDialog;
     private LinearLayout mLLRecommend;
 
@@ -83,7 +83,7 @@ public class VipActivity extends BaseTitleActivity {
 
         mLLRecommend = findViewById(R.id.ll_recommend);
 
-        String[] identifications1 = {"个人IP", "商城定制", "成单神器", "获客宝典"};
+        String[] identifications1 = {"个人IP", "软文宝", "成单神器", "获客宝典"};
         int[] icon1 = {R.mipmap.ic_privilege1, R.mipmap.ic_privilege2, R.mipmap.ic_privilege3, R.mipmap.ic_privilege4};
         createPrivilegeView(mLLPrivilegeOne, titles1, identifications1, icon1);
 

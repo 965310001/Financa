@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.githang.statusbar.StatusBarCompat;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
@@ -117,17 +116,15 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
-
+//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
         /*设置全屏并有状态栏 start */
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
         getWindow().setAttributes(attrs);
         /* 设置全屏并有状态栏 end   */
-
 
         registerMessageReceiver();  // used for receive msg
         init();

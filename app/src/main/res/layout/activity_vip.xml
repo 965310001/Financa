@@ -258,7 +258,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="181dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_8"

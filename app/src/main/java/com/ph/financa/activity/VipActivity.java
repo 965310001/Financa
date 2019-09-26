@@ -189,14 +189,11 @@ public class VipActivity extends BaseTitleActivity {
                 }
             }
             for (SelectBean bean : data) {
-
                 LinearLayout itemView = (LinearLayout) View.inflate(mContext, R.layout.item_recommend, null);
-
                 TextView tvYear = itemView.findViewById(R.id.tv_year);
                 TextView tvPrice = itemView.findViewById(R.id.tv_price);
                 TextView tvOldPrice = itemView.findViewById(R.id.tv_old_price);
                 tvOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-
 
                 setRecommendData(bean.getName(), transformationPrice(bean.getPrice()), transformationPrice(bean.getOriginalPrice()), tvYear, tvPrice, tvOldPrice);
 

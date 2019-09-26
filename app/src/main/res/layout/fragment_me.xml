@@ -82,6 +82,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ic_head" />
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/ic_crown_open"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_78"

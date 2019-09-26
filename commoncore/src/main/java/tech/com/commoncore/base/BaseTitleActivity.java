@@ -21,6 +21,7 @@ public abstract class BaseTitleActivity extends BaseActivity implements IBaseTit
     public void beforeSetTitleBar(TitleBarView titleBar) {
         titleBar.setRightText("")
                 .setLeftTextDrawable(R.mipmap.back_black)
+                .setLeftText("返回")
                 .setTitleMainTextMarquee(true)
                 .setTitleMainText("")
                 .setDividerHeight(0);

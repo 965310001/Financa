@@ -32,7 +32,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
     private ArrayList<Fragment> mFragments;
     private int[] mIconSelectIds = {
             R.mipmap.ic_home_selected};
-    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
+    private ArrayList<CustomTabEntity> mTabEntities;
 
     @Override
     public int getContentLayout() {
@@ -63,7 +63,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
                 tvVip.setVisibility(View.VISIBLE);
                 break;
         }
-
+        mTabEntities = new ArrayList<>();
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], mIconSelectIds[0], mIconSelectIds[0]));
         }

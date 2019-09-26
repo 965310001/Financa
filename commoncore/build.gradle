@@ -16,7 +16,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
+                arguments = [moduleName: project.getName()]
             }
         }
     }
@@ -50,7 +50,12 @@ dependencies {
     api 'androidx.recyclerview:recyclerview:1.0.0'
     api 'androidx.appcompat:appcompat:1.0.0'
     api 'com.vise.xiaoyaoyou:xsnow:2.1.9'
-    api 'com.jakewharton:butterknife:8.5.1'
+//    api 'com.jakewharton:butterknife:8.5.1'
+//    annotationProcessor  'com.jakewharton:butterknife-compiler:8.5.1'
+
+    api 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+
     api 'com.github.AriesHoo.UIWidget:widget-core:3.2.6'
     //万能适配器
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'

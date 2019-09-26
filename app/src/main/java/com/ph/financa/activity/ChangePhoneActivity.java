@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.aries.ui.view.title.TitleBarView;
+import com.githang.statusbar.StatusBarCompat;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
@@ -38,6 +39,7 @@ public class ChangePhoneActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         mTvSendCode = findViewById(R.id.tv_send_code);
         mEtPhone = findViewById(R.id.et_phone);
         mEtCode = findViewById(R.id.et_code);

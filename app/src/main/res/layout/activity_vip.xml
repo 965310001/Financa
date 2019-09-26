@@ -192,7 +192,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:layout_width="132dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_12"
@@ -206,7 +206,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_8"
                     android:gravity="center"
-                    android:text="查看谁看了我的文章、名片、产品\n客户兴趣和产品偏好一目了然\n掌握客户信息，主动出击，完成签单"
+                    android:text="第一时间了解查看我的文章、名片和产品的客户，帮助保险顾问快速获客"
                     android:textColor="#ff555555"
                     android:textSize="16sp" />
 
@@ -221,11 +221,11 @@
 
 
                 <TextView
-                    android:layout_width="115dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_25"
-                    android:text="特权二：小程序"
+                    android:text="特权二：智能名片"
                     android:textColor="#fff1a843"
                     android:textSize="16sp" />
 
@@ -235,7 +235,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_8"
                     android:gravity="center"
-                    android:text="专属小程序展现个人名片\n实现与客户即时通讯\n不错过每一次签单的机会"
+                    android:text="自带营销性第一张保险行业的互联网智能名片"
                     android:textColor="#ff555555"
                     android:textSize="16sp" />
 
@@ -249,7 +249,7 @@
                     android:src="@mipmap/ic_bg_vip2" />
 
                 <TextView
-                    android:layout_width="132dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_25"
@@ -258,12 +258,13 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:layout_width="164dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="72dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_8"
                     android:gravity="center"
-                    android:text="具体客户间人脉追踪\n利用好微信人脉生态圈\n掌握更多的潜客"
+                    android:minWidth="181dp"
+                    android:text="利用三度人脉，挖掘微信人脉关系，获得更多客户"
                     android:textColor="#ff555555"
                     android:textSize="16sp" />
 
@@ -278,7 +279,7 @@
                     android:src="@mipmap/ic_bg_vip3" />
 
                 <TextView
-                    android:layout_width="132dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_25"
@@ -292,7 +293,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_8"
                     android:gravity="center"
-                    android:text="文章的查看数、转发数、停留时长统计\n专注每一项客户留下的潜在意向\n提高获客效率"
+                    android:text="提供多维度分析数据，协助保险顾问快速成交"
                     android:textColor="#ff555555"
                     android:textSize="16sp" />
 
@@ -337,7 +338,7 @@
                     android:src="@mipmap/ic_bg_vip5" />
 
                 <TextView
-                    android:layout_width="132dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_25"
@@ -351,7 +352,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_8"
                     android:gravity="center"
-                    android:text="文章插入专属产品\n提高产品曝光率\n抓住每一次销售机会"
+                    android:text="提供灵活自由的产品管理方式，保险顾问根据需要添加保险产品"
                     android:textColor="#ff555555"
                     android:textSize="16sp" />
 
@@ -388,8 +389,7 @@
             android:background="@color/white"
             android:orientation="horizontal"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toBottomOf="parent"
-          >
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/tv_type_name"

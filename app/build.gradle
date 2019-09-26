@@ -11,7 +11,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.0.3"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true     //第一步
@@ -89,5 +89,7 @@ dependencies {
 
     /*新浪微博*/
     implementation 'com.sina.weibo.sdk:core:4.4.1:openDefaultRelease@aar'
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 
 }

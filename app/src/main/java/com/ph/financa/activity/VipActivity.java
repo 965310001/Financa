@@ -43,16 +43,13 @@ import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.widget.CircleImageView;
 
+/**
+ * VIP 界面
+ */
 public class VipActivity extends BaseTitleActivity {
 
     private CircleImageView mIvHead;
-    private TextView mTvName;
-    private TextView mTvVip;
-    private TextView mTvThreeDays;
-    private TextView mTvPrice;
-    private TextView mTvPayType;
-    private TextView mTvOpen;
-    private TextView mTvDate;
+    private TextView mTvName, mTvVip, mTvThreeDays, mTvPrice, mTvPayType, mTvOpen, mTvDate;
     private LinearLayout mLLPrivilege, mLLPrivilegeOne, mLLPrivilegeTwo;
 
     private String[] titles1 = {"智能名片", "小程序", "人脉追踪", "获客分析"};
@@ -190,8 +187,6 @@ public class VipActivity extends BaseTitleActivity {
                     data.remove(datum);
                 }
             }
-
-
             for (SelectBean bean : data) {
 
                 LinearLayout itemView = (LinearLayout) View.inflate(mContext, R.layout.item_recommend, null);
@@ -255,10 +250,10 @@ public class VipActivity extends BaseTitleActivity {
                             if (bean.isIsEnable()) {
                                 mTvVip.setText("您是VIP会员");
                                 mTvDate.setVisibility(View.VISIBLE);
-
                                 if (!TextUtils.isEmpty(bean.getEndTime())) {
                                     mTvDate.setText(String.format("截止日期：%s", bean.getEndTime()));
                                 }
+                                mTvThreeDays.setVisibility(View.GONE);
                             } else {
                                 mTvDate.setVisibility(View.GONE);
                                 mTvVip.setText("您还不是VIP会员");

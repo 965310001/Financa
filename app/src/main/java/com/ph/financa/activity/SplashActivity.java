@@ -35,10 +35,10 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         new Handler().postDelayed(() -> {
-            if (!SPHelper.getBooleanSF(mContext, Constant.ISGUIDE, false)) {
+            if (!getBooleanSF(Constant.ISGUIDE)) {/*过渡页*/
                 FastUtil.startActivity(mContext, WelcomeGuideActivity.class);
-            } else if (SPHelper.getBooleanSF(mContext, Constant.ISLOGIN, false)) {
-                if (!SPHelper.getBooleanSF(mContext, Constant.ISVERIFPHONE, false)) {/*填写手机号*/
+            } else if (getBooleanSF(Constant.ISLOGIN)) {/*登录*/
+                if (!getBooleanSF(Constant.ISVERIFPHONE)) {/*填写手机号*/
                     FastUtil.startActivity(mContext, SendCodeActivity.class);
                 } else {
                     FastUtil.startActivity(mContext, MainActivity.class);
@@ -46,11 +46,90 @@ public class SplashActivity extends BaseActivity {
             } else {
                 FastUtil.startActivity(mContext, LoginActivity.class);
             }
+
+//            List<State> states = Arrays.asList(new WelcomeGuideState(), new SendCodeState(), new MainState(), new LoginState());
+//            for (State state : states) {
+//                if (state.getStatus()) {
+//                    FastUtil.startActivity(mContext, state.getClazz());
+//                    break;
+//                }
+//            }
             finish();
-        }, 100);
+        }, 1000);
     }
 
-//    public void scaleImage(final Activity activity, final View view, int drawableResId) {
+    interface State {
+        boolean getStatus();
+
+        Class getClazz();
+    }
+
+    /*过渡页*/
+    class WelcomeGuideState implements State {
+
+        @Override
+        public boolean getStatus() {
+            return !getBooleanSF(Constant.ISGUIDE);
+        }
+
+        @Override
+        public Class getClazz() {
+            return WelcomeGuideActivity.class;
+        }
+    }
+
+    /*发送验证码*/
+    class SendCodeState implements State {
+
+        @Override
+        public boolean getStatus() {
+            return getBooleanSF(Constant.ISLOGIN) && !getBooleanSF(Constant.ISVERIFPHONE);
+        }
+
+        @Override
+        public Class getClazz() {
+            return SendCodeActivity.class;
+        }
+    }
+
+    /*主界面*/
+    class MainState implements State {
+
+        @Override
+        public boolean getStatus() {
+            return getBooleanSF(Constant.ISLOGIN) && getBooleanSF(Constant.ISVERIFPHONE);
+        }
+
+        @Override
+        public Class getClazz() {
+            return MainActivity.class;
+        }
+    }
+
+    /*登录*/
+    class LoginState implements State {
+
+        @Override
+        public boolean getStatus() {
+            return true;
+        }
+
+        @Override
+        public Class getClazz() {
+            return LoginActivity.class;
+        }
+    }
+
+    private boolean getBooleanSF(String key) {
+        return SPHelper.getBooleanSF(mContext, key, false);
+    }
+
+    @Override
+    public int getContentLayout() {
+        return R.layout.activity_splash;
+    }
+
+    //    public void scaleImage(final Activity activity, final View view, int drawableResId) {
 //
 //        // 获取屏幕的高宽
 //        Point outSize = new Point();
@@ -105,12 +184,4 @@ public class SplashActivity extends BaseActivity {
 //            }
 //        });
 //    }
-
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.activity_splash;
-    }
-
-
 }

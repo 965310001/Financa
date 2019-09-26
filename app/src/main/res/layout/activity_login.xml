@@ -8,22 +8,22 @@
     tools:context=".activity.LoginActivity">
 
     <TextView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_100"
         android:layout_marginTop="@dimen/dp_92"
         android:background="@drawable/shape_bg_logo"
         android:gravity="center"
         android:text="logo"
-        android:textColor="#ffffffff"
-        android:textSize="28sp" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_28" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_10"
         android:text="AI财富大师"
         android:textColor="#ff333333"
-        android:textSize="14sp" />
+        android:textSize="@dimen/textSize_14" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         android:layout_marginTop="@dimen/dp_40"
         android:text="一键登录 加速获客"
         android:textColor="#ff777777"
-        android:textSize="14sp" />
+        android:textSize="@dimen/textSize_14" />
 
     <LinearLayout
         android:id="@+id/ll_login"
@@ -53,8 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
             android:text="微信登录"
-            android:textColor="#ffffffff"
-            android:textSize="18sp" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize_18" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -64,5 +64,5 @@
         android:layout_marginTop="@dimen/dp_5"
         android:text="登录表示同意《用户协议》《隐私政策》"
         android:textColor="#ff777777"
-        android:textSize="14sp" />
+        android:textSize="@dimen/textSize_14" />
 </LinearLayout>

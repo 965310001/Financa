@@ -1,5 +1,6 @@
 package com.ph.financa.activity;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -194,6 +195,8 @@ public class VipActivity extends BaseTitleActivity {
                 TextView tvYear = itemView.findViewById(R.id.tv_year);
                 TextView tvPrice = itemView.findViewById(R.id.tv_price);
                 TextView tvOldPrice = itemView.findViewById(R.id.tv_old_price);
+                tvOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
 
                 setRecommendData(bean.getName(), transformationPrice(bean.getPrice()), transformationPrice(bean.getOriginalPrice()), tvYear, tvPrice, tvOldPrice);
 

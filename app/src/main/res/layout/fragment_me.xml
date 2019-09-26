@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -21,7 +22,7 @@
                 android:layout_height="@dimen/dp_60"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_56"
-                android:src="@color/colorPrimary"
+                tools:src="@color/colorPrimary"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +32,7 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_61"
-                android:text="周莘羽"
+                tools:text="周莘羽"
                 android:textColor="#ffffffff"
                 android:textSize="17sp"
                 app:layout_constraintLeft_toRightOf="@id/ic_head"
@@ -51,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="@dimen/dp_16"
-                android:text="公司名称"
+                tools:text="公司名称"
                 android:textColor="#ffffffff"
                 android:textSize="14sp"
                 app:layout_constraintLeft_toRightOf="@id/ic_head"
@@ -218,7 +219,6 @@
             <TextView
                 android:id="@+id/tv_products"
                 android:layout_width="wrap_content"
-
                 android:layout_height="22dp"
                 android:layout_marginRight="@dimen/dp_11"
                 android:text="8"
@@ -262,7 +262,6 @@
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_weight="1"
                 android:text="历史分享"
-
                 android:textColor="#ff333333"
                 android:textSize="17sp" />
 
@@ -284,16 +283,10 @@
                 app:srcCompat="@mipmap/ic_chevron" />
         </LinearLayout>
 
-
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/dp_16"-->
-        <!--android:background="#FDFDFE" />-->
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_16"
             android:background="@drawable/shape_bg_line" />
-
 
         <LinearLayout
             android:id="@+id/ll_message"
@@ -338,7 +331,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-
             android:layout_marginLeft="@dimen/dp_62"
             android:layout_marginRight="@dimen/dp_17"
             android:background="@drawable/shape_bg_line" />
@@ -422,7 +414,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_20"
-            android:text="Copyringht@2019-2020 浦衡科技版权所有"
+            android:text="Copyright@2019-2020 浦衡科技版权所有"
             android:textColor="#ff999999"
             android:textSize="12sp" />
     </LinearLayout>

@@ -87,8 +87,8 @@ public class LoginActivity extends BaseActivity {
 
     private void goActivity(String title, String url) {
         Bundle bundle = new Bundle();
-        bundle.putString("title", title);
-        bundle.putString("url", url);
+        bundle.putString(Constant.TITLE, title);
+        bundle.putString(Constant.URL, url);
         FastUtil.startActivity(mContext, WebActivity.class, bundle);
     }
 
@@ -147,35 +147,6 @@ public class LoginActivity extends BaseActivity {
             public void onUUPay(String dataOrg, String sign, String mode) {
             }
         });
-    }
-
-    /*登录*/
-    private void loginUser(Map<String, String> params) {
-        showLoading();
-        JSONObject jsonObject = new JSONObject(params);
-        ViseHttp.POST(ApiConstant.LOGIN)
-                .setJson(jsonObject)
-                .request(new ACallback<BaseTResp2<UserBean>>() {
-                    @Override
-                    public void onSuccess(BaseTResp2<UserBean> data) {
-                        hideLoading();
-                        UserBean bean = data.data;
-                        if (null != bean) {
-                            saveUser(bean);
-                        }
-                        if (data.isSuccess() || data.getCode() == 40102002) {
-                            loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
-                        } else {
-                            ToastUtil.show(data.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onFail(int errCode, String errMsg) {
-                        hideLoading();
-                        ToastUtil.show(errMsg);
-                    }
-                });
     }
 
     private void getAccessToken(String code) {
@@ -291,13 +262,11 @@ public class LoginActivity extends BaseActivity {
                     SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, true);
                     if (code == 40102002) {
                         FastUtil.startActivity(mContext, SendCodeActivity.class);
-                        finish();
                     } else if (code == 200) {
                         SPHelper.setBooleanSF(mContext, Constant.ISVERIFPHONE, true);
-
                         FastUtil.startActivity(mContext, MainActivity.class);
-                        finish();
                     }
+                    finish();
                 } else {
                     hideLoading();
                     ToastUtil.show(obj.toString());
@@ -340,5 +309,4 @@ public class LoginActivity extends BaseActivity {
     public int getContentLayout() {
         return R.layout.activity_login;
     }
-
 }

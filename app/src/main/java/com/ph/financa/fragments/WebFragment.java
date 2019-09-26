@@ -15,9 +15,8 @@ import tech.com.commoncore.base.BaseTitleFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
 
-
 /**
- * webfragment
+ * web 封装
  */
 public class WebFragment extends BaseTitleFragment {
 
@@ -53,7 +52,6 @@ public class WebFragment extends BaseTitleFragment {
     @Override
     public void loadData() {
         super.loadData();
-        Log.i(TAG, "loadData: " + mUrl);
         if (!TextUtils.isEmpty(mUrl)) {
             mAgentWeb = AgentWeb.with(this)
                     .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
@@ -61,16 +59,7 @@ public class WebFragment extends BaseTitleFragment {
                     .createAgentWeb()
                     .ready()
                     .go(mUrl);
-
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onDestroy();
-        }
-        super.onDestroy();
     }
 
     @Override
@@ -82,10 +71,18 @@ public class WebFragment extends BaseTitleFragment {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             Log.i(TAG, "initView: " + mUrl);
             if (mUrl.endsWith(ApiConstant.CUSTOMER)) {
-                StatusBarCompat.setStatusBarColor(mContext, getContext().getColor(R.color.white));
+                StatusBarCompat.setStatusBarColor(mContext, getContext().getResources().getColor(R.color.white));
             }
 
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
     }
 
     @Override

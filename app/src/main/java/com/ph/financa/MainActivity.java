@@ -63,6 +63,7 @@ import tech.com.commoncore.utils.ToastUtil;
  */
 public class MainActivity extends BaseActivity {
 
+
     /*极光*/
     public static boolean isForeground = false;
     private MessageReceiver mMessageReceiver;

@@ -99,13 +99,13 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    /*设置 收藏、产品、分享、消息*/
-    private void setNumber(TextView tv, String number) {
-        if (!TextUtils.isEmpty(number)) {
-            tv.setText(number);
-            tv.setVisibility(View.VISIBLE);
-        }
-    }
+//    /*设置 收藏、产品、分享、消息*/
+//    private void setNumber(TextView tv, String number) {
+//        if (!TextUtils.isEmpty(number)) {
+//            tv.setText(number);
+//            tv.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     @Override
     public void onClick(View view) {

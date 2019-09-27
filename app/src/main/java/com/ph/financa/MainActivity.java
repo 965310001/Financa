@@ -116,6 +116,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+//        Bundle bundle = new Bundle();
+//        bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
+//        bundle.putString(FriendTable.FRIEND_NAME, "我的客服");
+//        bundle.putString(FriendTable.FRIEND_HEAD, "客服");
+//        FastUtil.startActivity(mContext,CustomerActivity.class, bundle);
+
+
 //        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
         /*设置全屏并有状态栏 start */
@@ -128,7 +135,6 @@ public class MainActivity extends BaseActivity {
 
         registerMessageReceiver();  // used for receive msg
         init();
-
         /*测试*/
         PermissionManager.instance().request(mContext, new OnPermissionCallback() {
                     @Override
@@ -146,7 +152,6 @@ public class MainActivity extends BaseActivity {
                         Log.i(TAG, "onRequestNoAsk: " + permissionName);
                     }
                 }, Manifest.permission.READ_CONTACTS, Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         mNavigationBar = findViewById(R.id.navigationBar);

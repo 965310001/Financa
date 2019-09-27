@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -57,7 +58,8 @@ public class EaseCompat {
 
     public static Uri getUriForFile(Context context, File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", file);
+            Log.i(TAG, "getUriForFile: " + context.getPackageName() + ".fileProvider" + FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", file));
+            return FileProvider.getUriForFile(context, String.format("%s.fileProvider", context.getPackageName()), file);
         } else {
             return Uri.fromFile(file);
         }

@@ -1,6 +1,5 @@
 package com.ph.financa.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +18,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.aries.ui.view.title.TitleBarView;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
@@ -36,13 +37,12 @@ import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.share.WbShareHandler;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
-import com.vise.xsnow.permission.OnPermissionCallback;
-import com.vise.xsnow.permission.PermissionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -50,6 +50,8 @@ import java.util.Map;
 
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.permission.Permission;
+import tech.com.commoncore.permission.UsesPermission;
 import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
@@ -165,24 +167,48 @@ public class WebActivity extends BaseTitleActivity {
      * 请求权限
      */
     private void requestPermission() {
-        PermissionManager.instance().request(this, new OnPermissionCallback() {
+        new UsesPermission(this, Permission.CAMERA,Permission.WRITE_EXTERNAL_STORAGE){
             @Override
-            public void onRequestAllow(String permissionName) {
+            protected void onTrue(@NonNull ArrayList<String> lowerPermissions) {
+                //获取了全部权限执后行此函数，
                 takePhoto();
             }
 
             @Override
-            public void onRequestRefuse(String permissionName) {
-                Log.i(TAG, "onRequestRefuse: " + permissionName);
+            protected void onFalse(@NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
+                //未全部授权时执行此函数
                 cancelFilePathCallback();
             }
 
+            //要么实现上面两个方法即可，onTrue或onFalse只会有一个会被调用一次
+            //要么仅仅实现下面这个方法，不管授权了几个权限都会调用一次
+
             @Override
-            public void onRequestNoAsk(String permissionName) {
-                Log.i(TAG, "onRequestNoAsk: " + permissionName);
+            protected void onComplete(@NonNull ArrayList<String> resolvePermissions, @NonNull ArrayList<String> lowerPermissions, @NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
+                //完成回调，可能全部已授权、全部未授权、或者部分已授权
+                //通过resolvePermissions.contains(Permission.XXX)来判断权限是否已授权
                 cancelFilePathCallback();
             }
-        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        };
+
+//        PermissionManager.instance().request(this, new OnPermissionCallback() {
+//            @Override
+//            public void onRequestAllow(String permissionName) {
+//                takePhoto();
+//            }
+//
+//            @Override
+//            public void onRequestRefuse(String permissionName) {
+//                Log.i(TAG, "onRequestRefuse: " + permissionName);
+//                cancelFilePathCallback();
+//            }
+//
+//            @Override
+//            public void onRequestNoAsk(String permissionName) {
+//                Log.i(TAG, "onRequestNoAsk: " + permissionName);
+//                cancelFilePathCallback();
+//            }
+//        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     /**

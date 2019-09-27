@@ -309,7 +309,7 @@ public class CustomerFragment extends BaseFragment {
                 Log.i(TAG, "onRequestNoAsk: " + permissionName);
                 cancelFilePathCallback();
             }
-        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }, Manifest.permission_group.CAMERA);
 
         takePhoto();
     }

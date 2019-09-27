@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.widget.FrameLayout;
 
 import com.just.agentweb.AgentWeb;
-import com.ph.financa.R;
 import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.AndroidObject;
@@ -33,7 +31,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.FastUtil;
@@ -44,24 +41,12 @@ import tech.com.commoncore.utils.Utils;
 /**
  * 首页
  */
-public class HomeFragment extends BaseFragment implements WbShareCallback {
-
-    private String URL = String.format("%s%s?userId=%s&openId=%s&stateheight=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
-            SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
-            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""),
-            String.valueOf(DisplayUtil.px2dip(DisplayUtil.getStatusBarHeight())));
-
-    private AgentWeb mAgentWeb;
+public class HomeFragment extends WebFragment implements WbShareCallback {
 
     private WbShareHandler mShareHandler;
 
     private long mResourceId;
     private String mShareCode, mShareContent, mShareChannel = "OTHER", mResourceType, mAuthor, mTitle, mUrl, mAdPosition, mAdContent;
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.fragment_home;
-    }
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
@@ -83,18 +68,16 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
     }
 
     @Override
-    public void initView(Bundle savedInstanceState) {
-        Log.i(TAG, "initView: " + URL + " " + DisplayUtil.getStatusBarHeight());
+    protected String getUrl() {
+        return String.format("%s%s?userId=%s&openId=%s&stateheight=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
+                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""),
+                String.valueOf(DisplayUtil.px2dip(DisplayUtil.getStatusBarHeight())));
+    }
 
-        mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator()
-                .createAgentWeb()
-                .ready()
-                .go(URL);
-
-        /*监听分享*/
-        mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
+    @Override
+    protected Object getJavaObjectValue(AgentWeb agentWeb, Context context) {
+        return new AndroidInterface(mAgentWeb, getContext());
     }
 
     @Override
@@ -168,7 +151,6 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
                 e.printStackTrace();
             }
         }
-
 
         /*前往文章详情页面*/
         @JavascriptInterface
@@ -356,12 +338,4 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
         }
     };
-
-    @Override
-    public void onDestroy() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onDestroy();
-        }
-        super.onDestroy();
-    }
 }

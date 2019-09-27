@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.widget.FrameLayout;
 
 import com.just.agentweb.AgentWeb;
-import com.ph.financa.R;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.constant.Constant;
@@ -16,7 +14,6 @@ import com.ph.financa.constant.Constant;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
@@ -26,44 +23,17 @@ import tech.com.commoncore.utils.Utils;
 /**
  * 分享
  */
-public class ShareFragment extends BaseFragment {
+public class ShareFragment extends WebFragment {
 
-    private String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.SHARE,
-            SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""), SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
-    private AgentWeb mAgentWeb;
-
-  /*  @Override
-    public void onPause() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onPause();
-        }
-        super.onPause();
+    @Override
+    protected String getUrl() {
+        return String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.SHARE,
+                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""), SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
     }
 
     @Override
-    public void onResume() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onResume();
-        }
-        super.onResume();
-    }*/
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.fragment_share;
-    }
-
-    @Override
-    public void initView(Bundle savedInstanceState) {
-        Log.i(TAG, "initView: " + URL);
-        mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator()
-                .createAgentWeb()
-                .ready()
-                .go(URL);
-
-        mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
+    protected Object getJavaObjectValue(AgentWeb agentWeb, Context context) {
+        return new AndroidInterface(mAgentWeb, getContext());
     }
 
     class AndroidInterface extends AndroidObject {
@@ -98,14 +68,25 @@ public class ShareFragment extends BaseFragment {
                 ToastUtil.show(content);
             }
         }
-    }
 
-    @Override
-    public void onDestroy() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onDestroy();
+        /*前往访客画像*/
+        @JavascriptInterface
+        public void toBrowsePicture(String content) throws JSONException {
+            Log.i(TAG, "toBrowsePicture: " + content);
+//            Log.i(TAG, "前往访客画像: " + content);
+            if (!TextUtils.isEmpty(content)) {
+                JSONObject jsonObject = new JSONObject(content);
+                String userId = jsonObject.getString("userId");
+                String readerOpenId = jsonObject.getString("readerOpenId");
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.URL, String.format("%s%s?userId=%s&readerOpenId=%s", ApiConstant.BASE_URL_ZP,
+                        ApiConstant.BROWSE_DETAIL, userId, readerOpenId));
+                bundle.putString(Constant.TITLE, "访客画像");
+                FastUtil.startActivity(mContext, WebActivity.class, bundle, true);
+            } else {
+                ToastUtil.show("内容为空");
+            }
         }
-        super.onDestroy();
     }
 
 }

@@ -137,9 +137,9 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
 
     private ArrayList<Fragment> getFragments() {
         ArrayList<Fragment> list = new ArrayList<>();
-        list.add(new ShareFragment2());
-        list.add(new ForwardingFragment2());
-        list.add(new VisitorsFragment2());
+        list.add(new ShareFragment());
+        list.add(new ForwardingFragment());
+        list.add(new VisitorsFragment());
         list.add(new MessageFragment());
         return list;
     }

@@ -1,0 +1,24 @@
+github: https://github.com/xiangyuecn/Android-UsesPermission
+
+//假设需要获取摄像头、录音权限，直接在调用的地方实现抽象类，调用逻辑能简单直观不少
+
+new UsesPermission(MainActivity.this, Permission.CAMERA, Permission.RECORD_AUDIO){
+    @Override
+    protected void onTrue(@NonNull ArrayList<String> lowerPermissions) {
+        //获取了全部权限执后行此函数，
+    }
+
+    @Override
+    protected void onFalse(@NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
+        //未全部授权时执行此函数
+    }
+
+    //要么实现上面两个方法即可，onTrue或onFalse只会有一个会被调用一次
+    //要么仅仅实现下面这个方法，不管授权了几个权限都会调用一次
+
+    @Override
+    protected void onComplete(@NonNull ArrayList<String> resolvePermissions, @NonNull ArrayList<String> lowerPermissions, @NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
+        //完成回调，可能全部已授权、全部未授权、或者部分已授权
+        //通过resolvePermissions.contains(Permission.XXX)来判断权限是否已授权
+    }
+};

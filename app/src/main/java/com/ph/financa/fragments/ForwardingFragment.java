@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
-import android.widget.FrameLayout;
 
 import com.just.agentweb.AgentWeb;
-import com.ph.financa.R;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.constant.Constant;
@@ -16,7 +14,6 @@ import com.ph.financa.constant.Constant;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
@@ -27,42 +24,18 @@ import tech.com.commoncore.utils.Utils;
  * 转发
  */
 
-public class ForwardingFragment extends BaseFragment {
-
-    private String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.FORWARD, SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""), SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
-    private AgentWeb mAgentWeb;
-
-   /* @Override
-    public void onPause() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onPause();
-        }
-        super.onPause();
-    }
-*/
-  /*  @Override
-    public void onResume() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onResume();
-        }
-        super.onResume();
-    }*/
+public class ForwardingFragment extends WebFragment {
 
     @Override
-    public int getContentLayout() {
-        return R.layout.fragment_forwarding;
+    protected String getUrl() {
+        return String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.FORWARD,
+                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
     }
 
     @Override
-    public void initView(Bundle savedInstanceState) {
-        Log.i(TAG, "initView: " + URL);
-        mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent((FrameLayout) mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
-                .useDefaultIndicator()
-                .createAgentWeb()
-                .ready()
-                .go(URL);
-        mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
+    protected Object getJavaObjectValue(AgentWeb agentWeb, Context context) {
+        return new AndroidInterface(mAgentWeb, getContext());
     }
 
     class AndroidInterface extends AndroidObject {
@@ -92,19 +65,9 @@ public class ForwardingFragment extends BaseFragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             } else {
                 ToastUtil.show(content);
             }
         }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onDestroy();
-        }
-        super.onDestroy();
     }
 }

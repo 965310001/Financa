@@ -3,6 +3,7 @@ package com.ph.financa.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.aries.ui.view.title.TitleBarView;
@@ -10,6 +11,7 @@ import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 
 import tech.com.commoncore.base.BaseTitleFragment;
+import tech.com.commoncore.utils.DisplayUtil;
 
 /**
  * web 封装
@@ -45,23 +47,6 @@ public class WebFragment extends BaseTitleFragment {
         }
     }
 
-//    @Override
-//    public void loadData() {
-//        super.loadData();
-//        if (!TextUtils.isEmpty(getUrl())) {
-//            mAgentWeb = AgentWeb.with(this)
-//                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
-//                    .useDefaultIndicator()
-//                    .createAgentWeb()
-//                    .ready()
-//                    .go(getUrl());
-//
-//            if (null != getJavaObjectValue(mAgentWeb, getContext())) {
-//                mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), getJavaObjectValue(mAgentWeb, getContext()));
-//            }
-//        }
-//    }
-
     public void setUrl(String url) {
         this.mUrl = url;
     }
@@ -79,29 +64,6 @@ public class WebFragment extends BaseTitleFragment {
     }
 
     @Override
-    public void initView(Bundle savedInstanceState) {
-        if (!TextUtils.isEmpty(mTitle)) {
-            mTitleBar.setTitleMainText(mTitle);
-        } else {
-//            mTitleBar.setVisibility(View.GONE);
-//            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-        }
-
-        if (!TextUtils.isEmpty(getUrl())) {
-            mAgentWeb = AgentWeb.with(this)
-                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
-                    .useDefaultIndicator()
-                    .createAgentWeb()
-                    .ready()
-                    .go(getUrl());
-
-            if (null != getJavaObjectValue(mAgentWeb, getContext())) {
-                mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), getJavaObjectValue(mAgentWeb, getContext()));
-            }
-        }
-    }
-
-    @Override
     public void onDestroy() {
         if (null != mAgentWeb) {
             mAgentWeb.getWebLifeCycle().onDestroy();
@@ -110,7 +72,28 @@ public class WebFragment extends BaseTitleFragment {
     }
 
     @Override
+    public void initView(Bundle savedInstanceState) {
+        if (!TextUtils.isEmpty(getUrl())) {
+            mAgentWeb = AgentWeb.with(this)
+                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
+                    .useDefaultIndicator()
+                    .createAgentWeb()
+                    .ready()
+                    .go(getUrl());
+            if (null != getJavaObjectValue(mAgentWeb, getContext())) {
+                mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), getJavaObjectValue(mAgentWeb, getContext()));
+            }
+        }
+    }
+
+    @Override
     public void setTitleBar(TitleBarView titleBar) {
+        if (!TextUtils.isEmpty(mTitle)) {
+            titleBar.setTitleMainText(mTitle);
+        } else {
+            titleBar.setVisibility(View.GONE);
+            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+        }
     }
 
     @Override

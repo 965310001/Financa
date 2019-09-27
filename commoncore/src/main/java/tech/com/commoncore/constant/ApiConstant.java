@@ -15,7 +15,7 @@ public interface ApiConstant {
     /*首页*/
     String H5 = "h5/";/*首页URL：*/
     /*文章详情*/
-    String article = "h5/article/:id";
+    String ARTICLE = "h5/article/";
     /*文章编辑*/
     String edit = "edit/";
     /*插入产品*/
@@ -52,10 +52,11 @@ public interface ApiConstant {
     /*客户分组*/
     String visit_leading_in = "h5/visit-leading-in";
 
-
     /*前往访客画像*/
     String BROWSE_DETAIL = "h5/browse-detail";
 
+    /*前往新增客户*/
+    String VISIT_ADD = "h5/visit-add";
 
     /*批量或单个删除客户*/
     String DELETE_BATCH = "api/customer/delete/batch";
@@ -132,6 +133,4 @@ public interface ApiConstant {
 
     /*粘贴文章链接*/
     String PASTEARTICLE = "h5/copy-article";
-
-
 }

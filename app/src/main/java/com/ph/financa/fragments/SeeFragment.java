@@ -16,6 +16,7 @@ import com.githang.statusbar.StatusBarCompat;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.TabEntity;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.utils.StatusBarUtils;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
         if (null != mContentView) {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+            StatusBarUtils.immersive(getActivity(), true);
         }
         super.onVisibleChanged(isVisibleToUser);
         Log.i(TAG, "onVisibleChanged: ");
@@ -135,9 +137,9 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
 
     private ArrayList<Fragment> getFragments() {
         ArrayList<Fragment> list = new ArrayList<>();
-        list.add(new ShareFragment());
-        list.add(new ForwardingFragment());
-        list.add(new VisitorsFragment());
+        list.add(new ShareFragment2());
+        list.add(new ForwardingFragment2());
+        list.add(new VisitorsFragment2());
         list.add(new MessageFragment());
         return list;
     }

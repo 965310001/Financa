@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.VipActivity;
+import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
@@ -47,7 +48,8 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
     private String URL = String.format("%s%s?userId=%s&openId=%s&stateheight=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
             SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
-            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""), String.valueOf((DisplayUtil.getStatusBarHeight())));
+            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""),
+            String.valueOf(DisplayUtil.px2dip(DisplayUtil.getStatusBarHeight())));
 
     private AgentWeb mAgentWeb;
 
@@ -82,7 +84,7 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        Log.i(TAG, "initView: " + URL +" "+ DisplayUtil.getStatusBarHeight());
+        Log.i(TAG, "initView: " + URL + " " + DisplayUtil.getStatusBarHeight());
 
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mContentView.findViewById(R.id.fl), new FrameLayout.LayoutParams(-1, -1))
@@ -170,35 +172,82 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
         /*前往文章详情页面*/
         @JavascriptInterface
-        public void articleDetail(String content) {
+        public void articleDetail(String content) throws JSONException {
             Log.i(TAG, "前往文章详情页面: " + content);
+            if (!TextUtils.isEmpty(content)) {
+                JSONObject jsonObject = new JSONObject(content);
+                String id = jsonObject.getString("id");
+                Bundle bundle = new Bundle();
+                bundle.putString(Constant.URL, String.format("%s%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.ARTICLE, id));
+                FastUtil.startActivity(mContext, WebActivity.class, bundle);
+            } else {
+                ToastUtil.show("服务器异常，请稍后再试");
+            }
         }
     }
 
     private void share(String target, String shareLink, String imgUrl, String title, String description) {
+        mShareChannel = getShareChannel(target);
+        Log.i(TAG, "分享类型: " + mShareChannel);
         switch (target) {
             case "shareToFriend":/*微信*/
-                mShareChannel = "WECHAT";
-                Map<String, String> map = new HashMap<>();
-                map.put("url", shareLink);
-                map.put("imageurl", imgUrl);
-                map.put("title", title);
-                map.put("description", description);
-                WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 0, map, listener);
+//                mShareChannel = "WECHAT";
+//                Map<String, String> map = getWeixinShareMap(shareLink, imgUrl, title, description);
+                WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 0, getWeixinShareMap(shareLink, imgUrl, title, description), listener);
                 break;
             case "shareToCircle":/*朋友圈*/
-                mShareChannel = "WECHAT_CIRCLE";
-                map = new HashMap<>();
-                map.put("url", shareLink);
-                map.put("imageurl", imgUrl);
-                map.put("title", title);
-                map.put("description", description);
-                WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 1, map, listener);
+//                mShareChannel = "WECHAT_CIRCLE";
+//                map = new HashMap<>();
+//                map.put("url", shareLink);
+//                map.put("imageurl", imgUrl);
+//                map.put("title", title);
+//                map.put("description", description);
+                WeiXinBaoStrategy.getInstance(mContext).wechatShare(Constant.WECHATAPPKEY, 1, getWeixinShareMap(shareLink, imgUrl, title, description), listener);
                 break;
             case "shareToSina":/*新浪微博*/
-                mShareChannel = "SINA_WEIBO";
+//                mShareChannel = "SINA_WEIBO";
                 wbShare(shareLink, imgUrl, title, description);
                 break;
+        }
+    }
+
+    private Map<String, String> getWeixinShareMap(String shareLink, String imgUrl, String title, String description) {
+        Map<String, String> map = new HashMap<>();
+        map.put("url", shareLink);
+        map.put("imageurl", imgUrl);
+        map.put("title", title);
+        map.put("description", description);
+        return map;
+    }
+
+    /*获取分享类型*/
+    String getShareChannel(String target) {
+        for (ShareChannel shareChannel : ShareChannel.values()) {
+            if (shareChannel.getTarget().equals(target)) {
+                return shareChannel.getShare();
+            }
+        }
+        return mShareChannel;
+    }
+
+    enum ShareChannel {
+        SHARETOFRIEND("shareToFriend", "WECHAT"),/*微信*/
+        SHARETOCIRCLE("shareToCircle", "WECHAT_CIRCLE"),/*微信朋友圈*/
+        SHARETOSINA("shareToSina", "SINA_WEIBO");/*微博*/
+
+        private final String target, share;
+
+        ShareChannel(String target, String share) {
+            this.target = target;
+            this.share = share;
+        }
+
+        public String getTarget() {
+            return target;
+        }
+
+        public String getShare() {
+            return share;
         }
     }
 
@@ -258,9 +307,6 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
 
     @Override
     public void onResume() {
-//        mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
-
         if (null != mAgentWeb) {
             mAgentWeb.getWebLifeCycle().onResume();
         }
@@ -317,9 +363,5 @@ public class HomeFragment extends BaseFragment implements WbShareCallback {
             mAgentWeb.getWebLifeCycle().onDestroy();
         }
         super.onDestroy();
-    }
-
-    public boolean back() {
-        return mAgentWeb.back();
     }
 }

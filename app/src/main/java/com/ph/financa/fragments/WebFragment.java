@@ -1,19 +1,15 @@
 package com.ph.financa.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.aries.ui.view.title.TitleBarView;
-import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 
 import tech.com.commoncore.base.BaseTitleFragment;
-import tech.com.commoncore.constant.ApiConstant;
-import tech.com.commoncore.utils.DisplayUtil;
 
 /**
  * web 封装
@@ -23,7 +19,7 @@ public class WebFragment extends BaseTitleFragment {
     private static final String URL = "URL";
     private static final String TITLE = "TITLE";
 
-    private AgentWeb mAgentWeb;
+    protected AgentWeb mAgentWeb;
 
     private String mUrl, mTitle;
 
@@ -43,23 +39,43 @@ public class WebFragment extends BaseTitleFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if (null != getArguments()) {
             mUrl = getArguments().getString(URL);
             mTitle = getArguments().getString(TITLE);
         }
     }
 
-    @Override
-    public void loadData() {
-        super.loadData();
-        if (!TextUtils.isEmpty(mUrl)) {
-            mAgentWeb = AgentWeb.with(this)
-                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
-                    .useDefaultIndicator()
-                    .createAgentWeb()
-                    .ready()
-                    .go(mUrl);
-        }
+//    @Override
+//    public void loadData() {
+//        super.loadData();
+//        if (!TextUtils.isEmpty(getUrl())) {
+//            mAgentWeb = AgentWeb.with(this)
+//                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
+//                    .useDefaultIndicator()
+//                    .createAgentWeb()
+//                    .ready()
+//                    .go(getUrl());
+//
+//            if (null != getJavaObjectValue(mAgentWeb, getContext())) {
+//                mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), getJavaObjectValue(mAgentWeb, getContext()));
+//            }
+//        }
+//    }
+
+    public void setUrl(String url) {
+        this.mUrl = url;
+    }
+
+    protected String getUrl() {
+        return mUrl;
+    }
+
+    protected String getJavaObjectKey() {
+        return "cosmetics";
+    }
+
+    protected Object getJavaObjectValue(AgentWeb agentWeb, Context context) {
+        return null;
     }
 
     @Override
@@ -67,13 +83,21 @@ public class WebFragment extends BaseTitleFragment {
         if (!TextUtils.isEmpty(mTitle)) {
             mTitleBar.setTitleMainText(mTitle);
         } else {
-            mTitleBar.setVisibility(View.GONE);
-            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
-            Log.i(TAG, "initView: " + mUrl);
-            if (mUrl.endsWith(ApiConstant.CUSTOMER)) {
-                StatusBarCompat.setStatusBarColor(mContext, getContext().getResources().getColor(R.color.white));
-            }
+//            mTitleBar.setVisibility(View.GONE);
+//            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+        }
 
+        if (!TextUtils.isEmpty(getUrl())) {
+            mAgentWeb = AgentWeb.with(this)
+                    .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
+                    .useDefaultIndicator()
+                    .createAgentWeb()
+                    .ready()
+                    .go(getUrl());
+
+            if (null != getJavaObjectValue(mAgentWeb, getContext())) {
+                mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), getJavaObjectValue(mAgentWeb, getContext()));
+            }
         }
     }
 

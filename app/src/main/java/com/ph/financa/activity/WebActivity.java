@@ -460,8 +460,12 @@ public class WebActivity extends BaseTitleActivity {
                 String userId = jsonObject.getString("userId");
                 String visitOpenId = jsonObject.getString("visitOpenId");
                 Bundle bundle = new Bundle();
-                bundle.putString(Constant.URL, String.format("%s%s?userId=%s&visitOpenId=%S", ApiConstant.BASE_URL_ZP,
-                        ApiConstant.ADD_CUSTOMER, userId, visitOpenId));
+//                bundle.putString(Constant.URL, String.format("%s%s?userId=%s&visitOpenId=%S", ApiConstant.BASE_URL_ZP,
+//                        ApiConstant.BROWSE_DETAIL, userId, visitOpenId));
+
+                bundle.putString(Constant.URL, String.format("%s%s?userId=%s&visitOpenId=%s&openId=%s", ApiConstant.BASE_URL_ZP,
+                        ApiConstant.VISIT_ADD, userId, visitOpenId,
+                        SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
                 FastUtil.startActivity(mContext, WebActivity.class, bundle);
             } else {
                 ToastUtil.show("内容为空");

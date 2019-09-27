@@ -32,6 +32,7 @@ import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.ContactColumnBean;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.utils.StatusBarUtils;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 import com.vise.xsnow.permission.OnPermissionCallback;
@@ -79,10 +80,10 @@ public class CustomerFragment extends BaseFragment {
         if (null != mContentView) {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+            StatusBarUtils.immersive(getActivity(), true);
         }
         super.onVisibleChanged(isVisibleToUser);
     }
-
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override

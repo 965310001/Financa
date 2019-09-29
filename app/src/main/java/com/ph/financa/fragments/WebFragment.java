@@ -3,6 +3,7 @@ package com.ph.financa.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -80,6 +81,7 @@ public class WebFragment extends BaseTitleFragment {
                     .createAgentWeb()
                     .ready()
                     .go(getUrl());
+            Log.i(TAG, "initView: "+getUrl());
             if (null != getJavaObjectValue(mAgentWeb, getContext())) {
                 mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), getJavaObjectValue(mAgentWeb, getContext()));
             }

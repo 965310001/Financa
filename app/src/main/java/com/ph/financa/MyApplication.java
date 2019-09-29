@@ -1,6 +1,5 @@
 package com.ph.financa;
 
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
@@ -22,8 +21,6 @@ import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.interceptor.HttpLogInterceptor;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import tech.com.commoncore.app.FastManager;
@@ -213,24 +210,23 @@ public class MyApplication extends BaseApplication {
 ////        Model.getInstance().init(this);
 //
 //    }
-
-    private String getAppName(int pID) {
-        String processName = null;
-        ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
-        List l = am.getRunningAppProcesses();
-        Iterator i = l.iterator();
-//        PackageManager pm = this.getPackageManager();
-        while (i.hasNext()) {
-            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
-            try {
-                if (info.pid == pID) {
-                    processName = info.processName;
-                    return processName;
-                }
-            } catch (Exception e) {
-                // Logs.d("Process", "Error>> :"+ e.toString());
-            }
-        }
-        return processName;
-    }
+//    private String getAppName(int pID) {
+//        String processName = null;
+//        ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+//        List l = am.getRunningAppProcesses();
+//        Iterator i = l.iterator();
+////        PackageManager pm = this.getPackageManager();
+//        while (i.hasNext()) {
+//            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
+//            try {
+//                if (info.pid == pID) {
+//                    processName = info.processName;
+//                    return processName;
+//                }
+//            } catch (Exception e) {
+//                // Logs.d("Process", "Error>> :"+ e.toString());
+//            }
+//        }
+//        return processName;
+//    }
 }

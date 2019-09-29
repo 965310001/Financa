@@ -402,7 +402,8 @@ public class WebActivity extends BaseTitleActivity {
                 mTitle = String.format("%s的名片", mAuthor);
 
                 mShareContent = mTitle;
-                mUrl = shareLink;
+                /*mUrl = shareLink;*/
+                mShareUrl=shareLink;
 
                 String description = mTitle;
                 if (jsonObject.has("telephone")) {
@@ -439,7 +440,8 @@ public class WebActivity extends BaseTitleActivity {
                 mResourceType = "ARTICLE";
 
                 mTitle = title;
-                mUrl = shareLink;
+                /*mUrl = shareLink;*/
+                mShareUrl=shareLink;
 
                 if (jsonObject.has("positionState")) {
                     mAdPosition = jsonObject.getString("positionState");

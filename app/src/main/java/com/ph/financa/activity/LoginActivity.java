@@ -236,7 +236,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onError(int i, String s) {
-                subscriber.onNext(s);
+                subscriber.onNext(String.format("%d||%s", i, s));
                 subscriber.onComplete();
             }
 
@@ -268,9 +268,23 @@ public class LoginActivity extends BaseActivity {
                     }
                     finish();
                 } else {
-                    hideLoading();
-                    ToastUtil.show(obj.toString());
                     Log.i(TAG, "环信登录失败:" + obj.toString());
+                    String string = obj.toString();
+                    if (!TextUtils.isEmpty(string) && string.contains("||")) {
+                        try {
+                            String[] strings = string.split("||");
+                            int code = Integer.valueOf(strings[0]).intValue();
+                            if (code == Emerror.USER_ALREADY_LOGIN.getCode()) {
+                                EMClient.getInstance().logout(true);
+                                loginEaseMob(id, password, code);
+                            }
+                        } catch (Exception e) {
+                            ToastUtil.show(e.toString());
+                        }
+                    } else {
+                        hideLoading();
+                        ToastUtil.show(string);
+                    }
                 }
             }
 
@@ -284,6 +298,22 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
+    }
+
+    enum Emerror {
+        USER_ALREADY_LOGIN(200, "用户已登录");
+
+        private final int code;
+        private final String describe;
+
+        Emerror(int code, String describe) {
+            this.code = code;
+            this.describe = describe;
+        }
+
+        public int getCode() {
+            return code;
+        }
     }
 
     /*保存用户信息*/

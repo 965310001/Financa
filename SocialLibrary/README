@@ -1,0 +1,166 @@
+#第一步 清单文件
+   <!-- 根据需要添加 -->
+        <!-- 微博 -->
+        <meta-data
+            android:name="WEIBO_APP_KEY"
+            android:value="${WEIBO_APP_KEY}" />
+        <meta-data
+            android:name="WEIBO_REDIRECT_URL"
+            android:value="${WEIBO_REDIRECT_URL}" />
+        <meta-data
+            android:name="WEIBO_SCOPE"
+            android:value="${WEIBO_SCOPE}" />
+        <!-- QQ -->
+        <meta-data
+            android:name="TENCENT_ID"
+            android:value="${TENCENT_ID}" />
+        <!-- 微信 -->
+        <meta-data
+            android:name="WEIXIN_ID"
+            android:value="${WEIXIN_ID}" />
+        <meta-data
+            android:name="WEIXIN_SECRET"
+            android:value="${WEIXIN_SECRET}" />
+        <!-- 微信支付 -->
+        <meta-data
+            android:name="WEIXIN_PAY_MCH_ID"
+            android:value="${WEIXIN_PAY_MCH_ID}" />
+        <meta-data
+            android:name="WEIXIN_PAY_SECRET"
+            android:value="${WEIXIN_PAY_SECRET}" />
+        <!-- 支付宝支付 -->
+        <meta-data
+            android:name="ALIPAY_PARTNER"
+            android:value="${ALIPAY_PARTNER}" />
+        <meta-data
+            android:name="ALIPAY_SELLER"
+            android:value="${ALIPAY_SELLER}" />
+        <meta-data
+            android:name="ALIPAY_RSA_PRIVATE"
+            android:value="${ALIPAY_RSA_PRIVATE}" />
+        <!-- 微信分享 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" />
+        <!-- 微信支付 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" />
+
+#第二步 gradle
+   manifestPlaceholders = [  //debug环境
+                  //微博分享
+                  WEIBO_APP_KEY     : "请输入申请的密钥",
+                  WEIBO_REDIRECT_URL: "请输入申请的密钥",
+                  WEIBO_SCOPE       : "请输入申请的密钥",
+
+                  //腾讯qq分享
+                  TENCENT_ID        : "请输入申请的密钥",
+
+                  //微信分享
+                  WEIXIN_ID         : "请输入申请的密钥",
+                  WEIXIN_SECRET     : "请输入申请的密钥",
+
+                  //微信支付
+                  //商户号
+                  WEIXIN_PAY_MCH_ID : "请输入申请的密钥",
+                  //API密钥，在商户平台设置
+                  WEIXIN_PAY_SECRET : "请输入申请的密钥",
+
+                  //支付宝支付
+                  //商户PID
+                  ALIPAY_PARTNER    : "请输入申请的密钥",
+                  //商户收款账号
+                  ALIPAY_SELLER     : "请输入申请的密钥",
+                  //商户私钥，pkcs8格式
+                  ALIPAY_RSA_PRIVATE: "请输入申请的密钥"
+            ]
+#第三步 Application
+    Social.init(this);
+
+
+#第四步
+    WXEntryActivity 继承 WXBaseActivity
+    WXPayEntryActivity 继承 WXPayBaseEntryActivity
+
+
+#第五步 登录
+    #社会话组件类型：AuthType
+
+    AuthApi.doOauthVerify(content, AuthType.WEIXIN, onAuthListener);
+
+    private AuthApi.OnAuthListener onAuthListener = new AuthApi.OnAuthListener() {
+        @Override
+        public void onComplete(int type, User user) {
+            Toast.makeText(MainActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(int type, String error) {
+            Toast.makeText(MainActivity.this, "登录失败:" + error, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(int type) {
+            Toast.makeText(MainActivity.this, "登录取消", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+
+#第六步 分享
+
+    #社会话组件类型：ShareType
+
+    mShareApi = ShareApi.doShare(MainActivity.this, ShareType.WEIXIN, content, onShareListener);
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //如有qq、qq空间分享需要在调用页面的onActivityResult添加
+        if(mShareApi != null) {
+            mShareApi.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
+#第七步 支付
+    微信：
+        WxPay wxApi = new WxPay(MainActivity.this);
+        wxApi.setOnPayListener(onPayListener);
+
+        try {
+             JSONObject jsonObject = new JSONObject("source data...");  //服务端获取 客户端拼凑的Library也有提供，不过不放出使用方法，毕竟已经过时，如需要请联系作者
+             jsonObject = jsonObject.getJSONObject("pay_message");
+
+             WxPayContent req = new WxPayContent();
+             req.appid = jsonObject.getString("appid");
+             req.partnerid = jsonObject.getString("partnerid");
+             req.prepayid = jsonObject.getString("prepayid");
+             req.packageValue = jsonObject.getString("packagestr");
+             req.noncestr = jsonObject.getString("noncestr");
+             req.timestamp = jsonObject.getString("timestamp");
+             req.sign = jsonObject.getString("sign");
+             wxApi.pay(req);
+        } catch (JSONException ignored) {
+
+        }
+
+    支付宝：
+        AliPay alipayApi = new AliPay(MainActivity.this);
+        alipayApi.setOnPayListener(onPayListener);
+
+        try {
+            //服务端拼凑 客户端拼凑的Library也有提供，不过不放出使用方法，毕竟已经过时，如需要请联系作者
+            JSONObject jsonObject = new JSONObject("source data...");
+            alipayApi.pay(jsonObject.getString("pay_message"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }

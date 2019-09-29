@@ -1,1 +1,1 @@
-include ':app', ':easynavigation', ':commoncore', ':easeui'
+include ':app', ':easynavigation', ':commoncore', ':easeui', ':SocialLibrary'

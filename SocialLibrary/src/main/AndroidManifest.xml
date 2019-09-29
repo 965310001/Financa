@@ -1,0 +1,109 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.vendor.social" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <application android:allowBackup="true">
+
+        <activity
+            android:name=".support.weibo.WbBaseActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- 分享相关 -->
+        <!-- 微博 -->
+        <activity android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
+        </activity>
+        <!-- 微信支付 -->
+        <receiver
+            android:name=".pay.extra.AppRegister"
+            android:permission="com.tencent.mm.plugin.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+
+        <!--&lt;!&ndash; 微博 &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="WEIBO_APP_KEY"-->
+            <!--android:value="${WEIBO_APP_KEY}"/>-->
+        <!--<meta-data-->
+            <!--android:name="WEIBO_REDIRECT_URL"-->
+            <!--android:value="${WEIBO_REDIRECT_URL}"/>-->
+        <!--<meta-data-->
+            <!--android:name="WEIBO_SCOPE"-->
+            <!--android:value="${WEIBO_SCOPE}"/>-->
+        <!--&lt;!&ndash; QQ &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="TENCENT_ID"-->
+            <!--android:value="${TENCENT_ID}"/>-->
+        <!--&lt;!&ndash; 微信 &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="WEIXIN_ID"-->
+            <!--android:value="${WEIXIN_ID}"/>-->
+        <!--<meta-data-->
+            <!--android:name="WEIXIN_SECRET"-->
+            <!--android:value="${WEIXIN_SECRET}"/>-->
+        <!--&lt;!&ndash; 微信支付 &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="WEIXIN_PAY_MCH_ID"-->
+            <!--android:value="${WEIXIN_PAY_MCH_ID}"/>-->
+        <!--<meta-data-->
+            <!--android:name="WEIXIN_PAY_SECRET"-->
+            <!--android:value="${WEIXIN_PAY_SECRET}"/>-->
+        <!--&lt;!&ndash; 支付宝支付 &ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="ALIPAY_PARTNER"-->
+            <!--android:value="${ALIPAY_PARTNER}"/>-->
+        <!--<meta-data-->
+            <!--android:name="ALIPAY_SELLER"-->
+            <!--android:value="${ALIPAY_SELLER}"/>-->
+        <!--<meta-data-->
+            <!--android:name="ALIPAY_RSA_PRIVATE"-->
+            <!--android:value="${ALIPAY_RSA_PRIVATE}"/>-->
+
+        <!-- Tencent -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--<data android:scheme="tencent${TENCENT_ID}" />-->
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--<activity-->
+            <!--android:name=".wxapi.WXEntryActivity"-->
+            <!--android:exported="true"-->
+            <!--android:launchMode="singleTop"/>-->
+
+        <!--&lt;!&ndash; 支付相关 &ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".wxapi.WXPayEntryActivity"-->
+            <!--android:exported="true"-->
+            <!--android:launchMode="singleTop"/>-->
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+    </application>
+</manifest>

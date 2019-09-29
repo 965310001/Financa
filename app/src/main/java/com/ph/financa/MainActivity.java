@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//        FastUtil.startActivity(mContext, LoginActivity.class);
+//        FastUtil.startActivity(mContext, LoginActivity2.class);
 //        Bundle bundle = new Bundle();
 //        bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
 //        bundle.putString(FriendTable.FRIEND_NAME, "我的客服");

@@ -12,7 +12,6 @@ import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 
 import tech.com.commoncore.base.BaseTitleFragment;
-import tech.com.commoncore.utils.DisplayUtil;
 
 /**
  * web 封装
@@ -94,7 +93,7 @@ public class WebFragment extends BaseTitleFragment {
             titleBar.setTitleMainText(mTitle);
         } else {
             titleBar.setVisibility(View.GONE);
-            mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
+            /*mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);*/
         }
     }
 

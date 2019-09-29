@@ -21,8 +21,7 @@ import tech.com.commoncore.utils.Utils;
  */
 public class WriteArticleActivity extends BaseTitleActivity {
 
-    private String URL = String.format("%s%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.H5,
-            SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+    private String URL = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.ADDARTICLE,
             SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
             SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
 

@@ -52,7 +52,7 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
     protected void onVisibleChanged(boolean isVisibleToUser) {
         if (null != mContentView) {
             mContentView.setPadding(0, 0, 0, 0);
-            StatusBarUtils.immersive(getActivity(), false);
+            StatusBarUtils.immersive(mContext, false);
         }
         super.onVisibleChanged(isVisibleToUser);
         Log.i(TAG, "onVisibleChanged: ");

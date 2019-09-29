@@ -1,1 +1,1 @@
-include ':app', ':easynavigation', ':commoncore', ':easeui', ':SocialLibrary'
+include ':app', ':easynavigation', ':commoncore', ':easeui', ':SocialLibrary', ':WaveSideBar'

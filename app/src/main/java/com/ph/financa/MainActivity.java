@@ -27,6 +27,8 @@ import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.ph.financa.activity.PasteArticleActivity;
+import com.ph.financa.activity.SelectAddressActivity;
+import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.WriteArticleActivity;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.UserBean;
@@ -57,6 +59,7 @@ import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
+import tech.com.commoncore.utils.Utils;
 
 /**
  * 首页
@@ -117,7 +120,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//        FastUtil.startActivity(mContext, LoginActivity2.class);
+        FastUtil.startActivity(mContext, SelectAddressActivity.class);
 //        Bundle bundle = new Bundle();
 //        bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
 //        bundle.putString(FriendTable.FRIEND_NAME, "我的客服");
@@ -187,7 +190,12 @@ public class MainActivity extends BaseActivity {
                             switch (index) {
                                 case 0:
                                     mAddDialog.dismiss();
-                                    FastUtil.startActivity(mContext, WriteArticleActivity.class);
+                                    /*FastUtil.startActivity(mContext, WriteArticleActivity.class);*/
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("url", String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.ADDARTICLE,
+                                            SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                                            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
+                                    FastUtil.startActivity(mContext, WebActivity.class, bundle);
                                     break;
                                 case 1:
                                     // TODO: 2019/9/10 粘贴文章链接

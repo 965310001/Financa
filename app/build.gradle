@@ -91,5 +91,6 @@ dependencies {
     implementation 'com.sina.weibo.sdk:core:4.4.1:openDefaultRelease@aar'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+    implementation project(path: ':WaveSideBar')
 
 }

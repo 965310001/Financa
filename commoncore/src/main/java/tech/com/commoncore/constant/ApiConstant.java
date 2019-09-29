@@ -23,7 +23,7 @@ public interface ApiConstant {
     /*文章详情----微信访问：*/
     String wxarticle = "wxarticle";
     /*添加文章*/
-    String addArticle = "add-article";
+    String ADDARTICLE = "h5/add-article";
     /*历史分享文章*/
     String HISTORYARTICLE = "h5/history-article";
 

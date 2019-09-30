@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /*获取通讯录*/
 public class ContactColumnBean implements Serializable {
+
     private String id;
     private String name;
     private String number;

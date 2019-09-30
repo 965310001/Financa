@@ -28,6 +28,7 @@ import android.widget.FrameLayout;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
+import com.ph.financa.activity.SelectAddressActivity;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.ContactColumnBean;
@@ -53,6 +54,7 @@ import java.util.Map;
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
+import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
@@ -81,8 +83,26 @@ public class CustomerFragment extends BaseFragment {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
             StatusBarUtils.immersive(getActivity(), true);
+
+
+            if (SPHelper.getBooleanSF(mContext, Constant.ISREFRESH, false)) {
+                mAgentWeb.getWebCreator().getWebView().reload();
+                Log.i(TAG, "onVisibleChanged: ");
+                SPHelper.setBooleanSF(mContext, Constant.ISREFRESH, false);
+            }
         }
+        
         super.onVisibleChanged(isVisibleToUser);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (SPHelper.getBooleanSF(mContext, Constant.ISREFRESH, false)) {
+            mAgentWeb.getWebCreator().getWebView().reload();
+            Log.i(TAG, "onVisibleChanged: ");
+            SPHelper.setBooleanSF(mContext, Constant.ISREFRESH, false);
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -125,6 +145,7 @@ public class CustomerFragment extends BaseFragment {
             Log.i(TAG, "initView: " + URL);
         }
     }
+
 
     final WebViewClient client = new WebViewClient() {
         @Override
@@ -364,7 +385,8 @@ public class CustomerFragment extends BaseFragment {
             PermissionManager.instance().request(getActivity(), new OnPermissionCallback() {
                 @Override
                 public void onRequestAllow(String permissionName) {
-                    insertContact(getPhoneContacts());
+                    /*insertContact(getPhoneContacts());*/
+                    FastUtil.startActivity(mContext, SelectAddressActivity.class);
                 }
 
                 @Override

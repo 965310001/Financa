@@ -154,14 +154,21 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
 
         /*前往文章详情页面*/
         @JavascriptInterface
-        public void articleDetail(String content) throws JSONException {
+        public void articleDetail(String content) {
             Log.i(TAG, "前往文章详情页面: " + content);
             if (!TextUtils.isEmpty(content)) {
-                JSONObject jsonObject = new JSONObject(content);
-                String id = jsonObject.getString("id");
-                Bundle bundle = new Bundle();
-                bundle.putString(Constant.URL, String.format("%s%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.ARTICLE, id));
-                FastUtil.startActivity(mContext, WebActivity.class, bundle);
+                try {
+                    JSONObject jsonObject = new JSONObject(content);
+                    String id = jsonObject.getString("id");
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constant.URL, String.format("%s%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.ARTICLE, id,
+                            SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                            SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
+                    FastUtil.startActivity(mContext, WebActivity.class, bundle);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 ToastUtil.show("服务器异常，请稍后再试");
             }

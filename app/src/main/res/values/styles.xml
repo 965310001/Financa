@@ -33,5 +33,15 @@
 
     </style>
 
+    <style name="TranslucentNoTitle" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <!--<item name="android:statusBarColor">@color/white</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+    </style>
+
 
 </resources>

@@ -91,4 +91,7 @@ public interface Constant {
 
     /*过渡页*/
     String ISGUIDE = "ISGUIDE";
+
+    /*刷新界面*/
+    String ISREFRESH = "ISREFRESH";
 }

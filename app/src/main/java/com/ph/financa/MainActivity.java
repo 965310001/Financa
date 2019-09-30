@@ -27,7 +27,6 @@ import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.ph.financa.activity.PasteArticleActivity;
-import com.ph.financa.activity.SelectAddressActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.WriteArticleActivity;
 import com.ph.financa.activity.bean.BaseTResp2;
@@ -120,7 +119,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        FastUtil.startActivity(mContext, SelectAddressActivity.class);
+
+        /*FastUtil.startActivity(mContext, SelectAddressActivity.class);*/
+//        Bundle bundle1 = new Bundle();
+//        bundle1.putString(Constant.URL, "file:///android_asset/tips.html");
+//        FastUtil.startActivity(mContext, WebActivity.class, bundle1);
+
 //        Bundle bundle = new Bundle();
 //        bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
 //        bundle.putString(FriendTable.FRIEND_NAME, "我的客服");

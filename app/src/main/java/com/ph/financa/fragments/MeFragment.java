@@ -12,15 +12,20 @@ import com.ph.financa.activity.CustomerActivity;
 import com.ph.financa.activity.SettingActivity;
 import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
+import com.ph.financa.activity.bean.BaseTResp2;
+import com.ph.financa.activity.bean.UserBean;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
 import com.ph.financa.utils.StatusBarUtils;
+import com.vise.xsnow.http.ViseHttp;
+import com.vise.xsnow.http.callback.ACallback;
 
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.manager.GlideManager;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
+import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
 import tech.com.commoncore.widget.CircleImageView;
 
@@ -99,13 +104,50 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-//    /*设置 收藏、产品、分享、消息*/
-//    private void setNumber(TextView tv, String number) {
-//        if (!TextUtils.isEmpty(number)) {
-//            tv.setText(number);
-//            tv.setVisibility(View.VISIBLE);
-//        }
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
+    }
+
+    /*获取用户信息*/
+    private void getUserInfo() {
+        ViseHttp.GET(ApiConstant.GET_USER)
+                .request(new ACallback<BaseTResp2<UserBean>>() {
+                    @Override
+                    public void onSuccess(BaseTResp2<UserBean> data) {
+                        UserBean bean = data.data;
+                        if (null != bean) {
+                            saveUser(bean);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        ToastUtil.show(errMsg);
+                    }
+                });
+    }
+
+    /*保存用户信息*/
+    private void saveUser(UserBean data) {
+        if (null != data) {
+            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
+            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
+            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
+            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
+            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
+
+            SPHelper.setIntergerSF(mContext, Constant.ISVIP, data.getUserType());
+
+
+            setData(SPHelper.getStringSF(mContext, Constant.USERNAME, "")
+                    , SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, ""),
+                    SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
+
+        }
+    }
+
 
     @Override
     public void onClick(View view) {

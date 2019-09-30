@@ -212,6 +212,7 @@ public class LoginActivity extends BaseActivity {
 
                                     @Override
                                     public void onFail(int errCode, String errMsg) {
+                                        Log.i(TAG, "onFail: " + errMsg + errCode);
                                         hideLoading();
                                         ToastUtil.show(errMsg);
                                     }

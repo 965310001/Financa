@@ -38,6 +38,7 @@ import com.sina.weibo.sdk.share.WbShareHandler;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -122,10 +123,12 @@ public class WebActivity extends BaseTitleActivity {
                 public void openFileChooser(ValueCallback<Uri> uploadMsg) {
                     Log.e("WangJ", "运行方法 openFileChooser-1");
                     // (2)该方法回调时说明版本API < 21，此时将结果赋值给 mUploadCallbackBelow，使之 != null
+
+                    requestPermission();
                     mUploadCallbackBelow = uploadMsg;
                     Log.i(TAG, "openFileChooser:指定拍照存储位置的方式调起相机 ");
 //                    takePhoto();
-                    requestPermission();
+
                 }
 
                 /**
@@ -153,9 +156,10 @@ public class WebActivity extends BaseTitleActivity {
                 public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
                     Log.e("WangJ", "运行方法 onShowFileChooser");
                     // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
-                    mUploadCallbackAboveL = filePathCallback;
 //                    takePhoto();
                     requestPermission();
+                    mUploadCallbackAboveL = filePathCallback;
+
                     Log.i(TAG, "onShowFileChooser:指定拍照存储位置的方式调起相机 ");
                     return true;
                 }
@@ -167,16 +171,18 @@ public class WebActivity extends BaseTitleActivity {
      * 请求权限
      */
     private void requestPermission() {
-        new UsesPermission(this, Permission.CAMERA,Permission.WRITE_EXTERNAL_STORAGE){
+        new UsesPermission(this, Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE) {
             @Override
             protected void onTrue(@NonNull ArrayList<String> lowerPermissions) {
                 //获取了全部权限执后行此函数，
+                Log.i(TAG, "onTrue: ");
                 takePhoto();
             }
 
             @Override
             protected void onFalse(@NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
                 //未全部授权时执行此函数
+                Log.i(TAG, "onFalse: ");
                 cancelFilePathCallback();
             }
 
@@ -187,7 +193,8 @@ public class WebActivity extends BaseTitleActivity {
             protected void onComplete(@NonNull ArrayList<String> resolvePermissions, @NonNull ArrayList<String> lowerPermissions, @NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
                 //完成回调，可能全部已授权、全部未授权、或者部分已授权
                 //通过resolvePermissions.contains(Permission.XXX)来判断权限是否已授权
-                cancelFilePathCallback();
+                Log.i(TAG, "onComplete: ");
+//                cancelFilePathCallback();
             }
         };
 
@@ -260,6 +267,7 @@ public class WebActivity extends BaseTitleActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult: " + requestCode);
         if (requestCode == REQUEST_CODE) {
             // 经过上边(1)、(2)两个赋值操作，此处即可根据其值是否为空来决定采用哪种处理方法
             if (mUploadCallbackBelow != null) {
@@ -268,7 +276,7 @@ public class WebActivity extends BaseTitleActivity {
                 chooseAbove(resultCode, data);
             } else {
 //                Toast.makeText(this, "发生错误", Toast.LENGTH_SHORT).show();
-//                ToastUtil.show("发生错误");
+                ToastUtil.show("发生错误");
             }
         }
     }
@@ -397,13 +405,13 @@ public class WebActivity extends BaseTitleActivity {
                 mResourceId = jsonObject.getLong("id");
 
                 mShareCode = jsonObject.getString("shareCode");
-                mResourceType = "ARTICLE";
+                mResourceType = "CARD";
                 mAuthor = jsonObject.getString("name");
                 mTitle = String.format("%s的名片", mAuthor);
 
                 mShareContent = mTitle;
                 /*mUrl = shareLink;*/
-                mShareUrl=shareLink;
+                mShareUrl = shareLink;
 
                 String description = mTitle;
                 if (jsonObject.has("telephone")) {
@@ -426,22 +434,42 @@ public class WebActivity extends BaseTitleActivity {
                 String shareLink = jsonObject.getString("shareLink");
 
                 jsonObject = jsonObject.getJSONObject("sourceData");
-                jsonObject = jsonObject.getJSONObject("userInfo");
+
+
                 // TODO: 2019/9/26 如果错误修改这里
-                mResourceId = jsonObject.getJSONObject("productDetail").getLong("id");
-                mShareCode = jsonObject.getJSONObject("productDetail").getString("shareCode");
-                mAuthor = jsonObject.getString("name");
+                JSONObject userInfo = jsonObject.getJSONObject("userInfo");
+                mAuthor = userInfo.getString("name");
 
-                String title = jsonObject.getString("title");
-                String description = jsonObject.getString("summary");
-                description = description.replace("\n", "");
+                String title = " ";//= jsonObject.getString("title");
+//                String description = jsonObject.getString("summary");
+//                description = description.replace("\n", "");
 
-                mShareContent = jsonObject.getString("content");
-                mResourceType = "ARTICLE";
+                String description = "";
+                mResourceType = "PRODUCT";
 
-                mTitle = title;
-                /*mUrl = shareLink;*/
-                mShareUrl=shareLink;
+                mShareUrl = shareLink;
+
+                JSONObject productDetail = jsonObject.getJSONObject("productDetail");
+                mResourceId = productDetail.getLong("id");
+                mShareCode = productDetail.getString("shareCode");
+
+                if (productDetail.has("content")) {
+                    JSONArray content1 = productDetail.getJSONArray("content");
+                    if (content1.length() > 2) {
+                        if (content1.length() > 3) {
+                            description = mShareContent = (String) content1.getJSONObject(1).get("value");
+                            title = (String) content1.getJSONObject(1).get("value");
+                        } else {
+                            mShareContent = " ";
+                        }
+                    } else {
+                        mShareContent = " ";
+                    }
+
+                } else {
+                    mShareContent = " ";
+                }
+
 
                 if (jsonObject.has("positionState")) {
                     mAdPosition = jsonObject.getString("positionState");
@@ -454,6 +482,7 @@ public class WebActivity extends BaseTitleActivity {
                 if (TextUtils.isEmpty(description)) {
                     description = title;
                 }
+                mTitle = title;
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -500,6 +529,46 @@ public class WebActivity extends BaseTitleActivity {
             }
         }
 
+
+        @JavascriptInterface
+        public void shareArticleData(String content) {
+            Log.i(TAG, "shareArticleData: " + content);
+            try {
+                JSONObject jsonObject = new JSONObject(content);
+                String target = jsonObject.getString("target");
+                String imgUrl = jsonObject.getString("imgUrl");
+                String shareLink = jsonObject.getString("shareLink");
+                Log.i(TAG, "shareArticleData: " + shareLink);
+                jsonObject = jsonObject.getJSONObject("sourceData");
+                String title = jsonObject.getString("title");
+                String description = jsonObject.getString("summary");
+                description = description.replace("\n", "");
+
+                mResourceId = jsonObject.getLong("id");
+
+                mShareCode = jsonObject.getString("shareCode");
+                mShareContent = jsonObject.getString("content");
+                mResourceType = "ARTICLE";
+                mAuthor = jsonObject.getString("author");
+                mTitle = title;
+                mShareUrl = shareLink;
+
+                if (jsonObject.has("positionState")) {
+                    mAdPosition = jsonObject.getString("positionState");
+                }
+
+                if (jsonObject.has("production")) {
+                    mAdContent = jsonObject.getString("production");
+                }
+
+                if (TextUtils.isEmpty(description)) {
+                    description = title;
+                }
+                share(target, shareLink, imgUrl, title, description);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private WbShareHandler mShareHandler;

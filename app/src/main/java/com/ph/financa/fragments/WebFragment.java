@@ -81,8 +81,10 @@ public class WebFragment extends BaseTitleFragment {
                     .ready()
                     .go(getUrl());
             Log.i(TAG, "initView: "+getUrl());
-            if (null != getJavaObjectValue(mAgentWeb, getContext())) {
-                mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), getJavaObjectValue(mAgentWeb, getContext()));
+            Object obj = getJavaObjectValue(mAgentWeb, getContext());
+            if (null != obj) {
+                Log.i(TAG, "initView: ");
+                mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), obj);
             }
         }
     }

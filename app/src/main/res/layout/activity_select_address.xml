@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="false"
     tools:context=".activity.SelectAddressActivity">
 
     <include layout="@layout/layout_title_bar" />
 
-
     <!--搜索框-->
-    <com.nanchen.wavesidebar.SearchEditText
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/main_search"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="15dp"
+        android:layout_marginBottom="@dimen/dp_5"
         android:background="@drawable/shape_search_edit_bg"
-        android:drawableStart="@mipmap/ic_search"
-        android:drawableLeft="@mipmap/ic_search"
-        android:drawablePadding="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
-        android:hint="@string/search"
         android:imeOptions="actionSearch"
         android:maxLines="1"
         android:padding="5dp"
-        android:textSize="16sp"
-        app:drawableDel="@mipmap/ic_delete" />
+        android:textSize="16sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_content"
@@ -47,7 +45,7 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             app:sidebar_lazy_respond="false"
-            app:sidebar_text_color="@color/colorAccent" />
+            app:sidebar_text_color="@color/C_212121" />
 
     </FrameLayout>
 

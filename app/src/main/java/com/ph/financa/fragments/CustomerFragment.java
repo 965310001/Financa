@@ -25,6 +25,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
@@ -53,6 +55,8 @@ import java.util.Map;
 
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.permission.Permission;
+import tech.com.commoncore.permission.UsesPermission;
 import tech.com.commoncore.utils.DisplayUtil;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
@@ -91,7 +95,7 @@ public class CustomerFragment extends BaseFragment {
                 SPHelper.setBooleanSF(mContext, Constant.ISREFRESH, false);
             }
         }
-        
+
         super.onVisibleChanged(isVisibleToUser);
     }
 
@@ -217,7 +221,7 @@ public class CustomerFragment extends BaseFragment {
             } else if (mUploadCallbackAboveL != null) {
                 chooseAbove(resultCode, data);
             } else {
-//                ToastUtil.show("发生错误");
+                ToastUtil.show("发生错误");
             }
         }
     }
@@ -313,26 +317,53 @@ public class CustomerFragment extends BaseFragment {
      * 请求权限
      */
     private void requestPermission() {
-        PermissionManager.instance().request(getActivity(), new OnPermissionCallback() {
+//        PermissionManager.instance().request(getActivity(), new OnPermissionCallback() {
+//            @Override
+//            public void onRequestAllow(String permissionName) {
+////                takePhoto();
+//            }
+//
+//            @Override
+//            public void onRequestRefuse(String permissionName) {
+//                Log.i(TAG, "onRequestRefuse: " + permissionName);
+//                cancelFilePathCallback();
+//            }
+//
+//            @Override
+//            public void onRequestNoAsk(String permissionName) {
+//                Log.i(TAG, "onRequestNoAsk: " + permissionName);
+//                cancelFilePathCallback();
+//            }
+//        }, Manifest.permission_group.CAMERA);
+//
+//        takePhoto();
+
+        new UsesPermission(mContext, Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE) {
             @Override
-            public void onRequestAllow(String permissionName) {
-//                takePhoto();
+            protected void onTrue(@NonNull ArrayList<String> lowerPermissions) {
+                //获取了全部权限执后行此函数，
+                Log.i(TAG, "onTrue: ");
+                takePhoto();
             }
 
             @Override
-            public void onRequestRefuse(String permissionName) {
-                Log.i(TAG, "onRequestRefuse: " + permissionName);
+            protected void onFalse(@NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
+                //未全部授权时执行此函数
+                Log.i(TAG, "onFalse: ");
                 cancelFilePathCallback();
             }
 
-            @Override
-            public void onRequestNoAsk(String permissionName) {
-                Log.i(TAG, "onRequestNoAsk: " + permissionName);
-                cancelFilePathCallback();
-            }
-        }, Manifest.permission_group.CAMERA);
+            //要么实现上面两个方法即可，onTrue或onFalse只会有一个会被调用一次
+            //要么仅仅实现下面这个方法，不管授权了几个权限都会调用一次
 
-        takePhoto();
+            @Override
+            protected void onComplete(@NonNull ArrayList<String> resolvePermissions, @NonNull ArrayList<String> lowerPermissions, @NonNull ArrayList<String> rejectFinalPermissions, @NonNull ArrayList<String> rejectPermissions, @NonNull ArrayList<String> invalidPermissions) {
+                //完成回调，可能全部已授权、全部未授权、或者部分已授权
+                //通过resolvePermissions.contains(Permission.XXX)来判断权限是否已授权
+                Log.i(TAG, "onComplete: ");
+//                cancelFilePathCallback();
+            }
+        };
     }
 
 

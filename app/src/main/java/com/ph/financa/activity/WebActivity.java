@@ -101,7 +101,7 @@ public class WebActivity extends BaseTitleActivity {
         mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, mContext));
 
         /*我的名片*/
-        if (mUrl.contains(ApiConstant.MY_CARD)) {
+//        if (mUrl.contains(ApiConstant.MY_CARD)) {
             mAgentWeb.getWebCreator().getWebView().setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -164,7 +164,7 @@ public class WebActivity extends BaseTitleActivity {
                     return true;
                 }
             });
-        }
+//        }
     }
 
     /**

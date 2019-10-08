@@ -21,6 +21,7 @@ import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMultiDeviceListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.NetUtils;
 import com.next.easynavigation.constant.Anim;
@@ -89,6 +90,18 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         isForeground = true;
         super.onResume();
+        getUnreadMsgCount();
+    }
+
+    private void getUnreadMsgCount() {
+        /*用户*/
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.USERID));
+        if (null!=conversation) {
+            int count = conversation.getUnreadMsgCount();
+            if (count > 0) {
+                mNavigationBar.setMsgPointCount(1, count);
+            }
+        }
     }
 
     @Override
@@ -225,6 +238,8 @@ public class MainActivity extends BaseActivity {
         EMClient.getInstance().addConnectionListener(new ConnectionListener());
 
         getUserInfo();
+
+        /*mNavigationBar.setMsgPointCount(1,10);*/
     }
 
     private void loginEaseMob(String id, String password) {

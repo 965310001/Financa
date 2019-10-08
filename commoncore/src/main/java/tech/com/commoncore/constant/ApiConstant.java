@@ -133,4 +133,10 @@ public interface ApiConstant {
 
     /*粘贴文章链接*/
     String PASTEARTICLE = "h5/copy-article";
+
+    /*消息模块-用户拉取信息*/
+    String MESSAGE_PULL = "api/message/pull";
+
+    /*消息模块-获取用户未读统计*/
+    String MESSAGE_COUNT = "api/message/count";
 }

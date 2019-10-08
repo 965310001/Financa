@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -22,9 +22,9 @@
                 android:layout_height="@dimen/dp_60"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_56"
-                tools:src="@color/colorPrimary"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -32,11 +32,11 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_61"
-                tools:text="周莘羽"
                 android:textColor="#ffffffff"
                 android:textSize="17sp"
                 app:layout_constraintLeft_toRightOf="@id/ic_head"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="周莘羽" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_20"
@@ -52,11 +52,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginLeft="@dimen/dp_16"
-                tools:text="公司名称"
                 android:textColor="#ffffffff"
                 android:textSize="14sp"
                 app:layout_constraintLeft_toRightOf="@id/ic_head"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                tools:text="公司名称" />
 
             <TextView
                 android:id="@+id/tv_rights"
@@ -83,13 +83,13 @@
                 app:layout_constraintTop_toBottomOf="@id/ic_head" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/ic_crown_open"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_78"
                 android:layout_marginTop="@dimen/dp_47"
                 android:layout_marginRight="@dimen/dp_4"
                 android:src="@mipmap/ic_vip"
+                android:visibility="gone"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -302,14 +302,36 @@
                 android:layout_marginLeft="@dimen/dp_20"
                 app:srcCompat="@mipmap/ic_message" />
 
-            <TextView
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="@dimen/dp_17"
-                android:layout_weight="1"
-                android:text="消息通知"
-                android:textColor="#ff333333"
-                android:textSize="17sp" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="@dimen/dp_17"
+                    android:layout_weight="1"
+                    android:text="消息通知"
+                    android:textColor="#ff333333"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_msg_count1"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="@dimen/dp_2"
+                    android:background="@drawable/shape_bg_unread_msg_count"
+                    android:textSize="@dimen/textSize_12"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@id/tv1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/tv_message"
@@ -349,14 +371,35 @@
                 android:layout_marginLeft="@dimen/dp_20"
                 app:srcCompat="@mipmap/ic_service" />
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="@dimen/dp_17"
-                android:layout_weight="1"
-                android:text="我的客服"
-                android:textColor="#ff333333"
-                android:textSize="17sp" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="@dimen/dp_17"
+                    android:layout_weight="1"
+                    android:text="我的客服"
+                    android:textColor="#ff333333"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_msg_count2"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="@dimen/dp_2"
+                    android:background="@drawable/shape_bg_unread_msg_count"
+                    android:textSize="@dimen/textSize_12"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@id/tv2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_18"
@@ -385,14 +428,35 @@
                 android:layout_marginLeft="@dimen/dp_20"
                 app:srcCompat="@mipmap/ic_setting" />
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="@dimen/dp_17"
-                android:layout_weight="1"
-                android:text="设置"
-                android:textColor="#ff333333"
-                android:textSize="17sp" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="@dimen/dp_17"
+                    android:layout_weight="1"
+                    android:text="设置"
+                    android:textColor="#ff333333"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_msg_count3"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginLeft="@dimen/dp_2"
+                    android:background="@drawable/shape_bg_unread_msg_count"
+                    android:textSize="@dimen/textSize_12"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@id/tv3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/dp_18"

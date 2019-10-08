@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.EaseConstant;
 import com.ph.financa.R;
 import com.ph.financa.activity.CustomerActivity;
@@ -13,6 +15,7 @@ import com.ph.financa.activity.SettingActivity;
 import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.BaseTResp2;
+import com.ph.financa.activity.bean.MessageCountBean;
 import com.ph.financa.activity.bean.UserBean;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
@@ -42,6 +45,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView mTvProducts;//产品
     private TextView mTvShare;//分享
     private TextView mTvMessage;//消息
+
+
+    private TextView mTv1, mTv2, mTv3;
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
@@ -82,6 +88,78 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         setData(SPHelper.getStringSF(mContext, Constant.USERNAME, "")
                 , SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, ""),
                 SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
+
+        mTv1 = mContentView.findViewById(R.id.tv_msg_count1);
+        mTv2 = mContentView.findViewById(R.id.tv_msg_count2);
+        mTv3 = mContentView.findViewById(R.id.tv_msg_count3);
+
+        getUnreadMsgCount();
+
+        getMessagePull();
+        getMessageCount();
+    }
+
+    /*用户拉取信息*/
+    private void getMessagePull() {
+        ViseHttp.POST(ApiConstant.MESSAGE_PULL)
+                .request(new ACallback<BaseTResp2<String>>() {
+                    @Override
+                    public void onSuccess(BaseTResp2<String> data) {
+                        if (data.isSuccess()) {
+                            Log.i(TAG, "onSuccess: " + data.getData());
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        ToastUtil.show(errMsg);
+                    }
+                });
+    }
+
+    /*消息模块-获取用户未读统计*/
+    private void getMessageCount() {
+        ViseHttp.GET(ApiConstant.MESSAGE_COUNT)
+                .request(new ACallback<BaseTResp2<MessageCountBean>>() {
+                    @Override
+                    public void onSuccess(BaseTResp2<MessageCountBean> data) {
+                        if (data.isSuccess()) {
+                            int count = data.getData().getUnreadCount();
+                            if (count > 0) {
+                                mTv1.setVisibility(View.VISIBLE);
+                                mTvMessage.setVisibility(View.VISIBLE);
+
+                                mTvMessage.setText(String.format("%s", count));
+                            }else{
+                                mTv1.setVisibility(View.GONE);
+                                mTvMessage.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        ToastUtil.show(errMsg);
+                    }
+                });
+
+    }
+
+
+    private void getUnreadMsgCount() {
+        /*用户*/
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.CUSTOMSERVICE));
+        if (null != conversation) {
+           /* int count = conversation.getUnreadMsgCount();
+            if (count > 0) {
+                mTv1.setVisibility(View.VISIBLE);
+            }*/
+            /*客服*/
+            int count = conversation.getUnreadMsgCount();
+            if (count > 0) {
+                mTv2.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void setData(String name, String companyName, String head) {
@@ -108,6 +186,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         getUserInfo();
+
+        getUnreadMsgCount();
     }
 
     /*获取用户信息*/

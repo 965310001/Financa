@@ -2,27 +2,23 @@ package com.ph.financa.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.os.StrictMode;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -32,26 +28,15 @@ import com.just.agentweb.AgentWeb;
 import com.ph.financa.R;
 import com.ph.financa.activity.SelectAddressActivity;
 import com.ph.financa.activity.bean.AndroidObject;
-import com.ph.financa.activity.bean.BaseTResp2;
-import com.ph.financa.activity.bean.ContactColumnBean;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.utils.StatusBarUtils;
-import com.vise.xsnow.http.ViseHttp;
-import com.vise.xsnow.http.callback.ACallback;
 import com.vise.xsnow.permission.OnPermissionCallback;
 import com.vise.xsnow.permission.PermissionManager;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
@@ -87,8 +72,6 @@ public class CustomerFragment extends BaseFragment {
             mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);
             StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
             StatusBarUtils.immersive(getActivity(), true);
-
-
             if (SPHelper.getBooleanSF(mContext, Constant.ISREFRESH, false)) {
                 mAgentWeb.getWebCreator().getWebView().reload();
                 Log.i(TAG, "onVisibleChanged: ");
@@ -122,69 +105,91 @@ public class CustomerFragment extends BaseFragment {
             mAgentWeb = AgentWeb.with(mContext)
                     .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
                     .useDefaultIndicator()
+                    .setWebChromeClient(mWebChromeClient)
+                    .setWebViewClient(mWebViewClient)
                     .createAgentWeb()
                     .ready()
                     .go(URL);
             mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
-            WebSettings settings = mAgentWeb.getWebCreator().getWebView().getSettings();
-            settings.setUseWideViewPort(true);
-            settings.setLoadWithOverviewMode(true);
-            settings.setDomStorageEnabled(true);
-            settings.setDefaultTextEncodingName("UTF-8");
-            settings.setAllowContentAccess(true); // 是否可访问Content Provider的资源，默认值 true
-            settings.setAllowFileAccess(true);    // 是否可访问本地文件，默认值 true
-            // 是否允许通过file url加载的Javascript读取本地文件，默认值 false
-            settings.setAllowFileAccessFromFileURLs(false);
-            // 是否允许通过file url加载的Javascript读取全部资源(包括文件,http,https)，默认值 false
-            settings.setAllowUniversalAccessFromFileURLs(false);
-            //开启JavaScript支持
-            settings.setJavaScriptEnabled(true);
-            // 支持缩放
-            settings.setSupportZoom(true);
 
+//            WebSettings settings = mAgentWeb.getWebCreator().getWebView().getSettings();
+//            settings.setUseWideViewPort(true);
+//            settings.setLoadWithOverviewMode(true);
+//            settings.setDomStorageEnabled(true);
+//            settings.setDefaultTextEncodingName("UTF-8");
+//            settings.setAllowContentAccess(true); // 是否可访问Content Provider的资源，默认值 true
+//            settings.setAllowFileAccess(true);    // 是否可访问本地文件，默认值 true
+//            // 是否允许通过file url加载的Javascript读取本地文件，默认值 false
+//            settings.setAllowFileAccessFromFileURLs(false);
+//            // 是否允许通过file url加载的Javascript读取全部资源(包括文件,http,https)，默认值 false
+//            settings.setAllowUniversalAccessFromFileURLs(false);
+//            //开启JavaScript支持
+//            settings.setJavaScriptEnabled(true);
+//            // 支持缩放
+//            settings.setSupportZoom(true);
 
-            mAgentWeb.getWebCreator().getWebView().setWebViewClient(client);
-            mAgentWeb.getWebCreator().getWebView().setWebChromeClient(chromeClient);
+//            mAgentWeb.getWebCreator().getWebView().setWebViewClient(client);
+//            mAgentWeb.getWebCreator().getWebView().setWebChromeClient(chromeClient);
 
             Log.i(TAG, "initView: " + URL);
         }
     }
 
 
-    final WebViewClient client = new WebViewClient() {
+//    final WebViewClient client = new WebViewClient() {
+//        @Override
+//        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+////                            view.loadUrl(url); // 在本WebView打开新的url请求
+//            return true;  // 标记新请求已经被处理笑话
+//            // 上边2行合起来，标识所有新链接都在本页面处理，不跳转别的浏览器
+//        }
+//
+//        @Override
+//        public void onPageFinished(WebView view, String url) {
+//            super.onPageFinished(view, url);
+//        }
+//    };
+
+    private com.just.agentweb.WebViewClient mWebViewClient = new com.just.agentweb.WebViewClient() {
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                            view.loadUrl(url); // 在本WebView打开新的url请求
-            return true;  // 标记新请求已经被处理笑话
-            // 上边2行合起来，标识所有新链接都在本页面处理，不跳转别的浏览器
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return super.shouldOverrideUrlLoading(view, request);
         }
 
         @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            //do you  work
+            Log.i("Info", "BaseWebActivity onPageStarted");
         }
     };
 
-    final WebChromeClient chromeClient = new WebChromeClient() {
+    private com.just.agentweb.WebChromeClient mWebChromeClient = new com.just.agentweb.WebChromeClient() {
 
         /**
-         * 8(Android 2.2) <= API <= 10(Android 2.3)回调此方法
+         //         * 8(Android 2.2) <= API <= 10(Android 2.3)回调此方法
          */
         public void openFileChooser(ValueCallback<Uri> uploadMsg) {
             Log.e("WangJ", "运行方法 openFileChooser-1");
             // (2)该方法回调时说明版本API < 21，此时将结果赋值给 mUploadCallbackBelow，使之 != null
+
+            requestPermission();
             mUploadCallbackBelow = uploadMsg;
             Log.i(TAG, "openFileChooser:指定拍照存储位置的方式调起相机 ");
-//            takePhoto();
-            requestPermission();
+//                    takePhoto();
+
         }
 
         /**
          * 11(Android 3.0) <= API <= 15(Android 4.0.3)回调此方法
          */
-        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
-            Log.e("WangJ", "运行方法 openFileChooser-2 (acceptType: " + acceptType + ")");
-            // 这里我们就不区分input的参数了，直接用拍照
+//        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
+//            Log.e("WangJ", "运行方法 openFileChooser-2 (acceptType: " + acceptType + ")");
+//            // 这里我们就不区分input的参数了，直接用拍照
+//            openFileChooser(uploadMsg);
+//        }
+
+        @Override
+        public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
             openFileChooser(uploadMsg);
         }
 
@@ -204,12 +209,61 @@ public class CustomerFragment extends BaseFragment {
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
             Log.e("WangJ", "运行方法 onShowFileChooser");
             // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
-            mUploadCallbackAboveL = filePathCallback;
+//                    takePhoto();
             requestPermission();
+            mUploadCallbackAboveL = filePathCallback;
+
             Log.i(TAG, "onShowFileChooser:指定拍照存储位置的方式调起相机 ");
             return true;
         }
     };
+
+
+//    final WebChromeClient chromeClient = new WebChromeClient() {
+//
+//        /**
+//         * 8(Android 2.2) <= API <= 10(Android 2.3)回调此方法
+//         */
+//        public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+//            Log.e("WangJ", "运行方法 openFileChooser-1");
+//            // (2)该方法回调时说明版本API < 21，此时将结果赋值给 mUploadCallbackBelow，使之 != null
+//            mUploadCallbackBelow = uploadMsg;
+//            Log.i(TAG, "openFileChooser:指定拍照存储位置的方式调起相机 ");
+////            takePhoto();
+//            requestPermission();
+//        }
+//
+//        /**
+//         * 11(Android 3.0) <= API <= 15(Android 4.0.3)回调此方法
+//         */
+//        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
+//            Log.e("WangJ", "运行方法 openFileChooser-2 (acceptType: " + acceptType + ")");
+//            // 这里我们就不区分input的参数了，直接用拍照
+//            openFileChooser(uploadMsg);
+//        }
+//
+//        /**
+//         * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
+//         */
+//        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+//            Log.e("WangJ", "运行方法 openFileChooser-3 (acceptType: " + acceptType + "; capture: " + capture + ")");
+//            // 这里我们就不区分input的参数了，直接用拍照
+//            openFileChooser(uploadMsg);
+//        }
+//
+//        /**
+//         * API >= 21(Android 5.0.1)回调此方法
+//         */
+//        @Override
+//        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+//            Log.e("WangJ", "运行方法 onShowFileChooser");
+//            // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
+//            mUploadCallbackAboveL = filePathCallback;
+//            requestPermission();
+//            Log.i(TAG, "onShowFileChooser:指定拍照存储位置的方式调起相机 ");
+//            return true;
+//        }
+//    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -435,56 +489,56 @@ public class CustomerFragment extends BaseFragment {
     }
 
     /*从通讯录导入*/
-    private List<ContactColumnBean> getPhoneContacts() {
-        ContentResolver resolver = getActivity().getContentResolver();
-        Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-        if (cursor != null) {
-            List<ContactColumnBean> beanList = new ArrayList<>();
-            while (cursor.moveToNext()) {
-                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID)); // id
-                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)); // 姓名
-                String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)); // 电话
-                beanList.add(new ContactColumnBean(id, name, number));
-                Log.i(TAG, "getPhoneContacts: " + id + " " + name + " " + number);
-            }
-            cursor.close();
-            return beanList;
-        }
-        return null;
-    }
+//    private List<ContactColumnBean> getPhoneContacts() {
+//        ContentResolver resolver = getActivity().getContentResolver();
+//        Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+//        if (cursor != null) {
+//            List<ContactColumnBean> beanList = new ArrayList<>();
+//            while (cursor.moveToNext()) {
+//                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID)); // id
+//                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)); // 姓名
+//                String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)); // 电话
+//                beanList.add(new ContactColumnBean(id, name, number));
+//                Log.i(TAG, "getPhoneContacts: " + id + " " + name + " " + number);
+//            }
+//            cursor.close();
+//            return beanList;
+//        }
+//        return null;
+//    }
 
     /*从通讯录导入*/
-    private void insertContact(List<ContactColumnBean> beans) {
-        if (null != beans && beans.size() > 0) {
-            JSONArray jsonArray = new JSONArray();
-            for (ContactColumnBean bean : beans) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("customerName", bean.getName());
-                map.put("telephone", Arrays.asList(bean.getNumber()));
-                jsonArray.put(new JSONObject(map));
-            }
-            ViseHttp.POST(ApiConstant.INSERT_CONTACT)
-                    .setJson(jsonArray)
-                    .request(new ACallback<BaseTResp2>() {
-                        @Override
-                        public void onSuccess(BaseTResp2 data) {
-                            if (data.isSuccess()) {
-                                ToastUtil.show("上传成功！");
-                                mAgentWeb.getWebCreator().getWebView().reload();
-                            } else {
-                                ToastUtil.show(data.getMsg());
-                            }
-                        }
-
-                        @Override
-                        public void onFail(int errCode, String errMsg) {
-                            ToastUtil.show(errMsg);
-                        }
-                    });
-        } else {
-            ToastUtil.show("通讯录为空");
-        }
-    }
+//    private void insertContact(List<ContactColumnBean> beans) {
+//        if (null != beans && beans.size() > 0) {
+//            JSONArray jsonArray = new JSONArray();
+//            for (ContactColumnBean bean : beans) {
+//                Map<String, Object> map = new HashMap<>();
+//                map.put("customerName", bean.getName());
+//                map.put("telephone", Arrays.asList(bean.getNumber()));
+//                jsonArray.put(new JSONObject(map));
+//            }
+//            ViseHttp.POST(ApiConstant.INSERT_CONTACT)
+//                    .setJson(jsonArray)
+//                    .request(new ACallback<BaseTResp2>() {
+//                        @Override
+//                        public void onSuccess(BaseTResp2 data) {
+//                            if (data.isSuccess()) {
+//                                ToastUtil.show("上传成功！");
+//                                mAgentWeb.getWebCreator().getWebView().reload();
+//                            } else {
+//                                ToastUtil.show(data.getMsg());
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFail(int errCode, String errMsg) {
+//                            ToastUtil.show(errMsg);
+//                        }
+//                    });
+//        } else {
+//            ToastUtil.show("通讯录为空");
+//        }
+//    }
 
     @Override
     public void onDestroy() {
@@ -493,10 +547,6 @@ public class CustomerFragment extends BaseFragment {
         }
         super.onDestroy();
     }
-
-//    @Override
-//    public void setTitleBar(TitleBarView titleBar) {
-//    }
 
     @Override
     public int getContentLayout() {

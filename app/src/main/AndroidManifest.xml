@@ -19,6 +19,10 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" /> <!-- 相机 SD卡权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 极光推送 -->
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
     <permission
         android:name="com.ph.financa.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />

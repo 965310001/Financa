@@ -206,6 +206,7 @@ public class LoginActivity extends BaseActivity {
                                         if (data.isSuccess() || data.getCode() == 40102002) {
                                             loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
                                         } else {
+                                            Log.i(TAG, "onSuccess: " + data.getMsg());
                                             ToastUtil.show(data.getMsg());
                                         }
                                     }
@@ -237,7 +238,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onError(int i, String s) {
-                subscriber.onNext(String.format("%d||%s", i, s));
+                subscriber.onNext(String.format("%d//%s", i, s));
                 subscriber.onComplete();
             }
 
@@ -251,8 +252,8 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onNext(Object obj) {
+                hideLoading();
                 if (obj instanceof Integer) {
-                    hideLoading();
                     Log.i(TAG, "onSuccess: 环信登录成功");
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();
@@ -269,15 +270,19 @@ public class LoginActivity extends BaseActivity {
                     }
                     finish();
                 } else {
+                    Log.i(TAG, "onNext: "+id);
                     Log.i(TAG, "环信登录失败:" + obj.toString());
                     String string = obj.toString();
-                    if (!TextUtils.isEmpty(string) && string.contains("||")) {
+                    if (!TextUtils.isEmpty(string) && string.contains("//")) {
                         try {
-                            String[] strings = string.split("||");
+                            String[] strings = string.split("//");
+                            Log.i(TAG, "onNext: " +" "+strings[0]+" "+strings[1]);
                             int code = Integer.valueOf(strings[0]).intValue();
-                            if (code == Emerror.USER_ALREADY_LOGIN.getCode()) {
+                            if (Integer.valueOf(code) == Emerror.USER_ALREADY_LOGIN.getCode()) {
                                 EMClient.getInstance().logout(true);
                                 loginEaseMob(id, password, code);
+                            }else{
+                                ToastUtil.show(strings[1]);
                             }
                         } catch (Exception e) {
                             ToastUtil.show(e.toString());

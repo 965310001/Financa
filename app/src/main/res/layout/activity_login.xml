@@ -7,15 +7,21 @@
     android:orientation="vertical"
     tools:context=".activity.LoginActivity">
 
-    <TextView
+    <!--<TextView-->
+    <!--android:layout_width="@dimen/dp_100"-->
+    <!--android:layout_height="@dimen/dp_100"-->
+    <!--android:layout_marginTop="@dimen/dp_92"-->
+    <!--android:background="@drawable/shape_bg_logo"-->
+    <!--android:gravity="center"-->
+    <!--android:text="logo"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="@dimen/sp_28" />-->
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="@dimen/dp_100"
         android:layout_height="@dimen/dp_100"
         android:layout_marginTop="@dimen/dp_92"
-        android:background="@drawable/shape_bg_logo"
-        android:gravity="center"
-        android:text="logo"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_28" />
+        android:background="@mipmap/logo" />
 
     <TextView
         android:layout_width="wrap_content"

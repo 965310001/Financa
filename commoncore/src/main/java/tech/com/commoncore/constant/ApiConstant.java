@@ -67,7 +67,7 @@ public interface ApiConstant {
     /*我的收藏*/
     String COLLECTION = "h5/collection";
     /*消息通知*/
-    String message = "h5/message";
+    String MESSAGE = "h5/message";
     /*公告通知*/
     String MESSAGE_NOTICE = "h5/message-notice";
     /*消息详情*/
@@ -139,4 +139,7 @@ public interface ApiConstant {
 
     /*消息模块-获取用户未读统计*/
     String MESSAGE_COUNT = "api/message/count";
+
+    /*H5支付页面*/
+    String PAYMENT = "h5/payment";
 }

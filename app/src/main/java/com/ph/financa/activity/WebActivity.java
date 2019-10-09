@@ -140,7 +140,7 @@ public class WebActivity extends BaseTitleActivity {
 
         /**
          //         * 8(Android 2.2) <= API <= 10(Android 2.3)回调此方法
-                  */
+         */
         public void openFileChooser(ValueCallback<Uri> uploadMsg) {
             Log.e("WangJ", "运行方法 openFileChooser-1");
             // (2)该方法回调时说明版本API < 21，此时将结果赋值给 mUploadCallbackBelow，使之 != null
@@ -160,8 +160,6 @@ public class WebActivity extends BaseTitleActivity {
 //            // 这里我们就不区分input的参数了，直接用拍照
 //            openFileChooser(uploadMsg);
 //        }
-
-
         @Override
         public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
             openFileChooser(uploadMsg);
@@ -488,7 +486,10 @@ public class WebActivity extends BaseTitleActivity {
                     ApiConstant.DATA_LIB,
                     SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
                     SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
-            FastUtil.startActivity(mContext, WebActivity.class, bundle);
+
+//            FastUtil.startActivity(mContext, WebActivity.class, bundle);
+
+            runOnUiThread(() -> mAgentWeb.getWebCreator().getWebView().loadUrl(bundle.getString(Constant.URL)));
 
         }
 
@@ -679,9 +680,12 @@ public class WebActivity extends BaseTitleActivity {
                 if (TextUtils.isEmpty(description)) {
                     description = title;
                 }
+                if (description.length() > 700) {
+                    description = description.substring(0, 700);
+                }
                 share(target, shareLink, imgUrl, title, description);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.i(TAG, "shareArticleData: " + e.toString());
             }
         }
     }

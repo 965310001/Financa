@@ -32,22 +32,6 @@
 
     </RelativeLayout>
 
-    <!--<com.google.android.material.tabs.TabLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"></com.google.android.material.tabs.TabLayout>-->
-
-    <!--
-        <com.flyco.tablayout.SlidingTabLayout
-        android:id="@+id/tab_main"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_80"
-        android:background="#3F9FE0"
-        app:tl_textAllCaps="true"
-        app:tl_textBold="BOTH"
-        app:tl_textsize="14sp"/>
-    -->
-
-
     <com.flyco.tablayout.CommonTabLayout
         android:id="@+id/tab_main"
         android:layout_width="match_parent"
@@ -60,24 +44,6 @@
         app:tl_textSelectColor="#407DFC"
         app:tl_textUnselectColor="@color/C_333333"
         app:tl_textsize="16sp" />
-
-    <!--<com.flyco.tablayout.CommonTabLayout-->
-    <!--android:id="@+id/tab_main"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="48dp"-->
-    <!--android:layout_marginTop="@dimen/dp_10"-->
-    <!--android:background="@color/colorAccent"-->
-    <!--app:tl_divider_color="#1AFFFFFF"-->
-    <!--app:tl_divider_padding="13dp"-->
-    <!--app:tl_divider_width="1dp"-->
-    <!--app:tl_indicator_color="#FFFFFF"-->
-    <!--app:tl_indicator_height="1.5dp"-->
-    <!--app:tl_tab_padding="22dp"-->
-    <!--app:tl_tab_space_equal="true"-->
-    <!--app:tl_textSelectColor="#FFFFFF"-->
-    <!--app:tl_textUnselectColor="#66FFFFFF"-->
-    <!--app:tl_underline_color="#1AFFFFFF"-->
-    <!--app:tl_underline_height="1dp" />-->
 
     <FrameLayout
         android:id="@+id/fl_see"

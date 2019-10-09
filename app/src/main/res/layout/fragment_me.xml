@@ -126,6 +126,7 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:text="我的名片"
                 android:textColor="#ff333333"
                 android:textSize="17sp" />
@@ -164,7 +165,9 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:text="我的收藏"
+
                 android:textColor="#ff333333"
                 android:textSize="17sp" />
 
@@ -212,8 +215,10 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:text="我的产品"
                 android:textColor="#ff333333"
+
                 android:textSize="17sp" />
 
             <TextView
@@ -261,7 +266,9 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_weight="1"
+                android:gravity="left"
                 android:text="历史分享"
+
                 android:textColor="#ff333333"
                 android:textSize="17sp" />
 

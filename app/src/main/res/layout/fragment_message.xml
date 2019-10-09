@@ -21,9 +21,16 @@
         app:tl_textUnselectColor="@color/C_333333"
         app:tl_textsize="14sp" />
 
-    <FrameLayout
-        android:id="@+id/container"
+    <!--<FrameLayout-->
+        <!--android:id="@+id/fl_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="gone" />-->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>
 

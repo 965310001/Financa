@@ -1,4 +1,4 @@
-package tech.com.commoncore.utils;
+package com.hyphenate.easeui.utils;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -650,7 +650,7 @@ public class DateUtil {
     }
 
     //获取当天的开始时间
-    public static java.util.Date getDayBegin() {
+    public static Date getDayBegin() {
         Calendar cal = new GregorianCalendar();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -659,7 +659,7 @@ public class DateUtil {
         return cal.getTime();
     }
     //获取当天的结束时间
-    public static java.util.Date getDayEnd() {
+    public static Date getDayEnd() {
         Calendar cal = new GregorianCalendar();
         cal.set(Calendar.HOUR_OF_DAY, 23);
         cal.set(Calendar.MINUTE, 59);
@@ -772,7 +772,7 @@ public class DateUtil {
         return getDayEndTime(calendar.getTime());
     }
     //获取本年的开始时间
-    public static java.util.Date getBeginDayOfYear() {
+    public static Date getBeginDayOfYear() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, getNowYear());
         // cal.set
@@ -782,7 +782,7 @@ public class DateUtil {
         return getDayStartTime(cal.getTime());
     }
     //获取本年的结束时间
-    public static java.util.Date getEndDayOfYear() {
+    public static Date getEndDayOfYear() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, getNowYear());
         cal.set(Calendar.MONTH, Calendar.DECEMBER);

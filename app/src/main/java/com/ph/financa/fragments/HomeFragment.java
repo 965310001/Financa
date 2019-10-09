@@ -95,6 +95,12 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
         ToastUtil.show("分享失败");
     }
 
+    private String getUrl(String url) {
+        return String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, url,
+                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
+    }
+
     class AndroidInterface extends AndroidObject {
 
         private AgentWeb agent;
@@ -108,8 +114,9 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
 
         @JavascriptInterface
         public void toViperPage(String content) {
-            Log.i(TAG, "toViperPage: " + content);
-            FastUtil.startActivity(mContext, VipActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("url", getUrl(ApiConstant.PAYMENT));
+            FastUtil.startActivity(mContext, VipActivity.class, bundle);
         }
 
         @JavascriptInterface

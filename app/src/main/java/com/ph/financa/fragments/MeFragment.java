@@ -12,7 +12,6 @@ import com.hyphenate.easeui.EaseConstant;
 import com.ph.financa.R;
 import com.ph.financa.activity.CustomerActivity;
 import com.ph.financa.activity.SettingActivity;
-import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.MessageCountBean;
@@ -127,12 +126,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                             int count = data.getData().getUnreadCount();
                             if (count > 0) {
                                 mTv1.setVisibility(View.VISIBLE);
-                                mTvMessage.setVisibility(View.VISIBLE);
+//                                mTvMessage.setVisibility(View.VISIBLE);
 
                                 mTvMessage.setText(String.format("%s", count));
                             }else{
                                 mTv1.setVisibility(View.GONE);
-                                mTvMessage.setVisibility(View.GONE);
+//                                mTvMessage.setVisibility(View.GONE);
                             }
                         }
                     }
@@ -243,7 +242,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.ic_crown_open:
             case R.id.ic_open:
                 // TODO: 2019/9/9 开通688会员
-                goActivity(VipActivity.class, null);
+                bundle.putString("url", getUrl(ApiConstant.PAYMENT));
+                goActivity(WebActivity.class, bundle);
                 break;
 
             case R.id.ic_head:
@@ -269,7 +269,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.ll_message:
                 // TODO: 2019/9/9 消息通知
-                bundle.putString("url", getUrl(ApiConstant.MESSAGE_NOTICE));
+                bundle.putString("url", getUrl(ApiConstant.MESSAGE));
                 goActivity(WebActivity.class, bundle);
                 break;
             case R.id.ll_service:

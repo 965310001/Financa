@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +27,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.utils.DateUtil;
 import com.hyphenate.easeui.widget.EaseConversationList;
 
 import java.util.ArrayList;
@@ -214,6 +216,12 @@ public class EaseConversationListFragment extends EaseBaseFragment {
             for (EMConversation conversation : conversations.values()) {
                 if (conversation.getAllMessages().size() != 0) {
                     sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
+                    Log.i("TAG", "loadConversationList: " + conversation.getLastMessage().getMsgTime());
+                    Log.i("TAG", "loadConversationList:本周 " + DateUtil.getEndDayOfWeek().getTime());
+                    Log.i("TAG", "loadConversationList:上周 " + DateUtil.getEndDayOfLastWeek().getTime());
+                    Log.i("TAG", "loadConversationList:一月内 " + DateUtil.getEndDayOfMonth().getTime());
+//                    Log.i("TAG", "loadConversationList:半年内 " + DateUtil.getEndDayOfWeek().getTime());
+
                 }
             }
         }

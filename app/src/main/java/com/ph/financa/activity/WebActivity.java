@@ -152,6 +152,12 @@ public class WebActivity extends BaseTitleActivity {
 
         }
 
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+
+        }
+
         /**
          * 11(Android 3.0) <= API <= 15(Android 4.0.3)回调此方法
          */

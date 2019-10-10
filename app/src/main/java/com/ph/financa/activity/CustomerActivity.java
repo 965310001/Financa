@@ -2,6 +2,7 @@ package com.ph.financa.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.aries.ui.view.title.TitleBarView;
@@ -34,8 +35,6 @@ public class CustomerActivity extends BaseTitleActivity {
         } else {
             mTitleBar.setTitleMainText("我的客服");
         }
-
-
 
 //       /* String id;
 //        if (intent.hasExtra("id")) {
@@ -86,6 +85,7 @@ public class CustomerActivity extends BaseTitleActivity {
             message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
             message.setAttribute("nickName", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
 
+            Log.i(TAG, "onSetMessageAttributes: "+getIntent().getStringExtra(FriendTable.FRIEND_HEAD)+" "+getIntent().getStringExtra(FriendTable.FRIEND_NAME));
             message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
             message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
         }

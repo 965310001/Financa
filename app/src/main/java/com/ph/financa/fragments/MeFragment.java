@@ -95,7 +95,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         getUnreadMsgCount();
 
         getMessagePull();
-        getMessageCount();
+        /*getMessageCount();*/
     }
 
     /*用户拉取信息*/
@@ -129,7 +129,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 //                                mTvMessage.setVisibility(View.VISIBLE);
 
                                 mTvMessage.setText(String.format("%s", count));
-                            }else{
+                            } else {
                                 mTv1.setVisibility(View.GONE);
 //                                mTvMessage.setVisibility(View.GONE);
                             }
@@ -187,6 +187,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         getUserInfo();
 
         getUnreadMsgCount();
+
+        getMessageCount();
     }
 
     /*获取用户信息*/

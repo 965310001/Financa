@@ -56,13 +56,13 @@ public class PasteArticleActivity extends BaseTitleActivity {
         super.onPause();
     }
 
-    @Override
-    public void onResume() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onResume();
-        }
-        super.onResume();
-    }
+//    @Override
+//    public void onResume() {
+//        if (null != mAgentWeb) {
+//            mAgentWeb.getWebLifeCycle().onResume();
+//        }
+//        super.onResume();
+//    }
 
     @Override
     public void setTitleBar(TitleBarView titleBar) {

@@ -305,13 +305,13 @@ public class HomeFragment2 extends BaseFragment implements WbShareCallback {
         super.onPause();
     }
 
-    @Override
-    public void onResume() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onResume();
-        }
-        super.onResume();
-    }
+//    @Override
+//    public void onResume() {
+//        if (null != mAgentWeb) {
+//            mAgentWeb.getWebLifeCycle().onResume();
+//        }
+//        super.onResume();
+//    }
 
     /*微博分享*/
     private void wbShare(String shareLink, String imgUrl, String title, String description) {

@@ -215,13 +215,12 @@ public class EaseConversationListFragment extends EaseBaseFragment {
         synchronized (conversations) {
             for (EMConversation conversation : conversations.values()) {
                 if (conversation.getAllMessages().size() != 0) {
-                    sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
+                    sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
                     Log.i("TAG", "loadConversationList: " + conversation.getLastMessage().getMsgTime());
                     Log.i("TAG", "loadConversationList:本周 " + DateUtil.getEndDayOfWeek().getTime());
                     Log.i("TAG", "loadConversationList:上周 " + DateUtil.getEndDayOfLastWeek().getTime());
                     Log.i("TAG", "loadConversationList:一月内 " + DateUtil.getEndDayOfMonth().getTime());
 //                    Log.i("TAG", "loadConversationList:半年内 " + DateUtil.getEndDayOfWeek().getTime());
-
                 }
             }
         }

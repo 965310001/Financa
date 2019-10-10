@@ -2,7 +2,6 @@ package com.hyphenate.easeui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,10 +131,32 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
         EMMessage message = conversation.getLastMessage();
         try {
             Map<String, Object> map = message.ext();
-            Log.i(TAG, "onSetMessageAttributes: " + map.get("UserPortrait"));
+            /*Log.i(TAG, "onSetMessageAttributes: " + map.get("UserPortrait"));*/
 
-            holder.name.setText(map.get("otherUserNickName").toString());
-            String otherUserPortrait = map.get("otherUserPortrait").toString();
+            String otherUserPortrait;
+
+
+            if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
+                    message.conversationId().equals("1174970756044423168")) {
+//                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+//                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+
+
+                holder.name.setText(map.get("nickName").toString());
+                otherUserPortrait = map.get("UserPortrait").toString();
+            } else {
+//                GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+//                /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+//                EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+                holder.name.setText(map.get("otherUserNickName").toString());
+                otherUserPortrait = map.get("otherUserPortrait").toString();
+
+            }
+
+
+//            holder.name.setText(map.get("otherUserNickName").toString());
+//            String otherUserPortrait = map.get("otherUserPortrait").toString();
+
             if (!TextUtils.isEmpty(otherUserPortrait)) {
                 if (otherUserPortrait.equals("客服")) {
                     GlideManager.loadCircleImg(R.drawable.ic_service, holder.avatar);

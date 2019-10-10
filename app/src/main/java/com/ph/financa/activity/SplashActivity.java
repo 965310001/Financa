@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.ph.financa.MainActivity;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.AppStatus;
+import com.ph.financa.activity.bean.AppStatusManager;
 import com.ph.financa.constant.Constant;
 
 import tech.com.commoncore.base.BaseActivity;
@@ -46,6 +48,7 @@ public class SplashActivity extends BaseActivity {
             } else {
                 FastUtil.startActivity(mContext, LoginActivity.class);
             }
+            AppStatusManager.getInstance().setAppStatus(AppStatus.STATUS_NORMAL);
 
 //            List<State> states = Arrays.asList(new WelcomeGuideState(), new SendCodeState(), new MainState(), new LoginState());
 //            for (State state : states) {

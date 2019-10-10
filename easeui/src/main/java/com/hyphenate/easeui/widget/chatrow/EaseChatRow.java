@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.Direct;
@@ -151,9 +150,21 @@ public abstract class EaseChatRow extends LinearLayout {
             if (message.direct() == Direct.SEND) {
                 /*EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);*/
                 try {
+//                    Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*垃圾*/
+//                    Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*垃圾*/
+//                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*我*/
+//                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*我*/
                     Map<String, Object> map = message.ext();
 //                    Glide.with(getContext()).load(map.get("UserPortrait").toString()).into(userAvatarView);
-                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+                    if (message.conversationId().equals("1174970756044423168")) {
+                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+                    }else {
+                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+                    }
+
                 } catch (Exception e) {
                     Log.i(TAG, "setUpBaseView: " + e);
                 }
@@ -162,8 +173,17 @@ public abstract class EaseChatRow extends LinearLayout {
 //                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
                 try {
                     Map<String, Object> map = message.ext();
-                    Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);
-                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+//                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+//                    /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+//                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+                    if (message.conversationId().equals("1174970756044423168")) {
+                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+                    }else {
+                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+                    }
                 } catch (Exception e) {
                     Log.i(TAG, "setUpBaseView: " + e);
                 }

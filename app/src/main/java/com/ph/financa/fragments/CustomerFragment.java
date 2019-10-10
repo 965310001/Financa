@@ -84,6 +84,9 @@ public class CustomerFragment extends BaseFragment {
 
     @Override
     public void onResume() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onResume();
+        }
         super.onResume();
         if (SPHelper.getBooleanSF(mContext, Constant.ISREFRESH, false)) {
             mAgentWeb.getWebCreator().getWebView().reload();

@@ -28,8 +28,11 @@ import com.next.easynavigation.constant.Anim;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.ph.financa.activity.PasteArticleActivity;
+import com.ph.financa.activity.SplashActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.WriteArticleActivity;
+import com.ph.financa.activity.bean.AppStatus;
+import com.ph.financa.activity.bean.AppStatusManager;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.UserBean;
 import com.ph.financa.constant.Constant;
@@ -128,6 +131,18 @@ public class MainActivity extends BaseActivity {
     private void init() {
         JPushInterface.init(getApplicationContext());
         JPushManager.getInstance().setAlias(mContext, SPHelper.getStringSF(mContext, Constant.USERID, ""));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (AppStatusManager.getInstance().getAppStatus() == AppStatus.STATUS_RECYVLE){
+            //跳到闪屏页
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
     }
 
     @Override

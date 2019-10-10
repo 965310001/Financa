@@ -51,6 +51,7 @@ import com.hyphenate.easeui.model.EaseCompat;
 import com.hyphenate.easeui.model.EaseDingMessageHelper;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.easeui.utils.SPHelper;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
 import com.hyphenate.easeui.widget.EaseChatExtendMenu;
@@ -157,7 +158,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         chatType = fragmentArgs.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
         // userId you are chat with or group id
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
-
+        SPHelper.setStringSF(getContext(), "USERID", fragmentArgs.getString("USERID"));
+        Log.i(TAG, "onActivityCreated: "+SPHelper.getStringSF(getContext(), "USERID"));
         this.turnOnTyping = turnOnTyping();
 
         super.onActivityCreated(savedInstanceState);
@@ -1042,7 +1044,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
         cameraFile = new File(PathUtil.getInstance().getImagePath(),
                 EMClient.getInstance().getCurrentUser() + System.currentTimeMillis() + ".jpg");
-        Log.i(TAG, "selectPicFromCamera: "+cameraFile.getPath());
+        Log.i(TAG, "selectPicFromCamera: " + cameraFile.getPath());
         cameraFile.getParentFile().mkdirs();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addCategory(Intent.CATEGORY_DEFAULT);

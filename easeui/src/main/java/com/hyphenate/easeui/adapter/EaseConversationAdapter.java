@@ -28,6 +28,7 @@ import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseSmileUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.utils.GlideManager;
+import com.hyphenate.easeui.utils.SPHelper;
 import com.hyphenate.easeui.widget.EaseConversationList.EaseConversationListHelper;
 import com.hyphenate.easeui.widget.EaseImageView;
 import com.hyphenate.util.DateUtils;
@@ -137,7 +138,7 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
 
 
             if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
-                    message.conversationId().equals("1174970756044423168")) {
+                    message.conversationId().equals(SPHelper.getStringSF(getContext(), "USERID"))) {
 //                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
 //                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
 

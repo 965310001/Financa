@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import androidx.viewpager.widget.ViewPager;
 
-import com.ph.financa.MainActivity;
+import com.hyphenate.easeui.utils.GlideManager;
 import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
 import com.zhengsr.viewpagerlib.bean.PageBean;
@@ -50,7 +50,8 @@ public class WelcomeGuideActivity extends BaseActivity {
         bannerViewPager.setPageListener(bean, R.layout.image_layout, (PageHelperListener<Integer>) (view, data) -> {
             //通过获取到这个view，你可以随意定制你的内容
             ImageView imageView = view.findViewById(R.id.iv_bg);
-            imageView.setImageResource(data);
+            /*imageView.setImageResource(data);*/
+            GlideManager.loadImg(data, imageView);
         });
 
         bannerViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

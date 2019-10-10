@@ -64,42 +64,30 @@ public class ChatListFragment extends BaseFragment {
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
         if (conversations.size() > 1) {
             EaseConversationListFragment fragment = new EaseConversationListFragment();
+            Bundle bundle1 = new Bundle();
+            bundle1.putString("TIME", mParam1);
+            fragment.setArguments(bundle1);
             fragment.hideTitleBar();
             fragment.setConversationListItemClickListener(conversation -> {
                 try {
                     Bundle bundle = new Bundle();
-                    Map<String, Object> ext = conversation.getLastMessage().ext();
+                    conversation.conversationId();
+                    Map<String, Object> ext = conversation.getLatestMessageFromOthers().ext();
                     Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*我*/
                     Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*我*/
-
                     Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
                     Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*她*/
 
                     if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
                             conversation.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
-
-                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("UserPortrait").toString());
-                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("nickName").toString());
-//                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-//                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-
-//                        holder.name.setText(map.get("otherUserNickName").toString());
-//                        otherUserPortrait = map.get("otherUserPortrait").toString();
-                    } else {
+                        Log.i(TAG, "getLastMessage:11 ");
                         bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
                         bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
-
-//                GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
-//                /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
-//                EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-
-//                        holder.name.setText(map.get("nickName").toString());
-//                        otherUserPortrait = map.get("UserPortrait").toString();
+                    } else {
+                        Log.i(TAG, "getLastMessage: 22");
+                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
+                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
                     }
-
-
-//                    bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
-//                    bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
                     bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
                     FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
                 } catch (Exception e) {

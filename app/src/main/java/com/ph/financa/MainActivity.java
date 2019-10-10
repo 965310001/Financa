@@ -19,9 +19,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMMultiDeviceListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.NetUtils;
 import com.next.easynavigation.constant.Anim;
@@ -57,6 +59,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
@@ -93,19 +96,8 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         isForeground = true;
         super.onResume();
-        getUnreadMsgCount();
     }
 
-    private void getUnreadMsgCount() {
-        /*用户*/
-        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.USERID));
-        if (null!=conversation) {
-            int count = conversation.getUnreadMsgCount();
-            if (count > 0) {
-                mNavigationBar.setMsgPointCount(1, count);
-            }
-        }
-    }
 
     @Override
     protected void onPause() {
@@ -136,7 +128,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (AppStatusManager.getInstance().getAppStatus() == AppStatus.STATUS_RECYVLE){
+        if (AppStatusManager.getInstance().getAppStatus() == AppStatus.STATUS_RECYVLE) {
             //跳到闪屏页
             Intent intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
@@ -254,8 +246,53 @@ public class MainActivity extends BaseActivity {
 
         getUserInfo();
 
+        getUnreadMsgCount();
         /*mNavigationBar.setMsgPointCount(1,10);*/
     }
+
+    private void getUnreadMsgCount() {
+        /*用户*/
+        EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                Log.i(TAG, "onMessageReceived: " + messages.size());
+                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.USERID));
+                if (null != conversation) {
+                    int count = conversation.getUnreadMsgCount();
+                    if (count > 0) {
+                        Log.i(TAG, "onMessageReceived: ");
+                        mNavigationBar.setMsgPointCount(1, count);
+                    }
+                }
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages) {
+
+            }
+
+            @Override
+            public void onMessageRead(List<EMMessage> messages) {
+
+            }
+
+            @Override
+            public void onMessageDelivered(List<EMMessage> messages) {
+
+            }
+
+            @Override
+            public void onMessageRecalled(List<EMMessage> messages) {
+
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change) {
+
+            }
+        });
+    }
+
 
     private void loginEaseMob(String id, String password) {
         try {
@@ -471,10 +508,23 @@ public class MainActivity extends BaseActivity {
 //                }
 //                break;
 //        }
+
+        ShortcutBadger.applyCount(mContext, 2); //for 1.1.3
+
+
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
+
+
+        /*设置聊天条数*/
+//        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
+
+        /*删除图标条数*/
+//        ShortcutBadger.removeCount(mContext);
+
+
     }
 
 //    @Override

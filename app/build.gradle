@@ -18,7 +18,7 @@ android {
 
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86','x86_64','mips'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
     }
@@ -93,4 +93,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation project(path: ':WaveSideBar')
 
+
+    /*应用图标显示未读消息数*/
+    implementation "me.leolin:ShortcutBadger:1.1.22@aar"
 }

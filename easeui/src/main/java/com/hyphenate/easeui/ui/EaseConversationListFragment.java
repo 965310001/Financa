@@ -83,8 +83,14 @@ public class EaseConversationListFragment extends EaseBaseFragment {
 
     @Override
     protected void setUpView() {
-        conversationList.addAll(loadConversationList());
-        conversationListView.init(conversationList);
+        List<EMConversation> collection = loadConversationList();
+        if (null != collection && collection.size() > 0) {
+            conversationList.addAll(collection);
+            conversationListView.init(conversationList);
+            getView().findViewById(R.id.ll_blank).setVisibility(View.GONE);
+        } else {
+            getView().findViewById(R.id.ll_blank).setVisibility(View.VISIBLE);
+        }
 
         if (listItemClickListener != null) {
             conversationListView.setOnItemClickListener(new OnItemClickListener() {
@@ -213,10 +219,28 @@ public class EaseConversationListFragment extends EaseBaseFragment {
          * so use synchronized to make sure timestamp of last message won't change.
          */
         synchronized (conversations) {
+            String time = getArguments().getString("TIME");
             for (EMConversation conversation : conversations.values()) {
                 if (conversation.getAllMessages().size() != 0) {
-                    sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
-                    Log.i("TAG", "loadConversationList: " + conversation.getLastMessage().getMsgTime());
+                    long l = conversation.getLastMessage().getMsgTime();
+                    if (time.equals("本周")) {
+                        if (l < DateUtil.getEndDayOfWeek().getTime() && l > DateUtil.getBeginDayOfWeek().getTime()) {
+                            sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
+                        }
+                    } else if (time.equals("上周")) {
+                        if (l < DateUtil.getEndDayOfLastWeek().getTime() && l > DateUtil.getBeginDayOfLastWeek().getTime()) {
+                            sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
+                        }
+                    } else if (time.equals("一月内")) {
+                        if (l < DateUtil.getEndDayOfMonth().getTime() && l > DateUtil.getBeginDayOfMonth().getTime()) {
+                            sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
+                        }
+                    } else if (time.equals("半年内")) {
+                        if (l < DateUtil.getEndDayOfYear().getTime() && l > DateUtil.getBeginDayOfYear().getTime()) {
+                            sortList.add(new Pair<>(conversation.getLastMessage().getMsgTime(), conversation));
+                        }
+                    }
+                    /*Log.i("TAG", "loadConversationList: " + conversation.getLastMessage().getMsgTime());*/
                     Log.i("TAG", "loadConversationList:本周 " + DateUtil.getEndDayOfWeek().getTime());
                     Log.i("TAG", "loadConversationList:上周 " + DateUtil.getEndDayOfLastWeek().getTime());
                     Log.i("TAG", "loadConversationList:一月内 " + DateUtil.getEndDayOfMonth().getTime());

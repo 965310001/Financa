@@ -21,6 +21,7 @@ import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.model.styles.EaseMessageListItemStyle;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.utils.GlideManager;
+import com.hyphenate.easeui.utils.SPHelper;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
 import com.hyphenate.easeui.widget.EaseImageView;
@@ -147,7 +148,7 @@ public abstract class EaseChatRow extends LinearLayout {
         }
         if (userAvatarView != null) {
             //set nickname and avatar
-            if (message.direct() == Direct.SEND) {
+            if (message.direct() == Direct.SEND && message.conversationId().equals(SPHelper.getStringSF(getContext(), "USERID"))) {
                 /*EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);*/
                 try {
 //                    Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*垃圾*/
@@ -156,15 +157,17 @@ public abstract class EaseChatRow extends LinearLayout {
 //                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*我*/
                     Map<String, Object> map = message.ext();
 //                    Glide.with(getContext()).load(map.get("UserPortrait").toString()).into(userAvatarView);
-                    if (message.conversationId().equals("1174970756044423168")) {
-                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
-                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-                    }else {
-                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
-                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-                    }
+//                    if (message.direct() == EMMessage.Direct.SEND && message.conversationId().equals("1174970756044423168")) {
+//                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+//                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+//                    } else {
+//                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+//                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+//                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+//                    }
 
+                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
                 } catch (Exception e) {
                     Log.i(TAG, "setUpBaseView: " + e);
                 }
@@ -173,17 +176,19 @@ public abstract class EaseChatRow extends LinearLayout {
 //                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
                 try {
                     Map<String, Object> map = message.ext();
+                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+                    EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
 //                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
 //                    /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
 //                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-                    if (message.conversationId().equals("1174970756044423168")) {
-                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-                    }else {
-                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
-                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
-                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-                    }
+//                    if (message.direct() == EMMessage.Direct.SEND && message.conversationId().equals("1174970756044423168")) {
+//                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+//                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+//                    } else {
+//                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+//                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+//                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+//                    }
                 } catch (Exception e) {
                     Log.i(TAG, "setUpBaseView: " + e);
                 }

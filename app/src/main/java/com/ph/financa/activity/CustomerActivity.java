@@ -2,7 +2,6 @@ package com.ph.financa.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.aries.ui.view.title.TitleBarView;
@@ -35,36 +34,6 @@ public class CustomerActivity extends BaseTitleActivity {
         } else {
             mTitleBar.setTitleMainText("我的客服");
         }
-
-//       /* String id;
-//        if (intent.hasExtra("id")) {
-//            id = intent.getStringExtra("id");
-//        } else {
-//            id = SPHelper.getStringSF(mContext, Constant.USERID, "");
-//        }*/
-//        TextView mTvSend = findViewById(R.id.tv_send);
-//        AppCompatEditText mEtInput = findViewById(R.id.et_input);
-//        mEtInput.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (editable.length() > 0) {
-//                    mTvSend.setBackgroundResource(R.drawable.shape_send_selector);
-//                    mTvSend.setTextColor(Color.parseColor("#FFFFFF"));
-//                } else {
-//                    mTvSend.setBackgroundResource(R.drawable.shape_send_nomal);
-//                    mTvSend.setTextColor(Color.parseColor("#BBBBBB"));
-//                }
-//            }
-//        });
-
         /*聊天*/
         EaseChatFragment chatFragment = new EaseChatFragment();
         Bundle args = new Bundle();
@@ -73,6 +42,7 @@ public class CustomerActivity extends BaseTitleActivity {
         } else {
             args.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
         }
+        args.putString(Constant.USERID, SPHelper.getStringSF(mContext, Constant.USERID));
         chatFragment.setArguments(args);
         chatFragment.hideTitleBar();
         chatFragment.setChatFragmentHelper(mHelper);
@@ -85,7 +55,6 @@ public class CustomerActivity extends BaseTitleActivity {
             message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
             message.setAttribute("nickName", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
 
-            Log.i(TAG, "onSetMessageAttributes: "+getIntent().getStringExtra(FriendTable.FRIEND_HEAD)+" "+getIntent().getStringExtra(FriendTable.FRIEND_NAME));
             message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
             message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
         }
@@ -122,13 +91,6 @@ public class CustomerActivity extends BaseTitleActivity {
         }
     };
 
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.tv_send:
-//                break;
-//        }
-//    }
-
     @Override
     public void setTitleBar(TitleBarView titleBar) {
     }
@@ -137,5 +99,4 @@ public class CustomerActivity extends BaseTitleActivity {
     public int getContentLayout() {
         return R.layout.activity_customer;
     }
-
 }

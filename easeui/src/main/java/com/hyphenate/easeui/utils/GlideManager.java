@@ -122,7 +122,7 @@ public class GlideManager {
      * @param placeholder
      */
     public static void loadImg(Object obj, ImageView iv, Drawable placeholder) {
-        Glide.with(iv.getContext()).load(obj).apply(getRequestOptions()
+        Glide.with(iv.getContext().getApplicationContext()).load(obj).apply(getRequestOptions()
                 .error(placeholder)
                 .placeholder(placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -150,7 +150,7 @@ public class GlideManager {
      * @param placeholder 占位图
      */
     public static void loadCircleImg(Object obj, ImageView iv, Drawable placeholder) {
-        Glide.with(iv.getContext()).load(obj).apply(getRequestOptions()
+        Glide.with(iv.getContext().getApplicationContext()).load(obj).apply(getRequestOptions()
                 .error(placeholder)
                 .placeholder(placeholder)
                 .fallback(placeholder)
@@ -178,7 +178,7 @@ public class GlideManager {
      * @param isOfficial-是否官方模式圆角
      */
     public static void loadRoundImg(Object obj, ImageView iv, float dp, Drawable placeholder, boolean isOfficial) {
-        Glide.with(iv.getContext()).load(obj).apply(getRequestOptions()
+        Glide.with(iv.getContext().getApplicationContext()).load(obj).apply(getRequestOptions()
                 .fitCenter()
                 .error(placeholder)
                 .placeholder(placeholder)

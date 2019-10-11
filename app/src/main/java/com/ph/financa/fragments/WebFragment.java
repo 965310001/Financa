@@ -9,7 +9,10 @@ import android.widget.FrameLayout;
 
 import com.aries.ui.view.title.TitleBarView;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.IWebLayout;
 import com.ph.financa.R;
+import com.ph.financa.view.SmartRefreshWebLayout;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import tech.com.commoncore.base.BaseTitleFragment;
 
@@ -24,6 +27,9 @@ public class WebFragment extends BaseTitleFragment {
     protected AgentWeb mAgentWeb;
 
     private String mUrl, mTitle;
+
+
+    private SmartRefreshWebLayout mSmartRefreshWebLayout;
 
     public static WebFragment newInstance(String url) {
         return newInstance(url, "");
@@ -77,17 +83,32 @@ public class WebFragment extends BaseTitleFragment {
             mAgentWeb = AgentWeb.with(this)
                     .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
                     .useDefaultIndicator()
+                    .setWebLayout(getWebLayout())
                     .createAgentWeb()
                     .ready()
                     .go(getUrl());
-            Log.i(TAG, "initView: "+getUrl());
+            Log.i(TAG, "initView: " + getUrl());
             Object obj = getJavaObjectValue(mAgentWeb, getContext());
             if (null != obj) {
                 Log.i(TAG, "initView: ");
                 mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), obj);
             }
+
+            final SmartRefreshLayout mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
+            mSmartRefreshLayout.setOnRefreshListener(refreshlayout -> {
+                mAgentWeb.getUrlLoader().reload();
+                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+            });
+            mSmartRefreshLayout.autoRefresh();
+
         }
+
     }
+
+    protected IWebLayout getWebLayout() {
+        return this.mSmartRefreshWebLayout = new SmartRefreshWebLayout(this.getActivity());
+    }
+
 
     @Override
     public void setTitleBar(TitleBarView titleBar) {

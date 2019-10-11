@@ -96,4 +96,8 @@ dependencies {
 
     /*应用图标显示未读消息数*/
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
+
+
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+
 }

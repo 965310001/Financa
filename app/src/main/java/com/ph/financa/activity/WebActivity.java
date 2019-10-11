@@ -524,6 +524,13 @@ public class WebActivity extends BaseTitleActivity {
                 /*mUrl = shareLink;*/
                 mShareUrl = shareLink;
 
+                if (jsonObject.has("positionState")) {
+                    mAdPosition = jsonObject.getString("positionState");
+                }
+
+                if (jsonObject.has("production")) {
+                    mAdContent = jsonObject.getString("production");
+                }
                 String description = mTitle;
                 if (jsonObject.has("telephone")) {
                     description = String.format("从事多年保险顾问，具有丰富的保险理财经验，能为您提供专业的保险服务！电话：%s", jsonObject.getString("telephone"));
@@ -675,6 +682,8 @@ public class WebActivity extends BaseTitleActivity {
                 mTitle = title;
                 mShareUrl = shareLink;
 
+
+                /*新加*/
                 if (jsonObject.has("positionState")) {
                     mAdPosition = jsonObject.getString("positionState");
                 }
@@ -780,11 +789,20 @@ public class WebActivity extends BaseTitleActivity {
             jsonObject.putOpt("shareChannel", mShareChannel);
             jsonObject.putOpt("resourceType", mResourceType);
 
+            /*新加*/
+            JSONArray jsonArray = new JSONArray();
+            JSONObject articleAd = new JSONObject();
+            articleAd.putOpt("adContent", mAdContent);
+            articleAd.putOpt("adPosition", mAdPosition);
+            jsonArray.put(articleAd);
+
             JSONObject shareContent = new JSONObject();
             shareContent.putOpt("author", mAuthor);
             shareContent.putOpt("content", mShareContent);
             shareContent.putOpt("title", mTitle);
             shareContent.putOpt("url", mShareUrl);
+            /*新加*/
+            shareContent.putOpt("articleAd", jsonArray);
             jsonObject.putOpt("shareContent", shareContent);
         } catch (JSONException e) {
             e.printStackTrace();

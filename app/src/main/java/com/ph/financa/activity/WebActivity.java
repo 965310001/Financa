@@ -23,14 +23,17 @@ import androidx.annotation.NonNull;
 import com.aries.ui.view.title.TitleBarView;
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.IWebLayout;
 import com.just.agentweb.WebViewClient;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.utils.AndroidBug5497Workaround;
+import com.ph.financa.view.SmartRefreshWebLayout;
 import com.ph.financa.wxapi.pay.JPayListener;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.sina.weibo.sdk.WbSdk;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
@@ -68,7 +71,10 @@ public class WebActivity extends BaseTitleActivity {
     private int REQUEST_CODE = 1234;
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private ValueCallback<Uri> mUploadCallbackBelow;
-    Uri imageUri;
+    private Uri imageUri;
+
+    private SmartRefreshWebLayout mSmartRefreshWebLayout;
+    private SmartRefreshLayout mSmartRefreshLayout;
 
     @Override
     public void setTitleBar(TitleBarView titleBar) {
@@ -97,43 +103,23 @@ public class WebActivity extends BaseTitleActivity {
                 .useDefaultIndicator()
                 .setWebChromeClient(mWebChromeClient)
                 .setWebViewClient(mWebViewClient)
+                .setWebLayout(getWebLayout())
                 .createAgentWeb()
                 .ready()
                 .go(mUrl);
 
+        mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
+        mSmartRefreshLayout.setOnRefreshListener(refreshlayout -> {
+            mAgentWeb.getUrlLoader().reload();
+            mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+        });
+        mSmartRefreshLayout.autoRefresh();
+
         mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, mContext));
+    }
 
-        /*我的名片*/
-//        if (mUrl.contains(ApiConstant.MY_CARD)) {
-
-//        mAgentWeb.getWebCreator().getWebView().setWebViewClient(mWebViewClient);
-////        mAgentWeb.getWebCreator().getWebView().setWebViewClient(new WebViewClient() {
-////            @Override
-////            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-////                /*Log.i(TAG, "shouldOverrideUrlLoading: " + url);*/
-////                if (url.contains("tel:")) {
-////                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-////                    startActivity(intent);
-////                } else {
-////                    view.loadUrl(url); // 在本WebView打开新的url请求
-////                }
-////                return true;  // 标记新请求已经被处理笑话
-////                // 上边2行合起来，标识所有新链接都在本页面处理，不跳转别的浏览器
-////            }
-////
-////            @Override
-////            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-////                super.onPageStarted(view, url, favicon);
-////            }
-////
-//////            @Override
-//////            public void onPageFinished(WebView view, String url) {
-//////                super.onPageFinished(view, url);
-//////            }
-////        });
-//
-//        mAgentWeb.getWebCreator().getWebView().setWebChromeClient(mWebChromeClient);
-//        }
+    protected IWebLayout getWebLayout() {
+        return this.mSmartRefreshWebLayout = new SmartRefreshWebLayout(mContext);
     }
 
     private com.just.agentweb.WebChromeClient mWebChromeClient = new com.just.agentweb.WebChromeClient() {
@@ -155,7 +141,10 @@ public class WebActivity extends BaseTitleActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-
+            Log.i(TAG, "onProgressChanged: " + newProgress);
+//            if (newProgress==100){
+//                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+//            }
         }
 
         /**

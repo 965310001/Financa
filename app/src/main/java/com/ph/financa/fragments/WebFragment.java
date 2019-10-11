@@ -28,8 +28,8 @@ public class WebFragment extends BaseTitleFragment {
 
     private String mUrl, mTitle;
 
-
     private SmartRefreshWebLayout mSmartRefreshWebLayout;
+    private SmartRefreshLayout mSmartRefreshLayout;
 
     public static WebFragment newInstance(String url) {
         return newInstance(url, "");
@@ -70,14 +70,6 @@ public class WebFragment extends BaseTitleFragment {
     }
 
     @Override
-    public void onDestroy() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onDestroy();
-        }
-        super.onDestroy();
-    }
-
-    @Override
     public void initView(Bundle savedInstanceState) {
         if (!TextUtils.isEmpty(getUrl())) {
             mAgentWeb = AgentWeb.with(this)
@@ -90,25 +82,21 @@ public class WebFragment extends BaseTitleFragment {
             Log.i(TAG, "initView: " + getUrl());
             Object obj = getJavaObjectValue(mAgentWeb, getContext());
             if (null != obj) {
-                Log.i(TAG, "initView: ");
                 mAgentWeb.getJsInterfaceHolder().addJavaObject(getJavaObjectKey(), obj);
             }
 
-            final SmartRefreshLayout mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
+            mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
             mSmartRefreshLayout.setOnRefreshListener(refreshlayout -> {
                 mAgentWeb.getUrlLoader().reload();
                 mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
             });
             mSmartRefreshLayout.autoRefresh();
-
         }
-
     }
 
     protected IWebLayout getWebLayout() {
         return this.mSmartRefreshWebLayout = new SmartRefreshWebLayout(this.getActivity());
     }
-
 
     @Override
     public void setTitleBar(TitleBarView titleBar) {
@@ -118,6 +106,14 @@ public class WebFragment extends BaseTitleFragment {
             titleBar.setVisibility(View.GONE);
             /*mContentView.setPadding(0, DisplayUtil.getStatusBarHeight(), 0, 0);*/
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
     }
 
     @Override

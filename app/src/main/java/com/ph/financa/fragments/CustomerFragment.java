@@ -25,11 +25,14 @@ import androidx.annotation.NonNull;
 
 import com.githang.statusbar.StatusBarCompat;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.IWebLayout;
 import com.ph.financa.R;
 import com.ph.financa.activity.SelectAddressActivity;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.utils.StatusBarUtils;
+import com.ph.financa.view.SmartRefreshWebLayout;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.vise.xsnow.permission.OnPermissionCallback;
 import com.vise.xsnow.permission.PermissionManager;
 
@@ -65,6 +68,8 @@ public class CustomerFragment extends BaseFragment {
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private ValueCallback<Uri> mUploadCallbackBelow;
     private Uri imageUri;
+    private SmartRefreshWebLayout mSmartRefreshWebLayout;
+    private SmartRefreshLayout mSmartRefreshLayout;
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
@@ -89,8 +94,7 @@ public class CustomerFragment extends BaseFragment {
         }
         super.onResume();
         if (SPHelper.getBooleanSF(mContext, Constant.ISREFRESH, false)) {
-            mAgentWeb.getWebCreator().getWebView().reload();
-            Log.i(TAG, "onVisibleChanged: ");
+            mAgentWeb.getUrlLoader().reload();
             SPHelper.setBooleanSF(mContext, Constant.ISREFRESH, false);
         }
     }
@@ -110,9 +114,18 @@ public class CustomerFragment extends BaseFragment {
                     .useDefaultIndicator()
                     .setWebChromeClient(mWebChromeClient)
                     .setWebViewClient(mWebViewClient)
+                    .setWebLayout(getWebLayout())
                     .createAgentWeb()
                     .ready()
                     .go(URL);
+
+            mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
+            mSmartRefreshLayout.setOnRefreshListener(refreshlayout -> {
+                mAgentWeb.getUrlLoader().reload();
+                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+            });
+            mSmartRefreshLayout.autoRefresh();
+
             mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
 
 //            WebSettings settings = mAgentWeb.getWebCreator().getWebView().getSettings();
@@ -138,6 +151,9 @@ public class CustomerFragment extends BaseFragment {
         }
     }
 
+    protected IWebLayout getWebLayout() {
+        return this.mSmartRefreshWebLayout = new SmartRefreshWebLayout(mContext);
+    }
 
 //    final WebViewClient client = new WebViewClient() {
 //        @Override
@@ -182,6 +198,16 @@ public class CustomerFragment extends BaseFragment {
 
         }
 
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            Log.i(TAG, "onProgressChanged: "+newProgress);
+            if (newProgress==100){
+                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+            }
+        }
+
         /**
          * 11(Android 3.0) <= API <= 15(Android 4.0.3)回调此方法
          */
@@ -190,7 +216,6 @@ public class CustomerFragment extends BaseFragment {
 //            // 这里我们就不区分input的参数了，直接用拍照
 //            openFileChooser(uploadMsg);
 //        }
-
         @Override
         public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
             openFileChooser(uploadMsg);

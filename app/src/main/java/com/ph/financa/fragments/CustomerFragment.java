@@ -15,16 +15,20 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
 import com.githang.statusbar.StatusBarCompat;
+import com.just.agentweb.AbsAgentWebSettings;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.IAgentWebSettings;
 import com.just.agentweb.IWebLayout;
 import com.ph.financa.R;
 import com.ph.financa.activity.SelectAddressActivity;
@@ -97,6 +101,7 @@ public class CustomerFragment extends BaseFragment {
             mAgentWeb.getUrlLoader().reload();
             SPHelper.setBooleanSF(mContext, Constant.ISREFRESH, false);
         }
+        Log.i(TAG, "onResume: ");
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -114,6 +119,32 @@ public class CustomerFragment extends BaseFragment {
                     .useDefaultIndicator()
                     .setWebChromeClient(mWebChromeClient)
                     .setWebViewClient(mWebViewClient)
+                    .setAgentWebWebSettings(new AbsAgentWebSettings() {
+                        @Override
+                        protected void bindAgentWebSupport(AgentWeb agentWeb) {
+
+                        }
+
+                        @Override
+                        public IAgentWebSettings toSetting(WebView webView) {
+                            IAgentWebSettings iAgentWebSettings = super.toSetting(webView);
+                            iAgentWebSettings.getWebSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                            iAgentWebSettings.getWebSettings().setDomStorageEnabled(true);
+                            iAgentWebSettings.getWebSettings().setJavaScriptEnabled(true);
+                            iAgentWebSettings.getWebSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                            iAgentWebSettings.getWebSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+                            iAgentWebSettings.getWebSettings().setDomStorageEnabled(true);
+                            iAgentWebSettings.getWebSettings().setDatabaseEnabled(true);
+                            iAgentWebSettings.getWebSettings().setAppCacheEnabled(true);
+                            iAgentWebSettings.getWebSettings().setAllowFileAccess(true);
+                            iAgentWebSettings.getWebSettings().setSavePassword(true);
+                            iAgentWebSettings.getWebSettings().setSupportZoom(true);
+                            iAgentWebSettings.getWebSettings().setBuiltInZoomControls(true);
+                            iAgentWebSettings.getWebSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+                            iAgentWebSettings.getWebSettings().setUseWideViewPort(true);
+                            return iAgentWebSettings;
+                        }
+                    })
                     .setWebLayout(getWebLayout())
                     .createAgentWeb()
                     .ready()
@@ -124,7 +155,7 @@ public class CustomerFragment extends BaseFragment {
                 mAgentWeb.getUrlLoader().reload();
                 mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
             });
-            mSmartRefreshLayout.autoRefresh();
+//            mSmartRefreshLayout.autoRefresh();
 
             mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
 
@@ -172,7 +203,20 @@ public class CustomerFragment extends BaseFragment {
     private com.just.agentweb.WebViewClient mWebViewClient = new com.just.agentweb.WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            return super.shouldOverrideUrlLoading(view, request);
+//            return super.shouldOverrideUrlLoading(view, request);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                view.loadUrl(request.getUrl().toString());
+            } else {
+                view.loadUrl(request.toString());
+            }
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            view.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -202,8 +246,8 @@ public class CustomerFragment extends BaseFragment {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            Log.i(TAG, "onProgressChanged: "+newProgress);
-            if (newProgress==100){
+            Log.i(TAG, "onProgressChanged: " + newProgress);
+            if (newProgress == 100) {
                 mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
             }
         }

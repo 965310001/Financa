@@ -338,6 +338,18 @@
             android:name=".service.BadgeIntentService"
             android:exported="false" />
 
+        <receiver android:name="com.hyphenate.push.platform.mi.EMMiMsgReceiver">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

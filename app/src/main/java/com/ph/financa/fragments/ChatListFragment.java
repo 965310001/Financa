@@ -74,7 +74,7 @@ public class ChatListFragment extends BaseFragment {
                     /*conversation.conversationId();*/
                     Map<String, Object> ext = conversation.getLastMessage().ext();
 
-                    Log.i(TAG, "getLastMessage: "+ext);
+                    Log.i(TAG, "getLastMessage: " + ext);
                     Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*我*/
                     Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*我*/
                     Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
@@ -83,20 +83,20 @@ public class ChatListFragment extends BaseFragment {
                     if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
                             conversation.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
                         Log.i(TAG, "getLastMessage:11 ");
-                        if (null!=ext.get("otherUserNickName")) {
+                        if (null != ext.get("otherUserNickName")) {
                             bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
                         }
-                        if (null!=ext.get("otherUserPortrait")) {
+                        if (null != ext.get("otherUserPortrait")) {
                             bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
                         }
 
                     } else {
                         Log.i(TAG, "getLastMessage: 22");
 
-                        if (null!=ext.get("nickName")) {
+                        if (null != ext.get("nickName")) {
                             bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
                         }
-                        if (null!=ext.get("UserPortrait")) {
+                        if (null != ext.get("UserPortrait")) {
                             bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
                         }
 
@@ -104,6 +104,7 @@ public class ChatListFragment extends BaseFragment {
 //                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
                     }
                     bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
+//                    bundle.putString(EaseConstant.EXTRA_USER_ID, "1174970756044423168");/*测试客服*/
                     FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
                 } catch (Exception e) {
                     Log.i(TAG, "initView: " + e.toString());

@@ -68,11 +68,11 @@ public class MessageFragment extends BaseFragment {
 
             }
         });
-//        mMainTab.setTabData(mTabEntities, getActivity(), R.id.fl_see, getFragments());
-        ///
         mTabLayoutMessage.setTabData(mTabEntities);
 
 
+        //        mMainTab.setTabData(mTabEntities, getActivity(), R.id.fl_see, getFragments());
+        ///
 //        EaseConversationListFragment fragment = new EaseConversationListFragment();
 //        fragment.hideTitleBar();
 //        fragment.setConversationListItemClickListener(conversation -> {
@@ -113,7 +113,6 @@ public class MessageFragment extends BaseFragment {
             return mFragments.get(position);
         }
     }
-
 
     @Override
     public int getContentLayout() {

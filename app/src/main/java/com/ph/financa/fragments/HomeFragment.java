@@ -247,7 +247,6 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
         }
     }
 
-
     private void shareSuccess() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -267,8 +266,9 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
             shareContent.putOpt("content", mShareContent);
             shareContent.putOpt("title", mTitle);
             shareContent.putOpt("url", mUrl);
-            jsonObject.putOpt("shareContent", shareContent);
             shareContent.putOpt("articleAd", jsonArray);
+            Log.i(TAG, "shareSuccess: "+shareContent.toString());
+            jsonObject.putOpt("shareContent", shareContent);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -301,13 +301,13 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
         super.onPause();
     }
 
-    @Override
-    public void onResume() {
-        if (null != mAgentWeb) {
-            mAgentWeb.getWebLifeCycle().onResume();
-        }
-        super.onResume();
-    }
+//    @Override
+//    public void onResume() {
+//        if (null != mAgentWeb) {
+//            mAgentWeb.getWebLifeCycle().onResume();
+//        }
+//        super.onResume();
+//    }
 
     /*微博分享*/
     private void wbShare(String shareLink, String imgUrl, String title, String description) {

@@ -233,7 +233,7 @@ public class WeiXinBaoStrategy implements Strategy {
         } else if (error_code == -2) {
             //支付取消
             mJPayListener.onPayCancel();
-        }else if(error_code== BaseResp.ErrCode.ERR_AUTH_DENIED){
+        } else if (error_code == BaseResp.ErrCode.ERR_AUTH_DENIED) {
             //发送取消
             mJPayListener.onPayError(BaseResp.ErrCode.ERR_AUTH_DENIED, message);
         }

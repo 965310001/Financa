@@ -113,7 +113,7 @@ public class WebActivity extends BaseTitleActivity {
             mAgentWeb.getUrlLoader().reload();
             mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
         });
-        mSmartRefreshLayout.autoRefresh();
+//        mSmartRefreshLayout.autoRefresh();
 
         mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, mContext));
     }
@@ -542,7 +542,6 @@ public class WebActivity extends BaseTitleActivity {
 
                 jsonObject = jsonObject.getJSONObject("sourceData");
 
-
                 // TODO: 2019/9/26 如果错误修改这里
                 JSONObject userInfo = jsonObject.getJSONObject("userInfo");
                 mAuthor = userInfo.getString("name");
@@ -656,7 +655,6 @@ public class WebActivity extends BaseTitleActivity {
                 String target = jsonObject.getString("target");
                 String imgUrl = jsonObject.getString("imgUrl");
                 String shareLink = jsonObject.getString("shareLink");
-                Log.i(TAG, "shareArticleData: " + shareLink);
                 jsonObject = jsonObject.getJSONObject("sourceData");
                 String title = jsonObject.getString("title");
                 String description = jsonObject.getString("summary");
@@ -670,7 +668,6 @@ public class WebActivity extends BaseTitleActivity {
                 mAuthor = jsonObject.getString("author");
                 mTitle = title;
                 mShareUrl = shareLink;
-
 
                 /*新加*/
                 if (jsonObject.has("positionState")) {

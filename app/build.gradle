@@ -100,4 +100,8 @@ dependencies {
 
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
 
+
+//    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
+
+    implementation 'com.tencent.tbs.tbssdk:sdk:43697'
 }

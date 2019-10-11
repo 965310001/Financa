@@ -2,6 +2,7 @@ package com.hyphenate.easeui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,27 +137,25 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
 
             String otherUserPortrait;
 
-
             if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
                     message.conversationId().equals(SPHelper.getStringSF(getContext(), "USERID"))) {
 //                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
 //                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
 
-
                 holder.name.setText(map.get("nickName").toString());
-                otherUserPortrait = map.get("UserPortrait").toString();
+                otherUserPortrait = map.get("UserPortrait").toString();Log.i(TAG, "getView: "+otherUserPortrait);
             } else {
 //                GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
 //                /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
 //                EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
                 holder.name.setText(map.get("otherUserNickName").toString());
-                otherUserPortrait = map.get("otherUserPortrait").toString();
-
+                otherUserPortrait = map.get("otherUserPortrait").toString();Log.i(TAG, "getView: "+otherUserPortrait);
             }
 
 
 //            holder.name.setText(map.get("otherUserNickName").toString());
 //            String otherUserPortrait = map.get("otherUserPortrait").toString();
+
 
             if (!TextUtils.isEmpty(otherUserPortrait)) {
                 if (otherUserPortrait.equals("客服")) {

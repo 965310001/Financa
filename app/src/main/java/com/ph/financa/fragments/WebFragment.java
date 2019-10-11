@@ -79,6 +79,30 @@ public class WebFragment extends BaseTitleFragment {
     public void initView(Bundle savedInstanceState) {
         if (!TextUtils.isEmpty(getUrl())) {
 
+            /*com.tencent.smtt.sdk.WebView webView = mContentView.findViewById(R.id.webview);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webView.getSettings().setDomStorageEnabled(true);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+            webView.getSettings().setDomStorageEnabled(true);
+            webView.getSettings().setDatabaseEnabled(true);
+            webView.getSettings().setAppCacheEnabled(true);
+            webView.getSettings().setAllowFileAccess(true);
+            webView.getSettings().setSavePassword(true);
+            webView.getSettings().setSupportZoom(true);
+            webView.getSettings().setBuiltInZoomControls(true);
+            webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+            webView.getSettings().setUseWideViewPort(true);
+
+            webView.loadUrl(getUrl());
+//            webView.addJavascriptInterface(new AndroidInterface(mAgentWeb, getContext()), "cosmetics");
+
+            Object obj = getJavaObjectValue(mAgentWeb, getContext());
+            webView.addJavascriptInterface(obj, getJavaObjectKey());*/
+
+
             /*com.tencent.smtt.sdk.WebView mWebView=new com.tencent.smtt.sdk.WebView(mContext);*/
 
             mAgentWeb = AgentWeb.with(this)
@@ -125,13 +149,20 @@ public class WebFragment extends BaseTitleFragment {
 
             mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
             mSmartRefreshLayout.setOnRefreshListener(refreshlayout -> {
-                mAgentWeb.getUrlLoader().reload();
+                if (!isRefresh) {
+                    mAgentWeb.getUrlLoader().reload();
+//                    mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+                } else {
+                    isRefresh = false;
+                }
+//                mAgentWeb.getUrlLoader().reload();
                 /*mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);*/
             });
-//            mSmartRefreshLayout.autoRefresh();
+            isRefresh = true;
+            mSmartRefreshLayout.autoRefresh();
         }
     }
-
+    private boolean isRefresh;
     private com.just.agentweb.WebChromeClient mWebChromeClient = new com.just.agentweb.WebChromeClient() {
 
 
@@ -168,12 +199,6 @@ public class WebFragment extends BaseTitleFragment {
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             handler.proceed();//接受证书
             super.onReceivedSslError(view, handler, error);
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            //do you  work
-            Log.i("Info", "BaseWebActivity onPageStarted");
         }
     };
 

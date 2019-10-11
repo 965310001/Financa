@@ -3,6 +3,8 @@ package com.ph.financa;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -45,6 +47,7 @@ import com.ph.financa.fragments.MeFragment;
 import com.ph.financa.fragments.SeeFragment;
 import com.ph.financa.jpush.JPushManager;
 import com.ph.financa.jpush.MessageReceiver;
+import com.ph.financa.service.BadgeIntentService;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 import com.vise.xsnow.permission.OnPermissionCallback;
@@ -95,8 +98,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         isForeground = true;
+
+        updateUnreadLabel();
         super.onResume();
     }
+
 
 
     @Override
@@ -240,6 +246,8 @@ public class MainActivity extends BaseActivity {
 
         mNavigationBar.setAddViewLayout(createView());
 
+        registerBroadcastReceiver();
+
         //注册一个监听连接状态的listener
         EMClient.getInstance().addMultiDeviceListener(new MyMultiDeviceListener());
         EMClient.getInstance().addConnectionListener(new ConnectionListener());
@@ -249,6 +257,51 @@ public class MainActivity extends BaseActivity {
         getUnreadMsgCount();
         /*mNavigationBar.setMsgPointCount(1,10);*/
     }
+
+    private BroadcastReceiver broadcastReceiver;
+    private LocalBroadcastManager broadcastManager;
+
+    private void registerBroadcastReceiver() {
+        broadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.ACTION_CONTACT_CHANAGED);
+        intentFilter.addAction(Constant.ACTION_GROUP_CHANAGED);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateUnreadLabel();
+//                updateUnreadAddressLable();
+//                if (currentTabIndex == 0) {
+//                    // refresh conversation list
+//                    if (conversationListFragment != null) {
+//                        conversationListFragment.refresh();
+//                    }
+//                } else if (currentTabIndex == 1) {
+//                    if (contactListFragment != null) {
+//                        contactListFragment.refresh();
+//                    }
+//                }
+//                String action = intent.getAction();
+//                if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
+//                    if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
+//                        GroupsActivity.instance.onResume();
+//                    }
+//                }
+            }
+        };
+        broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private void updateUnreadLabel() {
+        int count = getUnreadMsgCountTotal();
+        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
+    }
+
+    public int getUnreadMsgCountTotal() {
+        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+    }
+
+
 
     private void getUnreadMsgCount() {
         /*用户*/
@@ -516,7 +569,6 @@ public class MainActivity extends BaseActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
-
 
         /*设置聊天条数*/
 //        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));

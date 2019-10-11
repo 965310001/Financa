@@ -97,7 +97,70 @@ public class LoginActivity extends BaseActivity {
             case R.id.ll_login:
                 loginWeixin();
                 break;
+
+            case R.id.tv_visitor_login:/*游客登录*/
+                visitorLogin();
+                break;
         }
+    }
+
+
+    private void visitorLogin() {
+        showLoading();
+        ViseHttp.POST(String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.ANONYMOUS_LOGIN))
+                .request(new ACallback<BaseTResp2<UserBean>>() {
+                    @Override
+                    public void onSuccess(BaseTResp2<UserBean> data) {
+                        hideLoading();
+                        Log.i(TAG, "onSuccess: " + data.toString());
+                        UserBean bean = data.data;
+                        if (null != bean) {
+                            saveUser(bean);
+                        }
+
+                        if (data.isSuccess() || data.getCode() == 40102002) {
+                            loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
+//                            loginEaseMob("1173549052970016768", "123456", data.getCode());
+                        } else {
+                            Log.i(TAG, "onSuccess: " + data.getMsg());
+                            ToastUtil.show(data.getMsg());
+                        }                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        hideLoading();
+                        ToastUtil.show(errMsg);
+                    }
+                });
+    }
+
+    @Override
+    public void loadData() {
+        super.loadData();
+
+        getVisitorLogin();
+    }
+
+    private void getVisitorLogin() {
+        ViseHttp.GET(String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.VISITORLOGIN)).request(new ACallback<Object>() {
+            @Override
+            public void onSuccess(Object data) {
+                Log.i(TAG, "onSuccess: " + data);
+                if (null != data) {
+                    String str = data.toString();
+                    if (!TextUtils.isEmpty(str) && str.contains("no")) {
+                        mContentView.findViewById(R.id.tv_visitor_login).setVisibility(View.VISIBLE);
+                    } else {
+                        mContentView.findViewById(R.id.tv_visitor_login).setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int errCode, String errMsg) {
+                ToastUtil.show(errMsg);
+            }
+        });
     }
 
     private void loginWeixin() {
@@ -105,7 +168,6 @@ public class LoginActivity extends BaseActivity {
         weiXinBaoStrategy.login(Constant.WECHATAPPKEY, new JPayListener() {
             @Override
             public void onPaySuccess() {
-
 //                /*Log.i(TAG, "onPaySuccess: " + SPHelper.getStringSF(mContext, "WEIXIN_USER"));*/
 //                String userInfo = SPHelper.getStringSF(mContext, "WEIXIN_USER", "");
 //                Log.i(TAG, "onPaySuccess: " + userInfo);
@@ -125,7 +187,6 @@ public class LoginActivity extends BaseActivity {
 //                    }
 //                }
 //                /*SPHelper.getStringSF(mContext,"WEIXIN_USER");*/
-
                 String code = SPHelper.getStringSF(mContext, Constant.WEIXINCODE, "");
                 if (!TextUtils.isEmpty(code)) {
                     getAccessToken(code);
@@ -270,18 +331,18 @@ public class LoginActivity extends BaseActivity {
                     }
                     finish();
                 } else {
-                    Log.i(TAG, "onNext: "+id);
+                    Log.i(TAG, "onNext: " + id);
                     Log.i(TAG, "环信登录失败:" + obj.toString());
                     String string = obj.toString();
                     if (!TextUtils.isEmpty(string) && string.contains("//")) {
                         try {
                             String[] strings = string.split("//");
-                            Log.i(TAG, "onNext: " +" "+strings[0]+" "+strings[1]);
+                            Log.i(TAG, "onNext: " + " " + strings[0] + " " + strings[1]);
                             int code = Integer.valueOf(strings[0]).intValue();
                             if (Integer.valueOf(code) == Emerror.USER_ALREADY_LOGIN.getCode()) {
                                 EMClient.getInstance().logout(true);
                                 loginEaseMob(id, password, code);
-                            }else{
+                            } else {
                                 ToastUtil.show(strings[1]);
                             }
                         } catch (Exception e) {

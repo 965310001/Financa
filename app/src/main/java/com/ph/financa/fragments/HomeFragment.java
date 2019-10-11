@@ -7,7 +7,6 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.just.agentweb.AgentWeb;
-import com.ph.financa.activity.VipActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
@@ -115,8 +114,10 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
         @JavascriptInterface
         public void toViperPage(String content) {
             Bundle bundle = new Bundle();
+//            bundle.putString("url", getUrl(ApiConstant.PAYMENT));
+            /*FastUtil(mContext, VipActivity.class, bundle);*/
             bundle.putString("url", getUrl(ApiConstant.PAYMENT));
-            FastUtil.startActivity(mContext, VipActivity.class, bundle);
+            FastUtil.startActivity(mContext, WebActivity.class, bundle);
         }
 
         @JavascriptInterface
@@ -267,7 +268,7 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
             shareContent.putOpt("title", mTitle);
             shareContent.putOpt("url", mUrl);
             shareContent.putOpt("articleAd", jsonArray);
-            Log.i(TAG, "shareSuccess: "+shareContent.toString());
+            Log.i(TAG, "shareSuccess: " + shareContent.toString());
             jsonObject.putOpt("shareContent", shareContent);
         } catch (JSONException e) {
             e.printStackTrace();

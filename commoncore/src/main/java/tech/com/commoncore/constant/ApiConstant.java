@@ -7,7 +7,7 @@ package tech.com.commoncore.constant;
  */
 public interface ApiConstant {
 
-    String BASE_URL_ZP = "http://wealth.phscitech.com/";//生成环境
+    String BASE_URL_ZP = "http://wealth.phscitech.com/";//生产环境
 //    String BASE_URL_ZP = "http://develop.phscitech.com/";//开发环境
 
     String AGREEMENT = "h5/user-agreement";//隐私政策
@@ -143,4 +143,11 @@ public interface ApiConstant {
 
     /*H5支付页面*/
     String PAYMENT = "h5/payment";
+
+    /*是否隐藏游客登录  yes隐藏*/
+    String VISITORLOGIN="api/pay/ios";
+
+    /*登录*/
+    String ANONYMOUS_LOGIN="api/anonymous/login";
+
 }

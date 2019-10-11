@@ -2,16 +2,11 @@ package com.ph.financa.service;
 
 import android.annotation.TargetApi;
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-
-import com.ph.financa.R;
-
-import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class BadgeIntentService extends IntentService {
 
@@ -44,20 +39,20 @@ public class BadgeIntentService extends IntentService {
             mNotificationManager.cancel(notificationId);
             notificationId++;
 
-            Notification.Builder builder = new Notification.Builder(getApplicationContext())
-                    .setContentTitle("聊天信息")
-                    .setContentText("信息")
-                    .setSmallIcon(R.mipmap.logo);
+//            Notification.Builder builder = new Notification.Builder(getApplicationContext())
+//                    .setContentTitle("聊天信息")
+//                    .setContentText("信息")
+//                    .setSmallIcon(R.mipmap.logo);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 setupNotificationChannel();
 
-                builder.setChannelId(NOTIFICATION_CHANNEL);
+//                builder.setChannelId(NOTIFICATION_CHANNEL);
             }
 
-            Notification notification = builder.build();
-            ShortcutBadger.applyNotification(getApplicationContext(), notification, badgeCount);
-            mNotificationManager.notify(notificationId, notification);
+//            Notification notification = builder.build();
+//            ShortcutBadger.applyNotification(getApplicationContext(), notification, badgeCount);
+//            mNotificationManager.notify(notificationId, notification);
         }
     }
 

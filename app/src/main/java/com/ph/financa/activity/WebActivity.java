@@ -2,7 +2,6 @@ package com.ph.financa.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
@@ -110,13 +108,21 @@ public class WebActivity extends BaseTitleActivity {
 
         mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
         mSmartRefreshLayout.setOnRefreshListener(refreshlayout -> {
-            mAgentWeb.getUrlLoader().reload();
-            mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+            if (!isRefresh) {
+                mAgentWeb.getUrlLoader().reload();
+            } else {
+                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+                isRefresh = false;
+            }
         });
-//        mSmartRefreshLayout.autoRefresh();
+
+        isRefresh = true;
+        mSmartRefreshLayout.autoRefresh();
 
         mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, mContext));
     }
+
+    private boolean isRefresh;
 
     protected IWebLayout getWebLayout() {
         return this.mSmartRefreshWebLayout = new SmartRefreshWebLayout(mContext);
@@ -140,11 +146,13 @@ public class WebActivity extends BaseTitleActivity {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            super.onProgressChanged(view, newProgress);
             Log.i(TAG, "onProgressChanged: " + newProgress);
-//            if (newProgress==100){
-//                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
-//            }
+            if (newProgress==100){
+                Log.i(TAG, "onProgressChanged: ");
+                /*mSmartRefreshLayout.finishRefresh();*/
+                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+            }
+            super.onProgressChanged(view, newProgress);
         }
 
         /**
@@ -241,16 +249,6 @@ public class WebActivity extends BaseTitleActivity {
 //    };
 
     private WebViewClient mWebViewClient = new WebViewClient() {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            return super.shouldOverrideUrlLoading(view, request);
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-//            super.onPageStarted(view, url, favicon);
-        }
-
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.contains("tel:")) {

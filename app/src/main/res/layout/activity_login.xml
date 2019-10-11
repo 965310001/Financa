@@ -63,6 +63,21 @@
             android:textSize="@dimen/textSize_18" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_visitor_login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/shape_bg_login"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="游客登录"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textSize_18"
+        android:visibility="gone" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_protocol"
         android:layout_width="wrap_content"

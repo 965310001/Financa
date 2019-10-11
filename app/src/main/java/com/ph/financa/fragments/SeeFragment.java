@@ -14,6 +14,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.githang.statusbar.StatusBarCompat;
 import com.ph.financa.R;
+import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.bean.TabEntity;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.utils.StatusBarUtils;
@@ -21,8 +22,11 @@ import com.ph.financa.utils.StatusBarUtils;
 import java.util.ArrayList;
 
 import tech.com.commoncore.base.BaseFragment;
+import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.DisplayUtil;
+import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
+import tech.com.commoncore.utils.Utils;
 
 /**
  * 谁看了我
@@ -108,9 +112,17 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_vip:
-                // TODO: 2019/9/9
+                Bundle bundle = new Bundle();
+                bundle.putString("url", getUrl(ApiConstant.PAYMENT));
+                FastUtil.startActivity(mContext, WebActivity.class, bundle);
                 break;
         }
+    }
+
+    private String getUrl(String url) {
+        return String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, url,
+                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
     }
 
 

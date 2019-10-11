@@ -94,4 +94,7 @@ public interface Constant {
 
     /*刷新界面*/
     String ISREFRESH = "ISREFRESH";
+
+    String ACTION_CONTACT_CHANAGED = "action_contact_changed";
+    String ACTION_GROUP_CHANAGED = "action_group_changed";
 }

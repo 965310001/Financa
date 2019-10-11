@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -114,6 +113,25 @@ public class CustomerFragment extends BaseFragment {
                 builder.detectFileUriExposure();
             }
 
+//            com.tencent.smtt.sdk.WebView webView = mContentView.findViewById(R.id.webview);
+//            webView.getSettings().setJavaScriptEnabled(true);
+//            webView.getSettings().setCacheMode(com.tencent.smtt.sdk.WebSettings.LOAD_CACHE_ELSE_NETWORK);
+//            webView.getSettings().setDomStorageEnabled(true);
+//            webView.getSettings().setJavaScriptEnabled(true);
+//            webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+//            webView.getSettings().setCacheMode(com.tencent.smtt.sdk.WebSettings.LOAD_NO_CACHE);
+//            webView.getSettings().setDomStorageEnabled(true);
+//            webView.getSettings().setDatabaseEnabled(true);
+//            webView.getSettings().setAppCacheEnabled(true);
+//            webView.getSettings().setAllowFileAccess(true);
+//            webView.getSettings().setSavePassword(true);
+//            webView.getSettings().setSupportZoom(true);
+//            webView.getSettings().setBuiltInZoomControls(true);
+//            webView.getSettings().setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+//            webView.getSettings().setUseWideViewPort(true);
+//            webView.loadUrl(URL);
+//            webView.addJavascriptInterface(new AndroidInterface(mAgentWeb, getContext()), "cosmetics");
+
             mAgentWeb = AgentWeb.with(mContext)
                     .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
                     .useDefaultIndicator()
@@ -152,10 +170,19 @@ public class CustomerFragment extends BaseFragment {
 
             mSmartRefreshLayout = (SmartRefreshLayout) mSmartRefreshWebLayout.getLayout();
             mSmartRefreshLayout.setOnRefreshListener(refreshlayout -> {
-                mAgentWeb.getUrlLoader().reload();
-                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+//                mAgentWeb.getUrlLoader().reload();
+//                mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+
+                if (!isRefresh) {
+                    mAgentWeb.getUrlLoader().reload();
+//                    mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
+                } else {
+                    isRefresh = false;
+                }
             });
-//            mSmartRefreshLayout.autoRefresh();
+
+            isRefresh = true;
+            mSmartRefreshLayout.autoRefresh();
 
             mAgentWeb.getJsInterfaceHolder().addJavaObject("cosmetics", new AndroidInterface(mAgentWeb, getContext()));
 
@@ -181,6 +208,8 @@ public class CustomerFragment extends BaseFragment {
             Log.i(TAG, "initView: " + URL);
         }
     }
+
+    private boolean isRefresh;
 
     protected IWebLayout getWebLayout() {
         return this.mSmartRefreshWebLayout = new SmartRefreshWebLayout(mContext);
@@ -217,12 +246,6 @@ public class CustomerFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             view.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            //do you  work
-            Log.i("Info", "BaseWebActivity onPageStarted");
         }
     };
 

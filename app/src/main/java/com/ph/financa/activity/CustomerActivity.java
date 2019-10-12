@@ -2,6 +2,7 @@ package com.ph.financa.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.aries.ui.view.title.TitleBarView;
@@ -52,6 +53,10 @@ public class CustomerActivity extends BaseTitleActivity {
     private EaseChatFragment.EaseChatFragmentHelper mHelper = new EaseChatFragment.EaseChatFragmentHelper() {
         @Override
         public void onSetMessageAttributes(EMMessage message) {
+//            message.getFrom();
+//            message.getTo();
+            Log.i(TAG, "onSetMessageAttributes: " + message.getFrom() + " " + message.getTo());/*获取消息发送者的用户名   接受者*/
+
             message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
             message.setAttribute("nickName", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
 

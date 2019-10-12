@@ -1,6 +1,11 @@
 package com.ph.financa.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,6 +17,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.TabEntity;
+import com.ph.financa.constant.Constant;
 
 import java.util.ArrayList;
 
@@ -32,6 +38,8 @@ public class MessageFragment extends BaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+
+
         mTabLayoutMessage = mContentView.findViewById(R.id.tab_message);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], R.mipmap.ic_home_selected, R.mipmap.ic_home_selected));
@@ -91,7 +99,33 @@ public class MessageFragment extends BaseFragment {
 //
 //        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
 //        Log.i(TAG, "initView:聊天记录 " + conversations.size());
+
+
+        registerReceiver();
     }
+
+    /*注册消息广播*/
+    private void registerReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constant.MESS_BROADCAST);
+        getActivity().registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) //onReceive函数不能做耗时的事情，参考值：10s以内
+        {
+            String action = intent.getAction();
+            if (action.equals(Constant.MESS_BROADCAST)) {
+                Log.i(TAG, "onReceive: ");
+                if (null != mFragments) {
+                    for (Fragment mFragment : mFragments) {
+                        ((ChatListFragment) mFragment).refresh();
+                    }
+                }
+            }
+        }
+    };
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {

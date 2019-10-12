@@ -120,6 +120,22 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
             FastUtil.startActivity(mContext, WebActivity.class, bundle);
         }
 
+        /*首页图片跳转*/
+        @JavascriptInterface
+        public void bannerLink(String content) throws JSONException {
+            Log.i(TAG, "bannerLink: "+content);
+            if (!TextUtils.isEmpty(content)) {
+                JSONObject jsonObject = new JSONObject(content);
+                String link = jsonObject.getString("link");
+                Bundle bundle = new Bundle();
+                bundle.putString("url", link);
+                Log.i(TAG, "bannerLink: " + link);
+                FastUtil.startActivity(mContext, WebActivity.class, bundle);
+            } else {
+                ToastUtil.show("内容为空");
+            }
+        }
+
         @JavascriptInterface
         public void shareArticleData(String content) {
             Log.i(TAG, "shareArticleData: " + content);
@@ -302,13 +318,13 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
         super.onPause();
     }
 
-//    @Override
-//    public void onResume() {
-//        if (null != mAgentWeb) {
-//            mAgentWeb.getWebLifeCycle().onResume();
-//        }
-//        super.onResume();
-//    }
+    @Override
+    public void onResume() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onResume();
+        }
+        super.onResume();
+    }
 
     /*微博分享*/
     private void wbShare(String shareLink, String imgUrl, String title, String description) {

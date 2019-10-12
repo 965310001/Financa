@@ -145,7 +145,10 @@ public interface ApiConstant {
     String PAYMENT = "h5/payment";
 
     /*是否隐藏游客登录  yes隐藏*/
-    String VISITORLOGIN="api/pay/ios";
+    String VISITORLOGIN="api/android/visitor_switch";
+
+//    String VISITORLOGIN="api/pay/ios";
+
 
     /*登录*/
     String ANONYMOUS_LOGIN="api/anonymous/login";

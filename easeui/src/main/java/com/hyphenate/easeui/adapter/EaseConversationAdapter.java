@@ -142,14 +142,36 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
 //                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
 //                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
 
-                holder.name.setText(map.get("nickName").toString());
-                otherUserPortrait = map.get("UserPortrait").toString();Log.i(TAG, "getView: "+otherUserPortrait);
+
+//                holder.name.setText(map.get("nickName").toString());
+//                otherUserPortrait = map.get("UserPortrait").toString();Log.i(TAG, "getView: "+otherUserPortrait);
+
+                try {
+//                    Map<String, Object> map = message.ext();
+//                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+//                    EaseUserUtils.setUserNick(map.get("nickName").toString(), userAvatarView);
+
+                    GlideManager.loadCircleImg(map.get("nickName").toString(), holder.avatar);
+                }catch (Exception e){
+                    Log.i(TAG, "setUpBaseView: "+e.toString());
+                    EaseUserUtils.setUserAvatar(getContext(), EMClient.getInstance().getCurrentUser(), holder.avatar);
+                }
             } else {
 //                GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
 //                /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
 //                EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-                holder.name.setText(map.get("otherUserNickName").toString());
-                otherUserPortrait = map.get("otherUserPortrait").toString();Log.i(TAG, "getView: "+otherUserPortrait);
+//                holder.name.setText(map.get("otherUserNickName").toString());
+//                otherUserPortrait = map.get("otherUserPortrait").toString();Log.i(TAG, "getView: "+otherUserPortrait);
+//                GlideManager.loadCircleImg(map.get("nickName").toString(), holder.avatar);
+
+
+                try {
+                    GlideManager.loadCircleImg(map.get("otherUserNickName").toString(), holder.avatar);
+                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), holder.avatar);
+                }catch (Exception e){
+                    Log.i(TAG, "getView: "+e.toString());
+                }
+
             }
 
 
@@ -157,15 +179,15 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
 //            String otherUserPortrait = map.get("otherUserPortrait").toString();
 
 
-            if (!TextUtils.isEmpty(otherUserPortrait)) {
-                if (otherUserPortrait.equals("客服")) {
-                    GlideManager.loadCircleImg(R.drawable.ic_service, holder.avatar);
-                } else {
-                    GlideManager.loadCircleImg(otherUserPortrait, holder.avatar);
-                }
-            } else {
-                GlideManager.loadCircleImg(R.drawable.ic_service, holder.avatar);
-            }
+//            if (!TextUtils.isEmpty(otherUserPortrait)) {
+//                if (otherUserPortrait.equals("客服")) {
+//                    GlideManager.loadCircleImg(R.drawable.ic_service, holder.avatar);
+//                } else {
+//                    GlideManager.loadCircleImg(otherUserPortrait, holder.avatar);
+//                }
+//            } else {
+//                GlideManager.loadCircleImg(R.drawable.ic_service, holder.avatar);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

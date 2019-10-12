@@ -97,4 +97,7 @@ public interface Constant {
 
     String ACTION_CONTACT_CHANAGED = "action_contact_changed";
     String ACTION_GROUP_CHANAGED = "action_group_changed";
+
+    /*消息广播*/
+    String MESS_BROADCAST = "com.ph.financa.fragments.MessageFragment";
 }

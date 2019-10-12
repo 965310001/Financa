@@ -3,9 +3,10 @@ package com.ph.financa.fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
@@ -28,6 +29,10 @@ public class ChatListFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
 
     private String mParam1;
+    private EaseConversationListFragment mFragment;
+
+    private FrameLayout mContainer;
+    private LinearLayout mLlBlank;
 
     public ChatListFragment() {
     }
@@ -50,72 +55,102 @@ public class ChatListFragment extends BaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        Log.i(TAG, "initView: ");
+//        Log.i(TAG, "initView: ");
+        mContainer = mContentView.findViewById(R.id.container);
+        mLlBlank = mContentView.findViewById(R.id.ll_blank);
+
         getLastMessage();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getLastMessage();
+        /*getLastMessage();*/
     }
 
     private void getLastMessage() {
-        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
-        if (conversations.size() > 1) {
-            EaseConversationListFragment fragment = new EaseConversationListFragment();
-            Bundle bundle1 = new Bundle();
-            bundle1.putString("TIME", mParam1);
-            fragment.setArguments(bundle1);
-            fragment.hideTitleBar();
-            fragment.setConversationListItemClickListener(conversation -> {
-                try {
-                    Bundle bundle = new Bundle();
-                    /*conversation.conversationId();*/
-                    Map<String, Object> ext = conversation.getLastMessage().ext();
+        mFragment = new EaseConversationListFragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("TIME", mParam1);
+        mFragment.setArguments(bundle1);
+        mFragment.hideTitleBar();
+        mFragment.setConversationListItemClickListener(conversation -> {
+            try {
+                Bundle bundle = new Bundle();
+                /*conversation.conversationId();*/
+                Map<String, Object> ext = conversation.getLastMessage().ext();
+                Log.i(TAG, "getLastMessage: " + ext);
 
-                    Log.i(TAG, "getLastMessage: " + ext);
-                    Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*我*/
-                    Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*我*/
-                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
-                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*她*/
+                if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
+                        conversation.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
+                    Log.i(TAG, "getLastMessage:11 ");
+                    if (null != ext.get("otherUserNickName")) {
+                        Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
+                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
+                    } else {
+                        bundle.putString(FriendTable.FRIEND_NAME, "");
+                    }
+                    if (null != ext.get("otherUserPortrait")) {
+                        Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*她*/
 
-                    if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
-                            conversation.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
-                        Log.i(TAG, "getLastMessage:11 ");
-                        if (null != ext.get("otherUserNickName")) {
-                            bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
-                        }
-                        if (null != ext.get("otherUserPortrait")) {
-                            bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
-                        }
+                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
+                    } else {
+                        bundle.putString(FriendTable.FRIEND_HEAD, "");
+                    }
+
+                } else {
+                    Log.i(TAG, "getLastMessage: 22");
+
+                    if (null != ext.get("nickName")) {
+                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
+                        Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*我*/
 
                     } else {
-                        Log.i(TAG, "getLastMessage: 22");
-
-                        if (null != ext.get("nickName")) {
-                            bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
-                        }
-                        if (null != ext.get("UserPortrait")) {
-                            bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
-                        }
-
+                        bundle.putString(FriendTable.FRIEND_NAME, "");
+                    }
+                    if (null != ext.get("UserPortrait")) {
+                        Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*我*/
+                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
+                    } else {
+                        bundle.putString(FriendTable.FRIEND_HEAD, "");
+                    }
 //                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
 //                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
-                    }
-                    bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
-//                    bundle.putString(EaseConstant.EXTRA_USER_ID, "1174970756044423168");/*测试客服*/
-                    FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
-                } catch (Exception e) {
-                    Log.i(TAG, "initView: " + e.toString());
                 }
-            });
-            mContentView.findViewById(R.id.container).setVisibility(View.VISIBLE);
-            mContentView.findViewById(R.id.ll_blank).setVisibility(View.GONE);
-            getChildFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
+                bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
+//                    bundle.putString(EaseConstant.EXTRA_USER_ID, "1174970756044423168");/*测试客服*/
+                FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
+            } catch (Exception e) {
+                Log.i(TAG, "initView: " + e.toString());
+            }
+        });
+        getChildFragmentManager().beginTransaction().replace(R.id.container, mFragment).commit();
+
+        if (getUnreadMsgCountTotal() > 1) {
+            mContainer.setVisibility(View.VISIBLE);
+            mLlBlank.setVisibility(View.GONE);
         } else {
-            mContentView.findViewById(R.id.container).setVisibility(View.GONE);
-            mContentView.findViewById(R.id.ll_blank).setVisibility(View.VISIBLE);
+            mContainer.setVisibility(View.GONE);
+            mLlBlank.setVisibility(View.VISIBLE);
+        }
+    }
+
+    int getUnreadMsgCountTotal() {
+        return EMClient.getInstance().chatManager().getAllConversations().size();
+    }
+
+    public void refresh() {
+        if (null != mFragment) {
+            mFragment.refresh();
+            if (getUnreadMsgCountTotal() > 1) {
+                mContainer.setVisibility(View.VISIBLE);
+                mLlBlank.setVisibility(View.GONE);
+            } else {
+                mContainer.setVisibility(View.GONE);
+                mLlBlank.setVisibility(View.VISIBLE);
+            }
+
+            /*getLastMessage();*/
         }
     }
 

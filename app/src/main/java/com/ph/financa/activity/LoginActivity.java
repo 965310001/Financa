@@ -21,6 +21,7 @@ import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.UserBean;
 import com.ph.financa.activity.bean.WXAccessTokenBean;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.utils.easeui.DemoHelper;
 import com.ph.financa.wxapi.pay.JPayListener;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
 import com.vise.xsnow.http.ViseHttp;
@@ -148,7 +149,7 @@ public class LoginActivity extends BaseActivity {
                 Log.i(TAG, "onSuccess: " + data);
                 if (null != data) {
                     String str = data.toString();
-                    if (!TextUtils.isEmpty(str) && str.contains("no")) {
+                    if (!TextUtils.isEmpty(str) && str.contains("yes")) {/*ios ye, andorid no*/
                         mContentView.findViewById(R.id.tv_visitor_login).setVisibility(View.VISIBLE);
                     } else {
                         mContentView.findViewById(R.id.tv_visitor_login).setVisibility(View.GONE);
@@ -316,6 +317,7 @@ public class LoginActivity extends BaseActivity {
                 hideLoading();
                 if (obj instanceof Integer) {
                     Log.i(TAG, "onSuccess: 环信登录成功");
+                    DemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();
 
@@ -399,6 +401,8 @@ public class LoginActivity extends BaseActivity {
             SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
             SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
             SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
+
+            DemoHelper.getInstance().setCurrentUserName(data.getName());
         }
     }
 

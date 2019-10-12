@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
@@ -259,14 +260,15 @@ public class EaseConversationListFragment extends EaseBaseFragment {
             list.add(sortItem.second);
         }
         /*去掉客服*/
+        List<EMConversation> listEmcon = new ArrayList<EMConversation>();
         if (list.size() > 0) {
             for (EMConversation emConversation : list) {
-                if (emConversation.conversationId().equals("1173549052970016768")) {
-                    list.remove(emConversation);
+                if (!TextUtils.isEmpty(emConversation.conversationId()) && emConversation.conversationId().equals("1173549052970016768")) {
                 }
+                listEmcon.add(emConversation);
             }
         }
-        return list;
+        return listEmcon;
     }
 
     /**

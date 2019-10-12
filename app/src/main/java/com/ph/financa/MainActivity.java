@@ -14,17 +14,18 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMClientListener;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMMultiDeviceListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.NetUtils;
@@ -48,6 +49,7 @@ import com.ph.financa.fragments.SeeFragment;
 import com.ph.financa.jpush.JPushManager;
 import com.ph.financa.jpush.MessageReceiver;
 import com.ph.financa.service.BadgeIntentService;
+import com.ph.financa.utils.easeui.DemoHelper;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 import com.vise.xsnow.permission.OnPermissionCallback;
@@ -62,7 +64,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import me.leolin.shortcutbadger.ShortcutBadger;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.utils.FastUtil;
@@ -101,15 +102,42 @@ public class MainActivity extends BaseActivity {
 
         updateUnreadLabel();
         super.onResume();
+
+        DemoHelper sdkHelper = DemoHelper.getInstance();
+        sdkHelper.pushActivity(this);
+        EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
+
+        refreshUIWithMessage();
     }
-
-
 
     @Override
     protected void onPause() {
         isForeground = false;
+
         super.onPause();
+
+        EMClient.getInstance().chatManager().removeMessageListener(mMessageListener);
+        EMClient.getInstance().removeClientListener(clientListener);
+        DemoHelper sdkHelper = DemoHelper.getInstance();
+        sdkHelper.popActivity(this);
     }
+
+    EMClientListener clientListener = new EMClientListener() {
+        @Override
+        public void onMigrate2x(boolean success) {
+            Toast.makeText(MainActivity.this, "onUpgradeFrom 2.x to 3.x " + (success ? "success" : "fail"), Toast.LENGTH_LONG).show();
+            if (success) {
+                Log.i(TAG, "onMigrate2x: ");
+                refreshUIWithMessage();
+            }
+        }
+    };
+
+/*    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }*/
 
     public void registerMessageReceiver() {
         mMessageReceiver = new MessageReceiver();
@@ -132,12 +160,12 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void beforeSetContentView() {
+        super.beforeSetContentView();
         if (AppStatusManager.getInstance().getAppStatus() == AppStatus.STATUS_RECYVLE) {
             //跳到闪屏页
-            Intent intent = new Intent(this, SplashActivity.class);
-            startActivity(intent);
+            Log.i(TAG, "beforeSetContentView: ");
+            FastUtil.startActivity(mContext, SplashActivity.class);
             finish();
             return;
         }
@@ -145,21 +173,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
-        /*FastUtil.startActivity(mContext, SelectAddressActivity.class);*/
-//        Bundle bundle1 = new Bundle();
-//        bundle1.putString(Constant.URL, "file:///android_asset/tips.html");
-//        FastUtil.startActivity(mContext, WebActivity.class, bundle1);
-
-//        Bundle bundle = new Bundle();
-//        bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
-//        bundle.putString(FriendTable.FRIEND_NAME, "我的客服");
-//        bundle.putString(FriendTable.FRIEND_HEAD, "客服");
-//        FastUtil.startActivity(mContext,CustomerActivity.class, bundle);
-
-
-//        StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
-
         /*设置全屏并有状态栏 start */
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -297,55 +310,83 @@ public class MainActivity extends BaseActivity {
         startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
     }
 
-    public int getUnreadMsgCountTotal() {
-        return EMClient.getInstance().chatManager().getUnreadMessageCount();
-    }
-
+//    public int getUnreadMsgCountTotal() {
+//        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+//    }
 
 
     private void getUnreadMsgCount() {
         /*用户*/
-        EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
-            @Override
-            public void onMessageReceived(List<EMMessage> messages) {
-                Log.i(TAG, "onMessageReceived: " + messages.size());
-                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.USERID));
-                if (null != conversation) {
-                    int count = conversation.getUnreadMsgCount();
-                    if (count > 0) {
-                        Log.i(TAG, "onMessageReceived: ");
-                        mNavigationBar.setMsgPointCount(1, count);
-                    }
+        EMClient.getInstance().chatManager().addMessageListener(mMessageListener);
+    }
+
+    private EMMessageListener mMessageListener = new EMMessageListener() {
+        @Override
+        public void onMessageReceived(List<EMMessage> messages) {
+            for (EMMessage message : messages) {
+                DemoHelper.getInstance().getNotifier().vibrateAndPlayTone(message);
+                try {
+                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserNickName"));
+                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserPortrait"));
+
+
+                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("nickName"));
+                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("UserPortrait"));
+
+                } catch (HyphenateException e) {
+                    Log.i(TAG, "onMessageReceived: " + e.toString());
                 }
             }
+            refreshUIWithMessage();
+        }
 
-            @Override
-            public void onCmdMessageReceived(List<EMMessage> messages) {
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+            Log.i(TAG, "onCmdMessageReceived: ");
+            refreshUIWithMessage();
+        }
 
-            }
+        @Override
+        public void onMessageRead(List<EMMessage> messages) {
 
-            @Override
-            public void onMessageRead(List<EMMessage> messages) {
+        }
 
-            }
+        @Override
+        public void onMessageDelivered(List<EMMessage> messages) {
 
-            @Override
-            public void onMessageDelivered(List<EMMessage> messages) {
+        }
 
-            }
+        @Override
+        public void onMessageRecalled(List<EMMessage> messages) {
+            Log.i(TAG, "onMessageRecalled: ");
+            refreshUIWithMessage();
+        }
 
-            @Override
-            public void onMessageRecalled(List<EMMessage> messages) {
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+        }
+    };
 
-            }
-
-            @Override
-            public void onMessageChanged(EMMessage message, Object change) {
-
+    void refreshUIWithMessage() {
+        runOnUiThread(() -> {
+            int count = getUnreadMsgCountTotal();
+            if (count > 0) {
+                Log.i(TAG, "onMessageReceived: ");
+                mNavigationBar.setMsgPointCount(1, count);
+                /*发送广播*/
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(Constant.MESS_BROADCAST);
+                sendBroadcast(intent);
+            } else {
+                mNavigationBar.clearMsgPoint(1);
             }
         });
     }
 
+    int getUnreadMsgCountTotal() {
+        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+    }
 
     private void loginEaseMob(String id, String password) {
         try {
@@ -562,13 +603,14 @@ public class MainActivity extends BaseActivity {
 //                break;
 //        }
 
-        ShortcutBadger.applyCount(mContext, 2); //for 1.1.3
+//        ShortcutBadger.applyCount(mContext, 2); //for 1.1.3
 
 
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
+
 
         /*设置聊天条数*/
 //        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));

@@ -193,6 +193,29 @@ public abstract class EaseChatRow extends LinearLayout {
                     Log.i(TAG, "setUpBaseView: " + e);
                 }
             }
+
+            Log.i(TAG, "setUpBaseView: ");
+//            if (message.direct() == Direct.SEND) {
+//                try {
+//                    Map<String, Object> map = message.ext();
+//                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+//                    EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+//                }catch (Exception e){
+//                    Log.i(TAG, "setUpBaseView: "+e.toString());
+//                    EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
+//                }
+//            } else {
+
+            Map<String, Object> map = message.ext();
+            try {
+                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+            } catch (Exception e) {
+                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+            }
+
+//            }
         }
         if (EMClient.getInstance().getOptions().getRequireDeliveryAck()) {
             if (deliveredView != null) {

@@ -82,10 +82,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:11.4.0'
     api 'com.hyphenate:hyphenate-sdk:3.6.1'
 
-
     implementation 'com.ninetripods:lib-dialog:1.1.0'
     implementation 'com.githang:status-bar-compat:0.7'
-
 
     /*新浪微博*/
     implementation 'com.sina.weibo.sdk:core:4.4.1:openDefaultRelease@aar'
@@ -93,15 +91,17 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation project(path: ':WaveSideBar')
 
-
     /*应用图标显示未读消息数*/
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
 
-
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
-
 
 //    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
 
     implementation 'com.tencent.tbs.tbssdk:sdk:43697'
+
+    implementation 'com.parse:parse-android:1.13.1'
+
+    implementation project(':hmspush')
+
 }

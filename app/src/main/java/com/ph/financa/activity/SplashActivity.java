@@ -29,11 +29,11 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void beforeSetContentView() {
-        super.beforeSetContentView();
         if (getIntent() != null && (getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
             finish();
             return;
         }
+        super.beforeSetContentView();
     }
 
     @Override

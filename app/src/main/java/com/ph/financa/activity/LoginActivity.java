@@ -125,7 +125,8 @@ public class LoginActivity extends BaseActivity {
                         } else {
                             Log.i(TAG, "onSuccess: " + data.getMsg());
                             ToastUtil.show(data.getMsg());
-                        }                    }
+                        }
+                    }
 
                     @Override
                     public void onFail(int errCode, String errMsg) {
@@ -317,6 +318,11 @@ public class LoginActivity extends BaseActivity {
                 hideLoading();
                 if (obj instanceof Integer) {
                     Log.i(TAG, "onSuccess: 环信登录成功");
+                    /*设置环信的信息*/
+                    DemoHelper.getInstance().getUserProfileManager().updateCurrentUserNickName(SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
+//                    DemoHelper.getInstance().getUserProfileManager().setCurrentUserAvatar(SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
+                    DemoHelper.getInstance().setCurrentUserName(SPHelper.getStringSF(mContext, Constant.USERID)); // 环信Id
+
                     DemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
                     EMClient.getInstance().chatManager().loadAllConversations();
                     EMClient.getInstance().groupManager().loadAllGroups();

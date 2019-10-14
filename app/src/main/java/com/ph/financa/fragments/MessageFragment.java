@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -15,9 +16,11 @@ import androidx.viewpager.widget.ViewPager;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.hyphenate.util.EMLog;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.TabEntity;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.utils.easeui.DemoHelper;
 
 import java.util.ArrayList;
 
@@ -102,6 +105,69 @@ public class MessageFragment extends BaseFragment {
 
 
         registerReceiver();
+
+
+        /**************消息监听 start *********/
+        ContactSyncListener contactSyncListener = new ContactSyncListener();
+        DemoHelper.getInstance().addSyncContactListener(contactSyncListener);
+
+        BlackListSyncListener blackListSyncListener = new BlackListSyncListener();
+        DemoHelper.getInstance().addSyncBlackListListener(blackListSyncListener);
+
+        ContactInfoSyncListener contactInfoSyncListener = new ContactInfoSyncListener();
+        DemoHelper.getInstance().getUserProfileManager().addSyncContactInfoListener(contactInfoSyncListener);
+        /**************消息监听 end *********/
+    }
+
+    class ContactSyncListener implements DemoHelper.DataSyncListener {
+        @Override
+        public void onSyncComplete(final boolean success) {
+            EMLog.d(TAG, "on contact list sync success:" + success);
+            getActivity().runOnUiThread(() -> getActivity().runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Log.i(TAG, "run: ");
+                    if (success) {
+//                                loadingView.setVisibility(View.GONE);
+//                                refresh();
+                    } else {
+                        String s1 = getResources().getString(R.string.get_failed_please_check);
+                        Toast.makeText(getActivity(), s1, Toast.LENGTH_LONG).show();
+//                                loadingView.setVisibility(View.GONE);
+                    }
+                }
+
+            }));
+        }
+    }
+
+    class BlackListSyncListener implements DemoHelper.DataSyncListener {
+
+        @Override
+        public void onSyncComplete(boolean success) {
+            getActivity().runOnUiThread(() -> {
+                Log.i(TAG, "run: ");
+//                    refresh();
+            });
+        }
+
+    }
+
+    class ContactInfoSyncListener implements DemoHelper.DataSyncListener {
+
+        @Override
+        public void onSyncComplete(final boolean success) {
+            EMLog.d(TAG, "on contactinfo list sync success:" + success);
+            getActivity().runOnUiThread(() -> {
+                Log.i(TAG, "run: " + success);
+//                    loadingView.setVisibility(View.GONE);
+                if (success) {
+//                        refresh();
+                }
+            });
+        }
+
     }
 
     /*注册消息广播*/
@@ -152,4 +218,6 @@ public class MessageFragment extends BaseFragment {
     public int getContentLayout() {
         return R.layout.fragment_message;
     }
+
+
 }

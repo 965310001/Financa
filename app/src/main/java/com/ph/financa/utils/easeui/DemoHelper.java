@@ -47,6 +47,7 @@ import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseNotifier;
 import com.hyphenate.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.utils.SPHelper;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.push.EMPushConfig;
 import com.hyphenate.util.EMLog;
@@ -73,6 +74,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import tech.com.commoncore.utils.Utils;
 
 public class DemoHelper {
     /**
@@ -1295,6 +1298,46 @@ public class DemoHelper {
             user = new EaseUser(username);
             EaseCommonUtils.setUserInitialLetter(user);
         }
+        Log.i(TAG, "getUserInfo: " + user.getUsername() + " " + user.getNickname());
+        Log.i(TAG, "getUserInfo: " + SPHelper.getStringSF(Utils.getContext(), com.ph.financa.constant.Constant.USERID));
+//        if (contactList != null && contactList.containsKey(username)) {
+//
+//        } else { // 如果内存中没有，则将本地数据库中的取出到内存中。
+//            getContactList();
+//        }
+//        user = getContactList().get(username);
+//        if (user == null) {
+//            user = new EaseUser(username);
+//        } else {
+//            if (TextUtils.isEmpty(user.getNickname())) { // 如果名字为空，则显示环信号码
+//                user.setNickname(user.getUsername());
+//            }
+//        }
+        //获取user信息，demo是从内存的好友列表里获取，
+        //实际开发中，可能还需要从服务器获取用户信息,
+        //从服务器获取的数据，最好缓存起来，避免频繁的网络请求
+        //设置自己的头像
+//        if (username.equals(EMClient.getInstance().getCurrentUser())) {
+//            user = new EaseUser(username);
+//            user.setAvatar("");
+//            return user;
+//        } else {
+//            //设置别人的头像
+//            if (contactList != null && contactList.containsKey(username)) {
+//
+//            } else { // 如果内存中没有，则将本地数据库中的取出到内存中。
+//                getContactList();
+//            }
+//            user = getContactList().get(username);
+//            if (user == null) {
+//                user = new EaseUser(username);
+//            } else {
+//                if (TextUtils.isEmpty(user.getNickname())) { // 如果名字为空，则显示环信号码
+//                    user.setNickname(user.getUsername());
+//                }
+//            }
+//        }
+
         return user;
     }
 

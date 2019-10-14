@@ -57,11 +57,14 @@ public class CustomerActivity extends BaseTitleActivity {
 //            message.getTo();
             Log.i(TAG, "onSetMessageAttributes: " + message.getFrom() + " " + message.getTo());/*获取消息发送者的用户名   接受者*/
 
+            if (message.getFrom().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
+            }
             message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
             message.setAttribute("nickName", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
 
             message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
             message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
+
         }
 
         @Override

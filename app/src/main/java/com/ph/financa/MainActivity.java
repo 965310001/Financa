@@ -122,14 +122,11 @@ public class MainActivity extends BaseActivity {
         sdkHelper.popActivity(this);
     }
 
-    EMClientListener clientListener = new EMClientListener() {
-        @Override
-        public void onMigrate2x(boolean success) {
-            Toast.makeText(MainActivity.this, "onUpgradeFrom 2.x to 3.x " + (success ? "success" : "fail"), Toast.LENGTH_LONG).show();
-            if (success) {
-                Log.i(TAG, "onMigrate2x: ");
-                refreshUIWithMessage();
-            }
+    EMClientListener clientListener = success -> {
+        Toast.makeText(MainActivity.this, "onUpgradeFrom 2.x to 3.x " + (success ? "success" : "fail"), Toast.LENGTH_LONG).show();
+        if (success) {
+            Log.i(TAG, "onMigrate2x: ");
+            refreshUIWithMessage();
         }
     };
 

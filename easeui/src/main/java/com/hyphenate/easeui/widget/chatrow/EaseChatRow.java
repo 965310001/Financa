@@ -206,14 +206,14 @@ public abstract class EaseChatRow extends LinearLayout {
 //                }
 //            } else {
 
-            Map<String, Object> map = message.ext();
-            try {
-                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-            } catch (Exception e) {
-                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
-            }
+//            Map<String, Object> map = message.ext();
+//            try {
+//                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+//                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+//            } catch (Exception e) {
+//                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+//                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+//            }
 
 //            }
         }

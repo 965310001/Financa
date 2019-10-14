@@ -83,7 +83,7 @@ public class ChatListFragment extends BaseFragment {
 
                 if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
                         conversation.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
-                    Log.i(TAG, "getLastMessage:11 ");
+                    /*Log.i(TAG, "getLastMessage:11 ");*/
                     if (null != ext.get("otherUserNickName")) {
                         Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
                         bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
@@ -100,11 +100,9 @@ public class ChatListFragment extends BaseFragment {
 
                 } else {
                     Log.i(TAG, "getLastMessage: 22");
-
                     if (null != ext.get("nickName")) {
                         bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
                         Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*我*/
-
                     } else {
                         bundle.putString(FriendTable.FRIEND_NAME, "");
                     }
@@ -114,11 +112,20 @@ public class ChatListFragment extends BaseFragment {
                     } else {
                         bundle.putString(FriendTable.FRIEND_HEAD, "");
                     }
-//                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
-//                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
+                }
+                if (null != ext.get("otherUserNickName")) {
+                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
+                    bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
+                } else {
+                    bundle.putString(FriendTable.FRIEND_NAME, "");
+                }
+                if (null != ext.get("otherUserPortrait")) {
+                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*她*/
+                    bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
+                } else {
+                    bundle.putString(FriendTable.FRIEND_HEAD, "");
                 }
                 bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
-//                    bundle.putString(EaseConstant.EXTRA_USER_ID, "1174970756044423168");/*测试客服*/
                 FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
             } catch (Exception e) {
                 Log.i(TAG, "initView: " + e.toString());
@@ -149,7 +156,6 @@ public class ChatListFragment extends BaseFragment {
                 mContainer.setVisibility(View.GONE);
                 mLlBlank.setVisibility(View.VISIBLE);
             }
-
             /*getLastMessage();*/
         }
     }

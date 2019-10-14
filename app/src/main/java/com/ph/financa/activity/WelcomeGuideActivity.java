@@ -35,9 +35,8 @@ public class WelcomeGuideActivity extends BaseActivity {
         mBtnStart.setOnClickListener(v -> {
             SPHelper.setBooleanSF(mContext, Constant.ISGUIDE, true);
             FastUtil.startActivity(mContext, LoginActivity.class);
+            finish();
         });
-
-
         List<Integer> images = new ArrayList<>();
         images.add(R.mipmap.ic_bg_guide1);
         images.add(R.mipmap.ic_bg_guide2);

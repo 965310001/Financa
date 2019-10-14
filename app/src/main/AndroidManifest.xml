@@ -49,6 +49,7 @@
         <activity
             android:name=".activity.WelcomeGuideActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" /> <!-- 极光推送start -->
         <!-- Required SDK 核心功能 -->
         <!-- 可配置 android:process 参数将 PushService 放在其他进程中 -->
@@ -227,12 +228,9 @@
         <activity
             android:name=".activity.SettingActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.WebActivity"
-            android:launchMode="singleTop"
-
             android:configChanges="keyboardHidden|screenLayout|orientation"
             android:screenOrientation="portrait" />
         <activity
@@ -249,7 +247,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SplashActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SplashTheme">
             <intent-filter>
@@ -261,7 +258,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan|stateHidden" /> <!-- android:taskAffinity="net.sourceforge.simcpux" -->
@@ -451,13 +448,13 @@
         <receiver android:name=".utils.easeui.receiver.HMSPushReceiver">
             <intent-filter>
                 <!-- 必须,用于接收 TOKEN -->
-                <action android:name="com.huawei.android.push.intent.REGISTRATION"/>
+                <action android:name="com.huawei.android.push.intent.REGISTRATION" />
                 <!-- 必须，用于接收消息 -->
-                <action android:name="com.huawei.android.push.intent.RECEIVE"/>
+                <action android:name="com.huawei.android.push.intent.RECEIVE" />
                 <!-- 可选，用于点击通知栏或通知栏上的按钮后触发 onEvent 回调 -->
-                <action android:name="com.huawei.android.push.intent.CLICK"/>
+                <action android:name="com.huawei.android.push.intent.CLICK" />
                 <!-- 可选，查看 PUSH 通道是否连接，不查看则不需要 -->
-                <action android:name="com.huawei.intent.action.PUSH_STATE"/>
+                <action android:name="com.huawei.intent.action.PUSH_STATE" />
             </intent-filter>
         </receiver>
         <!-- huawei push end -->
@@ -465,16 +462,15 @@
 
         <!-- 百度地图所需的service -->
         <!--<service-->
-            <!--android:name="com.baidu.location.f"-->
-            <!--android:enabled="true"-->
-            <!--android:process=":remote" />-->
+        <!--android:name="com.baidu.location.f"-->
+        <!--android:enabled="true"-->
+        <!--android:process=":remote" />-->
         <!--<meta-data-->
-            <!--android:name="com.baidu.lbsapi.API_KEY"-->
-            <!--android:value="3ecea51f560650b1ed8a4b99808f52e8" />-->
+        <!--android:name="com.baidu.lbsapi.API_KEY"-->
+        <!--android:value="3ecea51f560650b1ed8a4b99808f52e8" />-->
 
 
-
-        <receiver android:name="com.hyphenate.push.platform.vivo.EMVivoMsgReceiver" >
+        <receiver android:name="com.hyphenate.push.platform.vivo.EMVivoMsgReceiver">
             <intent-filter>
                 <!-- 接收 push 消息 -->
                 <action android:name="com.vivo.pushclient.action.RECEIVE" />
@@ -486,18 +482,15 @@
         <receiver android:name="com.hyphenate.push.platform.meizu.EMMzMsgReceiver">
             <intent-filter>
                 <!-- 接收 push 消息 -->
-                <action android:name="com.meizu.flyme.push.intent.MESSAGE"
-                    />
+                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
                 <!-- 接收 register 消息 -->
-                <action
-                    android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
+                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
                 <!-- 接收 unregister 消息-->
-                <action
-                    android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK"/>
+                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
                 <!-- 兼容低版本 Flyme3 推送服务配置 -->
-                <action android:name="com.meizu.c2dm.intent.REGISTRATION"
-                    />
+                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
+
                 <category android:name="${applicationId}"></category>
             </intent-filter>
         </receiver>

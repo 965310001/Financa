@@ -269,7 +269,7 @@ public class CustomerFragment extends BaseFragment {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            Log.i(TAG, "onProgressChanged: " + newProgress);
+//            Log.i(TAG, "onProgressChanged: " + newProgress);
             if (newProgress == 100) {
                 mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
             }

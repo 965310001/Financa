@@ -36,8 +36,6 @@ import com.ph.financa.activity.PasteArticleActivity;
 import com.ph.financa.activity.SplashActivity;
 import com.ph.financa.activity.WebActivity;
 import com.ph.financa.activity.WriteArticleActivity;
-import com.ph.financa.activity.bean.AppStatus;
-import com.ph.financa.activity.bean.AppStatusManager;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.UserBean;
 import com.ph.financa.constant.Constant;
@@ -66,6 +64,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.utils.AppStatus;
+import tech.com.commoncore.utils.AppStatusManager;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
 import tech.com.commoncore.utils.ToastUtil;
@@ -161,7 +161,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void beforeSetContentView() {
-        super.beforeSetContentView();
         if (AppStatusManager.getInstance().getAppStatus() == AppStatus.STATUS_RECYVLE) {
             //跳到闪屏页
             Log.i(TAG, "beforeSetContentView: ");
@@ -169,6 +168,7 @@ public class MainActivity extends BaseActivity {
             finish();
             return;
         }
+        super.beforeSetContentView();
     }
 
     @Override

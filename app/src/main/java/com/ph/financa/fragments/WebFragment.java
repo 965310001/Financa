@@ -1,7 +1,6 @@
 package com.ph.financa.fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
@@ -169,7 +168,7 @@ public class WebFragment extends BaseTitleFragment {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            Log.i(TAG, "onProgressChanged: " + newProgress);
+//            Log.i(TAG, "onProgressChanged: " + newProgress);
             if (newProgress == 100) {
                 mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
             }

@@ -146,7 +146,7 @@ public class WebActivity extends BaseTitleActivity {
 
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
-            Log.i(TAG, "onProgressChanged: " + newProgress);
+            /*Log.i(TAG, "onProgressChanged: " + newProgress);*/
             if (newProgress==100){
                 Log.i(TAG, "onProgressChanged: ");
                 /*mSmartRefreshLayout.finishRefresh();*/
@@ -815,6 +815,7 @@ public class WebActivity extends BaseTitleActivity {
     @Override
     public void onBackPressed() {
         if (!mAgentWeb.back()) {
+            Log.i(TAG, "onBackPressed: ");
             finish();
         } else {
 //            String url = mAgentWeb.getWebCreator().getWebView().getUrl();

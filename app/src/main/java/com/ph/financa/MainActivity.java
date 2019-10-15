@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -68,6 +67,7 @@ import tech.com.commoncore.utils.AppStatus;
 import tech.com.commoncore.utils.AppStatusManager;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
+import tech.com.commoncore.utils.SPUtil;
 import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
 
@@ -171,11 +171,11 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         /*设置全屏并有状态栏 start */
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setAttributes(attrs);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+//        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+//        getWindow().setAttributes(attrs);
         /* 设置全屏并有状态栏 end   */
 
         registerMessageReceiver();  // used for receive msg
@@ -323,13 +323,19 @@ public class MainActivity extends BaseActivity {
             for (EMMessage message : messages) {
                 DemoHelper.getInstance().getNotifier().vibrateAndPlayTone(message);
                 try {
-                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserNickName"));
-                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserPortrait"));
+                    /*是自己*/
+//                    if (message.direct() == EMMessage.Direct.SEND && !message.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
+////                        SPHelper.setStringSF(mContext,message.conversationId(),);
+////                    }
+//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserNickName"));
+//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserPortrait"));
+//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("nickName"));
+//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("UserPortrait"));
 
+                    SPUtil.put(Utils.getContext(), message.getFrom() + "name", message.getStringAttribute("nickName"));
+                    SPUtil.put(Utils.getContext(), message.getFrom() + "head", message.getStringAttribute("UserPortrait"));
 
-                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("nickName"));
-                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("UserPortrait"));
-
+                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("nickName") + " " + message.getStringAttribute("UserPortrait"));
                 } catch (HyphenateException e) {
                     Log.i(TAG, "onMessageReceived: " + e.toString());
                 }

@@ -2,7 +2,6 @@ package com.hyphenate.easeui.widget.chatrow;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -20,15 +19,12 @@ import com.hyphenate.easeui.adapter.EaseMessageAdapter;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.model.styles.EaseMessageListItemStyle;
 import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.hyphenate.easeui.utils.GlideManager;
-import com.hyphenate.easeui.utils.SPHelper;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
 import com.hyphenate.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
 import com.hyphenate.easeui.widget.EaseImageView;
 import com.hyphenate.util.DateUtils;
 
 import java.util.Date;
-import java.util.Map;
 
 public abstract class EaseChatRow extends LinearLayout {
     public interface EaseChatRowActionCallback {
@@ -146,79 +142,17 @@ public abstract class EaseChatRow extends LinearLayout {
                 }
             }
         }
-        if (userAvatarView != null) {
+        if(userAvatarView != null) {
             //set nickname and avatar
-            if (message.direct() == Direct.SEND && message.conversationId().equals(SPHelper.getStringSF(getContext(), "USERID"))) {
-                /*EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);*/
-                try {
-//                    Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*垃圾*/
-//                    Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*垃圾*/
-//                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*我*/
-//                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*我*/
-                    Map<String, Object> map = message.ext();
-//                    Glide.with(getContext()).load(map.get("UserPortrait").toString()).into(userAvatarView);
-//                    if (message.direct() == EMMessage.Direct.SEND && message.conversationId().equals("1174970756044423168")) {
-//                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
-//                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-//                    } else {
-//                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-//                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
-//                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-//                    }
-
-                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-                } catch (Exception e) {
-                    Log.i(TAG, "setUpBaseView: " + e);
-                }
+            if (message.direct() == Direct.SEND) {
+                EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
             } else {
-//                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-//                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
-                try {
-                    Map<String, Object> map = message.ext();
-                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
-                    EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-//                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-//                    /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
-//                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-//                    if (message.direct() == EMMessage.Direct.SEND && message.conversationId().equals("1174970756044423168")) {
-//                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-//                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-//                    } else {
-//                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
-//                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
-//                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-//                    }
-                } catch (Exception e) {
-                    Log.i(TAG, "setUpBaseView: " + e);
-                }
+                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
             }
-
-            Log.i(TAG, "setUpBaseView: ");
-//            if (message.direct() == Direct.SEND) {
-//                try {
-//                    Map<String, Object> map = message.ext();
-//                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
-//                    EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
-//                }catch (Exception e){
-//                    Log.i(TAG, "setUpBaseView: "+e.toString());
-//                    EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
-//                }
-//            } else {
-
-//            Map<String, Object> map = message.ext();
-//            try {
-//                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
-//                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
-//            } catch (Exception e) {
-//                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-//                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
-//            }
-
-//            }
         }
         if (EMClient.getInstance().getOptions().getRequireDeliveryAck()) {
-            if (deliveredView != null) {
+            if(deliveredView != null){
                 if (message.isDelivered()) {
                     deliveredView.setVisibility(View.VISIBLE);
                 } else {
@@ -244,15 +178,15 @@ public abstract class EaseChatRow extends LinearLayout {
                 if (itemStyle.isShowAvatar()) {
                     userAvatarView.setVisibility(View.VISIBLE);
                     EaseAvatarOptions avatarOptions = EaseUI.getInstance().getAvatarOptions();
-                    if (avatarOptions != null && userAvatarView instanceof EaseImageView) {
-                        EaseImageView avatarView = ((EaseImageView) userAvatarView);
-                        if (avatarOptions.getAvatarShape() != 0)
+                    if(avatarOptions != null && userAvatarView instanceof EaseImageView){
+                        EaseImageView avatarView = ((EaseImageView)userAvatarView);
+                        if(avatarOptions.getAvatarShape() != 0)
                             avatarView.setShapeType(avatarOptions.getAvatarShape());
-                        if (avatarOptions.getAvatarBorderWidth() != 0)
+                        if(avatarOptions.getAvatarBorderWidth() != 0)
                             avatarView.setBorderWidth(avatarOptions.getAvatarBorderWidth());
-                        if (avatarOptions.getAvatarBorderColor() != 0)
+                        if(avatarOptions.getAvatarBorderColor() != 0)
                             avatarView.setBorderColor(avatarOptions.getAvatarBorderColor());
-                        if (avatarOptions.getAvatarRadius() != 0)
+                        if(avatarOptions.getAvatarRadius() != 0)
                             avatarView.setRadius(avatarOptions.getAvatarRadius());
                     }
                 } else {
@@ -279,6 +213,161 @@ public abstract class EaseChatRow extends LinearLayout {
         }
 
     }
+
+
+
+    /*以前*/
+//    private void setUpBaseView() {
+//        // set nickname, avatar and background of bubble
+//        TextView timestamp = (TextView) findViewById(R.id.timestamp);
+//        if (timestamp != null) {
+//            if (position == 0) {
+//                timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
+//                timestamp.setVisibility(View.VISIBLE);
+//            } else {
+//                // show time stamp if interval with last message is > 30 seconds
+//                EMMessage prevMessage = (EMMessage) adapter.getItem(position - 1);
+//                if (prevMessage != null && DateUtils.isCloseEnough(message.getMsgTime(), prevMessage.getMsgTime())) {
+//                    timestamp.setVisibility(View.GONE);
+//                } else {
+//                    timestamp.setText(DateUtils.getTimestampString(new Date(message.getMsgTime())));
+//                    timestamp.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        }
+//        if (userAvatarView != null) {
+//            //set nickname and avatar
+//            if (message.direct() == Direct.SEND && message.conversationId().equals(SPHelper.getStringSF(getContext(), "USERID"))) {
+//                /*EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);*/
+//                try {
+////                    Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*垃圾*/
+////                    Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*垃圾*/
+////                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*我*/
+////                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*我*/
+//                    Map<String, Object> map = message.ext();
+////                    Glide.with(getContext()).load(map.get("UserPortrait").toString()).into(userAvatarView);
+////                    if (message.direct() == EMMessage.Direct.SEND && message.conversationId().equals("1174970756044423168")) {
+////                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+////                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+////                    } else {
+////                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+////                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+////                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+////                    }
+//
+//                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+//                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+//                } catch (Exception e) {
+//                    Log.i(TAG, "setUpBaseView: " + e);
+//                }
+//            } else {
+////                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+////                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+//                try {
+//                    Map<String, Object> map = message.ext();
+//                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+//                    EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+////                    GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+////                    /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+////                    EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+////                    if (message.direct() == EMMessage.Direct.SEND && message.conversationId().equals("1174970756044423168")) {
+////                        GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+////                        EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+////                    } else {
+////                        GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+////                        /*Glide.with(getContext()).load(map.get("otherUserPortrait").toString()).into(userAvatarView);*/
+////                        EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+////                    }
+//                } catch (Exception e) {
+//                    Log.i(TAG, "setUpBaseView: " + e);
+//                }
+//            }
+//
+//            Log.i(TAG, "setUpBaseView: ");
+////            if (message.direct() == Direct.SEND) {
+////                try {
+////                    Map<String, Object> map = message.ext();
+////                    GlideManager.loadCircleImg(map.get("UserPortrait").toString(), userAvatarView);
+////                    EaseUserUtils.setUserNick(map.get("nickName").toString(), usernickView);
+////                }catch (Exception e){
+////                    Log.i(TAG, "setUpBaseView: "+e.toString());
+////                    EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
+////                }
+////            } else {
+//
+////            Map<String, Object> map = message.ext();
+////            try {
+////                GlideManager.loadCircleImg(map.get("otherUserPortrait").toString(), userAvatarView);
+////                EaseUserUtils.setUserNick(map.get("otherUserNickName").toString(), usernickView);
+////            } catch (Exception e) {
+////                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+////                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+////            }
+//
+////            }
+//        }
+//        if (EMClient.getInstance().getOptions().getRequireDeliveryAck()) {
+//            if (deliveredView != null) {
+//                if (message.isDelivered()) {
+//                    deliveredView.setVisibility(View.VISIBLE);
+//                } else {
+//                    deliveredView.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        }
+//        if (EMClient.getInstance().getOptions().getRequireAck()) {
+//            if (ackedView != null) {
+//                if (message.isAcked()) {
+//                    if (deliveredView != null) {
+//                        deliveredView.setVisibility(View.INVISIBLE);
+//                    }
+//                    ackedView.setVisibility(View.VISIBLE);
+//                } else {
+//                    ackedView.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        }
+//
+//        if (itemStyle != null) {
+//            if (userAvatarView != null) {
+//                if (itemStyle.isShowAvatar()) {
+//                    userAvatarView.setVisibility(View.VISIBLE);
+//                    EaseAvatarOptions avatarOptions = EaseUI.getInstance().getAvatarOptions();
+//                    if (avatarOptions != null && userAvatarView instanceof EaseImageView) {
+//                        EaseImageView avatarView = ((EaseImageView) userAvatarView);
+//                        if (avatarOptions.getAvatarShape() != 0)
+//                            avatarView.setShapeType(avatarOptions.getAvatarShape());
+//                        if (avatarOptions.getAvatarBorderWidth() != 0)
+//                            avatarView.setBorderWidth(avatarOptions.getAvatarBorderWidth());
+//                        if (avatarOptions.getAvatarBorderColor() != 0)
+//                            avatarView.setBorderColor(avatarOptions.getAvatarBorderColor());
+//                        if (avatarOptions.getAvatarRadius() != 0)
+//                            avatarView.setRadius(avatarOptions.getAvatarRadius());
+//                    }
+//                } else {
+//                    userAvatarView.setVisibility(View.GONE);
+//                }
+//            }
+//            if (usernickView != null) {
+//                if (itemStyle.isShowUserNick())
+//                    usernickView.setVisibility(View.VISIBLE);
+//                else
+//                    usernickView.setVisibility(View.GONE);
+//            }
+//            if (bubbleLayout != null) {
+//                if (message.direct() == Direct.SEND) {
+//                    if (itemStyle.getMyBubbleBg() != null) {
+//                        bubbleLayout.setBackground(((EaseMessageAdapter) adapter).getMyBubbleBg());
+//                    }
+//                } else if (message.direct() == Direct.RECEIVE) {
+//                    if (itemStyle.getOtherBubbleBg() != null) {
+//                        bubbleLayout.setBackground(((EaseMessageAdapter) adapter).getOtherBubbleBg());
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
 
     private void setClickListener() {
         if (bubbleLayout != null) {

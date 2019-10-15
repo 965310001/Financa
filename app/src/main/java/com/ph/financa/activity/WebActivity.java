@@ -27,7 +27,6 @@ import com.ph.financa.R;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
-import com.ph.financa.utils.AndroidBug5497Workaround;
 import com.ph.financa.view.SmartRefreshWebLayout;
 import com.ph.financa.wxapi.pay.JPayListener;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
@@ -80,7 +79,8 @@ public class WebActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        AndroidBug5497Workaround.assistActivity(this);
+//        AndroidBug5497Workaround.assistActivity(this);
+//        AndroidBottomSoftBar.assistActivity(mContentView,this);
         Intent intent = getIntent();
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
         if (intent.hasExtra(Constant.TITLE)) {
@@ -92,6 +92,12 @@ public class WebActivity extends BaseTitleActivity {
 
         if (intent.hasExtra(Constant.URL)) {
             mUrl = intent.getStringExtra(Constant.URL);
+        } else {
+            /*可能是pdf*/
+            mUrl = String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP,
+                    ApiConstant.DATA_LIB,
+                    SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                    SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
         }
 
         Log.i(TAG, "initView: " + mUrl);
@@ -147,7 +153,7 @@ public class WebActivity extends BaseTitleActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             /*Log.i(TAG, "onProgressChanged: " + newProgress);*/
-            if (newProgress==100){
+            if (newProgress == 100) {
                 Log.i(TAG, "onProgressChanged: ");
                 /*mSmartRefreshLayout.finishRefresh();*/
                 mSmartRefreshLayout.postDelayed(() -> mSmartRefreshLayout.finishRefresh(), 100);
@@ -481,6 +487,7 @@ public class WebActivity extends BaseTitleActivity {
                     SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
 
 //            FastUtil.startActivity(mContext, WebActivity.class, bundle);
+            Log.i(TAG, "toFileLib: " + bundle.getString(Constant.URL));
 
             runOnUiThread(() -> mAgentWeb.getWebCreator().getWebView().loadUrl(bundle.getString(Constant.URL)));
 

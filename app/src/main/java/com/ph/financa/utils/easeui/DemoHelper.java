@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -75,6 +76,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import tech.com.commoncore.utils.SPUtil;
 import tech.com.commoncore.utils.Utils;
 
 public class DemoHelper {
@@ -442,6 +444,15 @@ public class DemoHelper {
                 Log.i(TAG, "getLaunchIntent: ");
                 // you can set what activity you want display when user click the notification
                 Intent intent = new Intent(appContext, CustomerActivity.class);
+
+                try {
+                    SPUtil.put(Utils.getContext(), message.getFrom() + "name", message.getStringAttribute("nickName"));
+                    SPUtil.put(Utils.getContext(), message.getFrom() + "head", message.getStringAttribute("UserPortrait"));
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+
+
                 // open calling activity if there is call
                 if (isVideoCalling) {
 //                    intent = new Intent(appContext, VideoCallActivity.class);
@@ -1286,8 +1297,14 @@ public class DemoHelper {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
         EaseUser user = null;
-        if (username.equals(EMClient.getInstance().getCurrentUser()))
-            return getUserProfileManager().getCurrentUserInfo();
+        if (!TextUtils.isEmpty(username) && username.equals(EMClient.getInstance().getCurrentUser())) {
+            EaseUser userInfo = getUserProfileManager().getCurrentUserInfo();
+            if (null != userInfo) {
+                userInfo.setNickname(SPHelper.getStringSF(Utils.getContext(), com.ph.financa.constant.Constant.USERHEAD));
+                userInfo.setAvatar(SPHelper.getStringSF(Utils.getContext(), com.ph.financa.constant.Constant.USERHEAD));
+            }
+            return userInfo;
+        }
         user = getContactList().get(username);
         if (user == null && getRobotList() != null) {
             user = getRobotList().get(username);
@@ -1298,8 +1315,7 @@ public class DemoHelper {
             user = new EaseUser(username);
             EaseCommonUtils.setUserInitialLetter(user);
         }
-        Log.i(TAG, "getUserInfo: " + user.getUsername() + " " + user.getNickname());
-        Log.i(TAG, "getUserInfo: " + SPHelper.getStringSF(Utils.getContext(), com.ph.financa.constant.Constant.USERID));
+
 //        if (contactList != null && contactList.containsKey(username)) {
 //
 //        } else { // 如果内存中没有，则将本地数据库中的取出到内存中。
@@ -1338,6 +1354,37 @@ public class DemoHelper {
 //            }
 //        }
 
+        /*获取头像开始*/
+        if (contactList != null && contactList.containsKey(username)) {
+
+        } else { // 如果内存中没有，则将本地数据库中的取出到内存中。
+            getContactList();
+        }
+        // // TODO 获取不在好友列表里的群成员具体信息，即陌生人信息，demo未实现
+        // if (user == null && getRobotList() != null) {
+        // user = getRobotList().get(hxId);
+        // }
+        user = contactList.get(username);
+        if (user == null) {
+            user = new EaseUser(username);
+        } else {
+            if (TextUtils.isEmpty(user.getNickname())) { // 如果名字为空，则显示环信号码
+                user.setNickname(user.getUsername());
+            }
+        }
+        try {
+            /*获取头像结束*/
+            user.setNickname(SPUtil.get(Utils.getContext(), username + "name", TextUtils.isEmpty(username) ? user.getUsername() : username).toString());
+            user.setAvatar(SPUtil.get(Utils.getContext(), username + "head", "").toString());
+
+            Log.i(TAG, "getUserInfo: " + SPUtil.get(Utils.getContext(), username + "name", TextUtils.isEmpty(username) ? user.getUsername() : username).toString());
+            Log.i(TAG, "getUserInfo: " + SPUtil.get(Utils.getContext(), username + "head", "").toString());
+
+
+        } catch (Exception e) {
+            Log.i(TAG, "getUserInfo: " + e.toString());
+        }
+
         return user;
     }
 
@@ -1351,6 +1398,8 @@ public class DemoHelper {
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
                 for (EMMessage message : messages) {
+                    DemoHelper.getInstance().getNotifier().vibrateAndPlayTone(message);
+
                     EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
                     // 判断一下是否是会议邀请
                     String confId = message.getStringAttribute(Constant.MSG_ATTR_CONF_ID, "");
@@ -1361,44 +1410,41 @@ public class DemoHelper {
                     }
 
                     //************接收并处理扩展消息***********************
-
-//                    String userName = "", userPic = "", otherUserNickName = "", otherUserPortrait = "";
-//                    try {
-//                        userName = message.getStringAttribute("nickName", "");
-//                        userPic = message.getStringAttribute("UserPortrait", "");
-//                    } catch (Exception e) {
-//                        Log.i(TAG, "onMessageReceived: " + e.toString());
-//                    }
-//
-//                    String hxIdFrom = message.getFrom();
-//                    EaseUser easeUser = new EaseUser(hxIdFrom);
-//                    easeUser.setAvatar(userPic);
-//                    easeUser.setNickname(userName);
-//
-//                    // 存入内存
-//                    getContactList();
-//                    contactList.put(hxIdFrom, easeUser);
-//                    try {
-//                        otherUserNickName = message.getStringAttribute("otherUserNickName", "");
-//                        otherUserPortrait = message.getStringAttribute("otherUserPortrait", "");
-//                    }catch (Exception e){
-//                        Log.i(TAG, "onMessageReceived: "+e.toString());
-//                    }
-//                    String to = message.getTo();
-//                    RobotUser robot = new RobotUser(to);
-//                    robot.setAvatar(otherUserNickName);
-//                    robot.setAvatar(otherUserPortrait);
-//                    robotList.put(to, robot);
-//
-//                    // 存入db
-//                    UserDao dao = new UserDao(appContext);
-//                    List<EaseUser> users = new ArrayList<EaseUser>();
-//                    users.add(easeUser);
-//                    dao.saveContactList(users);
-//                    getModel().setContactSynced(true);
+                    try {
+                        String userName = message.getStringAttribute("otherUserNickName", "");
+                        String userPic = message.getStringAttribute("otherUserPortrait", "");
 
 
-                    // in background, do not refresh UI, notify it in notification bar
+                        String userPortrait = message.getStringAttribute("UserPortrait", "");
+                        String nickName = message.getStringAttribute("nickName", "");
+                        Log.i(TAG, "onMessageReceived: " + userName + " " + userPic);
+                        Log.i(TAG, "onMessageReceived: " + nickName + " " + userPortrait);
+
+                        String hxIdFrom = message.getFrom();
+                        EaseUser easeUser = new EaseUser(hxIdFrom);
+                        easeUser.setAvatar(userPic);
+                        easeUser.setNickname(userName);
+
+                        // 存入内存
+                        getContactList();
+                        contactList.put(hxIdFrom, easeUser);
+                        // 存入db
+                        UserDao dao = new UserDao(null);
+                        List<EaseUser> users = new ArrayList<>();
+                        users.add(easeUser);
+                        dao.saveContactList(users);
+
+                        getModel().setContactSynced(true);
+
+                        // 通知listeners联系人同步完毕
+                        notifyContactsSyncListener(true);
+                        if (isGroupsSyncedWithServer()) {
+//                        notifyForRecevingEvents();
+                        }
+                    } catch (Exception e) {
+                        Log.i(TAG, "onMessageReceived: " + e.toString());
+                    }
+                    // ******************扩展信息处理完成**********************
                     if (!easeUI.hasForegroundActivies()) {
                         getNotifier().notify(message);
                     }

@@ -41,8 +41,6 @@ public class MessageFragment extends BaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
-
         mTabLayoutMessage = mContentView.findViewById(R.id.tab_message);
         for (int i = 0; i < titles.length; i++) {
             mTabEntities.add(new TabEntity(titles[i], R.mipmap.ic_home_selected, R.mipmap.ic_home_selected));

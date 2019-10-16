@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
-import androidx.annotation.NonNull;
 
 import java.lang.reflect.Method;
 
@@ -39,6 +37,7 @@ public class AndroidBug5497Workaround {
 
     private void possiblyResizeChildOfContent() {
         int usableHeightNow = computeUsableHeight();
+        Log.i("TAG", "usableHeightNow: "+usableHeightNow+" usableHeightPrevious:"+usableHeightPrevious);
         if (usableHeightNow != usableHeightPrevious) {
             int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
@@ -52,7 +51,6 @@ public class AndroidBug5497Workaround {
             mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
         }
-//        checkDeviceHasNavigationBar(activity);
     }
 
     private int computeUsableHeight() {
@@ -67,19 +65,19 @@ public class AndroidBug5497Workaround {
 
     private static final String NAVIGATION = "navigationBarBackground";
 
-    public static boolean isNavigationBarExist(@NonNull Activity activity) {
-        ViewGroup vp = (ViewGroup) activity.getWindow().getDecorView();
-        if (vp != null) {
-            for (int i = 0; i < vp.getChildCount(); i++) {
-                vp.getChildAt(i).getContext().getPackageName();
-
-                if (vp.getChildAt(i).getId() != -1 && NAVIGATION.equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    public static boolean isNavigationBarExist(@NonNull Activity activity) {
+//        ViewGroup vp = (ViewGroup) activity.getWindow().getDecorView();
+//        if (vp != null) {
+//            for (int i = 0; i < vp.getChildCount(); i++) {
+//                vp.getChildAt(i).getContext().getPackageName();
+//
+//                if (vp.getChildAt(i).getId() != -1 && NAVIGATION.equals(activity.getResources().getResourceEntryName(vp.getChildAt(i).getId()))) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
 
     /*判断是否存在虚拟键*/

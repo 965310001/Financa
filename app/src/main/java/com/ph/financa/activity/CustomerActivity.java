@@ -19,8 +19,7 @@ import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
-import com.ph.financa.utils.AndroidBottomSoftBar;
-import com.ph.financa.utils.AndroidBug5497Workaround;
+import com.ph.financa.utils.SoftKeyboardFixerForFullscreen;
 
 import org.json.JSONObject;
 
@@ -36,8 +35,9 @@ public class CustomerActivity extends BaseTitleActivity {
     public void initView(Bundle savedInstanceState) {
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
-        AndroidBottomSoftBar.assistActivity(mContentView, this);
-        AndroidBug5497Workaround.assistActivity(this);
+        SoftKeyboardFixerForFullscreen.assistActivity(this);
+//        AndroidBottomSoftBar.assistActivity(mContentView, this);
+//
 
         Intent intent = getIntent();
 //        if (intent.hasExtra(FriendTable.FRIEND_NAME)) {

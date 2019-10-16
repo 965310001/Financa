@@ -49,10 +49,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             signingConfig signingConfigs.config
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFileName = "$applicationId-v${defaultConfig.versionName}.apk"
+                }
+            }
         }
 
         debug {
             signingConfig signingConfigs.config
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFileName = "$applicationId-v${defaultConfig.versionName}.apk"
+                }
+            }
         }
     }
 

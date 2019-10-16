@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -242,9 +241,9 @@ public class EaseConversationListFragment extends EaseBaseFragment {
                         }
                     }
                     /*Log.i("TAG", "loadConversationList: " + conversation.getLastMessage().getMsgTime());*/
-                    Log.i("TAG", "loadConversationList:本周 " + DateUtil.getEndDayOfWeek().getTime());
-                    Log.i("TAG", "loadConversationList:上周 " + DateUtil.getEndDayOfLastWeek().getTime());
-                    Log.i("TAG", "loadConversationList:一月内 " + DateUtil.getEndDayOfMonth().getTime());
+//                    Log.i("TAG", "loadConversationList:本周 " + DateUtil.getEndDayOfWeek().getTime());
+//                    Log.i("TAG", "loadConversationList:上周 " + DateUtil.getEndDayOfLastWeek().getTime());
+//                    Log.i("TAG", "loadConversationList:一月内 " + DateUtil.getEndDayOfMonth().getTime());
 //                    Log.i("TAG", "loadConversationList:半年内 " + DateUtil.getEndDayOfWeek().getTime());
                 }
             }

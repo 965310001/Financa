@@ -54,7 +54,6 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
             StatusBarUtils.immersive(mContext, false);
         }
         super.onVisibleChanged(isVisibleToUser);
-        Log.i(TAG, "onVisibleChanged: ");
     }
 
     @Override
@@ -123,7 +122,7 @@ public class HomeFragment extends WebFragment implements WbShareCallback {
         /*首页图片跳转*/
         @JavascriptInterface
         public void bannerLink(String content) throws JSONException {
-            Log.i(TAG, "bannerLink: "+content);
+            Log.i(TAG, "bannerLink: " + content);
             if (!TextUtils.isEmpty(content)) {
                 JSONObject jsonObject = new JSONObject(content);
                 String link = jsonObject.getString("link");

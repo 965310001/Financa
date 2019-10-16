@@ -234,11 +234,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
-//            case R.id.tv_rights:
-//                // TODO: 2019/9/9 会员权益
-//                goActivity(null, null);
-//                break;
-
             case R.id.tv_rights:
             case R.id.tv_receive:
             case R.id.ic_crown_open:

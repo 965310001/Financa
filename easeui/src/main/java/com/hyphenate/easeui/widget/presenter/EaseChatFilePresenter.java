@@ -43,7 +43,6 @@ public class EaseChatFilePresenter extends EaseChatRowPresenter {
             try {
                 EMClient.getInstance().chatManager().ackMessageRead(message.getFrom(), message.getMsgId());
             } catch (HyphenateException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

@@ -981,14 +981,12 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
 
 	@Override
 	public float getMidScale() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setMidScale(float midScale) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 }

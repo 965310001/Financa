@@ -7,8 +7,7 @@
     <string name="errcode_unsupported">不支持错误</string>
     <string name="errcode_unknown">发送返回</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
 
     <string name="msg_recall_by_user">This message has been recalled by %1$s</string>
     <string name="at_your_in_group">%s @ you in group chat</string>

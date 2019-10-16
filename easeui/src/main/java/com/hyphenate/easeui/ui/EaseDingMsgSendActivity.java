@@ -60,7 +60,6 @@ public class EaseDingMsgSendActivity extends EaseBaseActivity {
         titleBar.getRightLayout().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: send the ding-type msg.
                 EMLog.i(TAG, "Click to send ding-type message.");
                 String msgContent = msgEidtText.getText().toString();
                 Intent i = new Intent();

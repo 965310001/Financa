@@ -100,6 +100,11 @@ public class WebActivity extends BaseTitleActivity {
                     SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
         }
 
+        /*接收pdf start*/
+        String action = intent.getAction();
+        Log.i(TAG, "pdf 的数据接收" + action + " " + intent.getType() + " " + intent.getData());
+        /*接收pdf end*/
+
         Log.i(TAG, "initView: " + mUrl);
 
         mAgentWeb = AgentWeb.with(this)

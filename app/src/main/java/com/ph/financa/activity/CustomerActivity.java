@@ -119,7 +119,6 @@ public class CustomerActivity extends BaseTitleActivity {
             message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
             message.setAttribute("nickName", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
 
-
             message.setAttribute("otherUserPortrait", getIntent().getStringExtra(FriendTable.FRIEND_HEAD));
             message.setAttribute("otherUserNickName", getIntent().getStringExtra(FriendTable.FRIEND_NAME));
         }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_16">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_head"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        android:src="@color/red"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:hint="产品使用说明.pdf"
+        android:singleLine="true"
+        android:textColor="@color/C_212121"
+        app:layout_constraintLeft_toRightOf="@id/iv_head"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_4"
+        android:hint="2019-10-12"
+        android:singleLine="true"
+        android:textColor="#ff777777"
+        app:layout_constraintLeft_toRightOf="@id/iv_head"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+</androidx.constraintlayout.widget.ConstraintLayout>

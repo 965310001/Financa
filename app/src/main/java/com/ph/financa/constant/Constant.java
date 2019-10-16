@@ -100,4 +100,7 @@ public interface Constant {
 
     /*消息广播*/
     String MESS_BROADCAST = "com.ph.financa.fragments.MessageFragment";
+
+    /*资料库*/
+    String DATABASE = "database";
 }

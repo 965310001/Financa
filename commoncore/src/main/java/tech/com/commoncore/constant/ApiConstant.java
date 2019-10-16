@@ -86,7 +86,7 @@ public interface ApiConstant {
     /*资料库*/
     String DATA_LIB = "h5/data-lib";
     /*怎么上传——帮助*/
-    String how_to_upload = "h5/how-to-upload";
+    String HOW_TO_UPLOAD = "h5/how-to-upload";
 
     /*发送验证码*/
     String SEND_CODE = "/api/phone/send";

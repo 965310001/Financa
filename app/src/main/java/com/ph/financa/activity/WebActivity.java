@@ -484,18 +484,19 @@ public class WebActivity extends BaseTitleActivity {
 
         @JavascriptInterface
         public void toFileLib(String content) {
-            Log.i(TAG, "toFileLib: 前往资料库页面方法");
-            Bundle bundle = new Bundle();
-            bundle.putString(Constant.URL, String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP,
-                    ApiConstant.DATA_LIB,
-                    SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
-                    SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
+//            Log.i(TAG, "toFileLib: 前往资料库页面方法");
+//            Bundle bundle = new Bundle();
+//            bundle.putString(Constant.URL, String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP,
+//                    ApiConstant.DATA_LIB,
+//                    SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+//                    SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
+//
+////            FastUtil.startActivity(mContext, WebActivity.class, bundle);
+//            Log.i(TAG, "toFileLib: " + bundle.getString(Constant.URL));
+//
+//            runOnUiThread(() -> mAgentWeb.getWebCreator().getWebView().loadUrl(bundle.getString(Constant.URL)));
 
-//            FastUtil.startActivity(mContext, WebActivity.class, bundle);
-            Log.i(TAG, "toFileLib: " + bundle.getString(Constant.URL));
-
-            runOnUiThread(() -> mAgentWeb.getWebCreator().getWebView().loadUrl(bundle.getString(Constant.URL)));
-
+            FastUtil.startActivity(mContext, DatabaseActivity.class);
         }
 
         /*名片分享的 方法*/

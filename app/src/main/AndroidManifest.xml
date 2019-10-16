@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" /> <!-- 相机 SD卡权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 极光推送 -->
-
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -42,6 +41,66 @@
         android:usesCleartextTraffic="true"
         tools:overrideLibrary="androidx.appcompat"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
+        <activity
+            android:name=".activity.DatabaseActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait">
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/msword" />
+            </intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+            </intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.ms-excel" />
+            </intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+            </intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.ms-powerpoint" />
+            </intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+            </intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/pdf" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.SelectAddressActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
@@ -220,8 +279,8 @@
         <activity
             android:name=".activity.CustomerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <!-- android:windowSoftInputMode="adjustPan|stateHidden"--><!--adjustResize-->
+            android:windowSoftInputMode="adjustPan|stateHidden" /> <!-- android:windowSoftInputMode="adjustPan|stateHidden" -->
+        <!-- adjustResize -->
         <activity
             android:name=".activity.WriteArticleActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
@@ -233,59 +292,7 @@
         <activity
             android:name=".activity.WebActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
-            android:screenOrientation="portrait">
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/msword" />
-            </intent-filter>
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
-            </intent-filter>
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.ms-excel" />
-            </intent-filter>
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.SEND" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-            </intent-filter>
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.ms-powerpoint" />
-            </intent-filter>
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.SEND" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
-            </intent-filter>
-            <intent-filter tools:ignore="AppLinkUrlError">
-                <action android:name="android.intent.action.SEND" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/pdf" />
-            </intent-filter>
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.EditCompanyActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
@@ -314,8 +321,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan" />
-        <!-- android:taskAffinity="net.sourceforge.simcpux" -->
+            android:windowSoftInputMode="adjustPan" /> <!-- android:taskAffinity="net.sourceforge.simcpux" -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
@@ -389,22 +395,17 @@
 
         <service
             android:name=".service.BadgeIntentService"
-            android:exported="false" />
-
-        <!-- VIVO推送配置 start -->
+            android:exported="false" /> <!-- VIVO推送配置 start -->
         <service
             android:name="com.vivo.push.sdk.service.CommandClientService"
             android:exported="true" />
+
         <activity
             android:name="com.vivo.push.sdk.LinkProxyClientActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--推送配置项-->
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- 推送配置项 -->
         <!-- VIVO推送配置 end -->
-
-
         <!-- Oppo推送配置 start -->
         <service
             android:name="com.coloros.mcssdk.PushService"
@@ -412,51 +413,42 @@
             <intent-filter>
                 <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
-        </service>
-        <!-- Oppo推送配置 end -->
-
+        </service> <!-- Oppo推送配置 end -->
         <!-- Mi推送配置 start -->
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
             android:process=":pushservice" />
-
         <service
             android:name="com.xiaomi.push.service.XMJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":pushservice" /> <!--注：此service必须在3.0.1版本以后（包括3.0.1版本）加入-->
-
+            android:process=":pushservice" /> <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
         <service
             android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
-            android:enabled="true" /> <!--注：此service必须在2.2.5版本以后（包括2.2.5版本）加入-->
+            android:enabled="true" /> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.xiaomi.push.service.receivers.PingReceiver"
             android:exported="false"
             android:process=":pushservice">
-
             <intent-filter>
                 <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
-
         </receiver>
-
         <receiver android:name="com.hyphenate.push.platform.mi.EMMiMsgReceiver">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
@@ -467,10 +459,7 @@
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
-        </receiver>
-        <!-- Mi推送配置 end-->
-
-
+        </receiver> <!-- Mi推送配置 end -->
         <!-- 开机自启动服务 -->
         <receiver android:name=".utils.easeui.receiver.StartServiceReceiver">
             <intent-filter android:priority="1000">
@@ -479,28 +468,26 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </receiver>
-
-        <!-- FCM required start -->
+        </receiver> <!-- FCM required start -->
         <service android:name=".utils.easeui.fcm.EMFCMMSGService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".utils.easeui.fcm.EMFCMTokenRefreshService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service>
-        <!-- FCM required end -->
-
-        <!--华为 HMS Config-->
-        <!--接入HMSSDK PUSH模块需要注册，第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播，
+        </service> <!-- FCM required end -->
+        <!-- 华为 HMS Config -->
+        <!--
+接入HMSSDK PUSH模块需要注册，第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播，
                 此receiver类需要开发者自己创建并继承com.huawei.hms.support.api.push.PushReceiver类，
-                参考示例代码中的类：com.huawei.hmsagent.HuaweiPushRevicer-->
+                参考示例代码中的类：com.huawei.hmsagent.HuaweiPushRevicer
+        -->
         <receiver android:name=".utils.easeui.receiver.HMSPushReceiver">
             <intent-filter>
+
                 <!-- 必须,用于接收 TOKEN -->
                 <action android:name="com.huawei.android.push.intent.REGISTRATION" />
                 <!-- 必须，用于接收消息 -->
@@ -510,46 +497,39 @@
                 <!-- 可选，查看 PUSH 通道是否连接，不查看则不需要 -->
                 <action android:name="com.huawei.intent.action.PUSH_STATE" />
             </intent-filter>
-        </receiver>
-        <!-- huawei push end -->
-
-
+        </receiver> <!-- huawei push end -->
         <!-- 百度地图所需的service -->
-        <!--<service-->
-        <!--android:name="com.baidu.location.f"-->
-        <!--android:enabled="true"-->
-        <!--android:process=":remote" />-->
-        <!--<meta-data-->
-        <!--android:name="com.baidu.lbsapi.API_KEY"-->
-        <!--android:value="3ecea51f560650b1ed8a4b99808f52e8" />-->
-
-
+        <!-- <service -->
+        <!-- android:name="com.baidu.location.f" -->
+        <!-- android:enabled="true" -->
+        <!-- android:process=":remote" /> -->
+        <!-- <meta-data -->
+        <!-- android:name="com.baidu.lbsapi.API_KEY" -->
+        <!-- android:value="3ecea51f560650b1ed8a4b99808f52e8" /> -->
         <receiver android:name="com.hyphenate.push.platform.vivo.EMVivoMsgReceiver">
             <intent-filter>
+
                 <!-- 接收 push 消息 -->
                 <action android:name="com.vivo.pushclient.action.RECEIVE" />
             </intent-filter>
-        </receiver>
-        <!-- VIVO推送配置 end -->
-
+        </receiver> <!-- VIVO推送配置 end -->
         <!-- MEIZU推送配置 start -->
         <receiver android:name="com.hyphenate.push.platform.meizu.EMMzMsgReceiver">
             <intent-filter>
+
                 <!-- 接收 push 消息 -->
                 <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
                 <!-- 接收 register 消息 -->
                 <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
-                <!-- 接收 unregister 消息-->
+                <!-- 接收 unregister 消息 -->
                 <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
                 <!-- 兼容低版本 Flyme3 推送服务配置 -->
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
 
-                <category android:name="${applicationId}"></category>
+                <category android:name="${applicationId}" />
             </intent-filter>
-        </receiver>
-        <!-- MEIZU推送配置 end -->
-
+        </receiver> <!-- MEIZU推送配置 end -->
         <!-- Oppo推送配置 start -->
         <service
             android:name="com.coloros.mcssdk.PushService"
@@ -557,47 +537,38 @@
             <intent-filter>
                 <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
-        </service>
-        <!-- Oppo推送配置 end -->
-
+        </service> <!-- Oppo推送配置 end -->
         <!-- Mi推送配置 start -->
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
             android:process=":pushservice" />
-
         <service
             android:name="com.xiaomi.push.service.XMJobService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":pushservice" /> <!--注：此service必须在3.0.1版本以后（包括3.0.1版本）加入-->
-
-
+            android:process=":pushservice" /> <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
-            android:enabled="true" /> <!--注：此service必须在2.2.5版本以后（包括2.2.5版本）加入-->
+            android:enabled="true" /> <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name="com.xiaomi.push.service.receivers.PingReceiver"
             android:exported="false"
             android:process=":pushservice">
-
             <intent-filter>
                 <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
-
         </receiver>
-
         <receiver android:name="com.hyphenate.push.platform.mi.EMMiMsgReceiver">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
@@ -609,7 +580,6 @@
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
         </receiver>
-        <!-- Mi推送配置 end-->
     </application>
 
 </manifest>

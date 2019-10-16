@@ -11,6 +11,7 @@ import com.githang.statusbar.StatusBarCompat;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseChatFragment;
@@ -20,8 +21,9 @@ import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
 import com.ph.financa.utils.SoftKeyboardFixerForFullscreen;
+import com.ph.financa.utils.easeui.DemoHelper;
 
-import org.json.JSONObject;
+import java.util.UUID;
 
 import tech.com.commoncore.base.BaseTitleActivity;
 import tech.com.commoncore.utils.SPHelper;
@@ -53,7 +55,7 @@ public class CustomerActivity extends BaseTitleActivity {
             String userId = intent.getStringExtra(EaseConstant.EXTRA_USER_ID);
             args.putString(EaseConstant.EXTRA_USER_ID, userId);
             if (!TextUtils.isEmpty(userId) && userId.equals(Constant.CUSTOMSERVICE)) {
-                /*sendEmmessage();*/
+                sendEmmessage();
                 mTitleBar.setTitleMainText("我的客服");
             } else {
                 EaseUser user = EaseUserUtils.getUserInfo(userId);
@@ -71,6 +73,8 @@ public class CustomerActivity extends BaseTitleActivity {
         chatFragment.hideTitleBar();
         chatFragment.setChatFragmentHelper(mHelper);
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
+
+
     }
 
     /*判断是否有客服信息*/
@@ -78,31 +82,45 @@ public class CustomerActivity extends BaseTitleActivity {
         EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.CUSTOMSERVICE));
         if (conversation == null || conversation.getAllMessages().size() == 0) {
             String content = "Hi，{用户名}，{上午}好，想问什么尽管问哦~直接发送编辑好的问题过来，我会尽快给您答复！";
-            EMMessage message = EMMessage.createTxtSendMessage(content, Constant.CUSTOMSERVICE);
-            try {
-                JSONObject weichat = new JSONObject();
-                message.setDirection(EMMessage.Direct.RECEIVE);
-                message.setAttribute("otherUserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD));
-                message.setAttribute("otherUserNickName", SPHelper.getStringSF(mContext, Constant.USERNAME));
+            EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
+            msg.setChatType(EMMessage.ChatType.Chat);
+            msg.setFrom(Constant.CUSTOMSERVICE);
+            msg.setTo(SPHelper.getStringSF(mContext, Constant.USERID));
+            /*EMTextMessageBody text_body = new EMTextMessageBody(content);*/
+            msg.setMsgId(UUID.randomUUID().toString());
+            msg.addBody(new EMTextMessageBody(content));
+            // 保存邀请消息
+            EMClient.getInstance().chatManager().saveMessage(msg);
+            DemoHelper.getInstance().getNotifier().notify(msg);
 
-                message.setAttribute("nickName", "我的客服");
-                message.setAttribute("UserPortrait", "https://img01.sogoucdn.com/net/a/04/link?url=https%3A%2F%2Fi04piccdn.sogoucdn.com%2Ff658e707bfde45c5&appid=122");
+            Log.i(TAG, "sendEmmessage: ");
 
-                JSONObject visitor = new JSONObject();
-                visitor.put("userNickname", "aa");
-                visitor.put("trueName", "aa");
-                visitor.put("phone", "15949629525");
-                visitor.put("description", "15949629525");
-                visitor.put("email", "15949629525");
-                weichat.put("visitor", visitor);
-                weichat.put("queueName", "15949629525");
-//                    message.setAttribute("visitor",visitor);
-                message.setAttribute("weichat", weichat);
-                Log.i(TAG, "sendEmmessage: ");
-                EMClient.getInstance().chatManager().sendMessage(message);
-            } catch (Exception e) {
-                Log.i(TAG, "sendEmmessage: " + e.toString());
-            }
+
+//            EMMessage message = EMMessage.createTxtSendMessage(content, Constant.CUSTOMSERVICE);
+//            try {
+//                JSONObject weichat = new JSONObject();
+//                message.setDirection(EMMessage.Direct.RECEIVE);
+//                message.setAttribute("otherUserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD));
+//                message.setAttribute("otherUserNickName", SPHelper.getStringSF(mContext, Constant.USERNAME));
+//
+//                message.setAttribute("nickName", "我的客服");
+//                message.setAttribute("UserPortrait", "https://img01.sogoucdn.com/net/a/04/link?url=https%3A%2F%2Fi04piccdn.sogoucdn.com%2Ff658e707bfde45c5&appid=122");
+//
+//                JSONObject visitor = new JSONObject();
+//                visitor.put("userNickname", "aa");
+//                visitor.put("trueName", "aa");
+//                visitor.put("phone", "15949629525");
+//                visitor.put("description", "15949629525");
+//                visitor.put("email", "15949629525");
+//                weichat.put("visitor", visitor);
+//                weichat.put("queueName", "15949629525");
+////                    message.setAttribute("visitor",visitor);
+//                message.setAttribute("weichat", weichat);
+//                Log.i(TAG, "sendEmmessage: ");
+//                EMClient.getInstance().chatManager().sendMessage(message);
+//            } catch (Exception e) {
+//                Log.i(TAG, "sendEmmessage: " + e.toString());
+//            }
         }
     }
 

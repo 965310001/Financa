@@ -1,17 +1,20 @@
 apply plugin: 'com.android.application'
 
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.ph.financa"
-        minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0.0"
+        applicationId rootProject.ext.android["applicationId"]
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true     //第一步
@@ -28,6 +31,11 @@ android {
     }
     signingConfigs {
         config {
+//            keyAlias keystoreProperties['KEYALIAS​']
+//            keyPassword keystoreProperties['KEYPASSWORD']
+//            storeFile file(keystoreProperties['​​STOREFILE'])
+//            storePassword keystoreProperties['STOREPASSWORD']
+
             keyAlias 'android'
             keyPassword '123456'
             storeFile file('D:/AndroidProjects/app.jks')

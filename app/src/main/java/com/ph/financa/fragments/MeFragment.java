@@ -301,4 +301,18 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public int getContentLayout() {
         return R.layout.fragment_me;
     }
+
+    /*刷新 数据*/
+    public void refresh(int count) {
+        if (null==mTv2) {
+            return;
+        }
+        if (count > 0) {
+            mTv2.setVisibility(View.VISIBLE);
+            mTv2.setText(String.format("%d%s", count, count < 99 ? "" : "+"));
+        } else {
+            mTv2.setVisibility(View.GONE);
+        }
+    }
+
 }

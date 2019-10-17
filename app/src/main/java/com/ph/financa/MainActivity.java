@@ -95,6 +95,7 @@ public class MainActivity extends BaseActivity {
 
     private AddDialog mAddDialog;
     private HomeFragment mHomeFragment;
+    private MeFragment mMeFragment;
 
 
     @Override
@@ -213,7 +214,8 @@ public class MainActivity extends BaseActivity {
         fragments.add(mHomeFragment);
         fragments.add(new SeeFragment());
         fragments.add(new CustomerFragment());
-        fragments.add(new MeFragment());
+        mMeFragment = new MeFragment();
+        fragments.add(mMeFragment);
 
         mNavigationBar.titleItems(tabText)
                 .normalIconItems(normalIcon)
@@ -358,7 +360,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onMessageRead(List<EMMessage> messages) {
-
+            refreshUIWithMessage();
         }
 
         @Override
@@ -397,7 +399,13 @@ public class MainActivity extends BaseActivity {
                     count = count - unreadMsgCount;
                 }
                 /*发送广播*/
-
+                if (unreadMsgCount>0){
+                    mNavigationBar.setMsgPointCount(4, unreadMsgCount);
+                }
+                mMeFragment.refresh(unreadMsgCount);
+            } else {
+                mNavigationBar.clearMsgPoint(4);
+                mMeFragment.refresh(0);
             }
 
             if (count > 0) {
@@ -645,7 +653,6 @@ public class MainActivity extends BaseActivity {
 
         /*设置聊天条数*/
 //        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
-
         /*删除图标条数*/
 //        ShortcutBadger.removeCount(mContext);
 

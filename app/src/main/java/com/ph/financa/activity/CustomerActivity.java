@@ -21,12 +21,13 @@ import com.ph.financa.R;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
 import com.ph.financa.utils.SoftKeyboardFixerForFullscreen;
-import com.ph.financa.utils.easeui.DemoHelper;
 
 import java.util.UUID;
 
 import tech.com.commoncore.base.BaseTitleActivity;
+import tech.com.commoncore.utils.DateUtil;
 import tech.com.commoncore.utils.SPHelper;
+import tech.com.commoncore.utils.SPUtil;
 
 /**
  * 我的客服
@@ -79,22 +80,30 @@ public class CustomerActivity extends BaseTitleActivity {
 
     /*判断是否有客服信息*/
     private void sendEmmessage() {
-        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.CUSTOMSERVICE));
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(Constant.CUSTOMSERVICE);
         if (conversation == null || conversation.getAllMessages().size() == 0) {
-            String content = "Hi，{用户名}，{上午}好，想问什么尽管问哦~直接发送编辑好的问题过来，我会尽快给您答复！";
-            EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.TXT);
+            String content = String.format("Hi，%s，%s好，想问什么尽管问哦~直接发送编辑好的问题过来，我会尽快给您答复！",
+                    SPHelper.getStringSF(mContext, Constant.USERNAME), DateUtil.getTimePhase());
+            EMMessage msg = EMMessage.createReceiveMessage(EMMessage.Type.CMD);
             msg.setChatType(EMMessage.ChatType.Chat);
             msg.setFrom(Constant.CUSTOMSERVICE);
-            msg.setTo(SPHelper.getStringSF(mContext, Constant.USERID));
-            /*EMTextMessageBody text_body = new EMTextMessageBody(content);*/
+            msg.setUnread(true);
+
+            msg.setAttribute("nickName", "我的客服");
+            msg.setAttribute("UserPortrait", "https://img01.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/120/h/80/iw/90/ih/60/t/0/ir/3?t=2&appid=200997&url=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FPr2SLX4glSdtlYbMwR0CbOwZSWvIM7MW5QicG9tSAOxhG8TTOf9XICDPvAHHb0qggMsCf4f5I3pEFDsLVwSU1Fw%2F0%3Fwx_fmt%3Djpeg&sign=941439310ef773a1c46686d4c125d998");
+
+            SPUtil.put(mContext, msg.getFrom() + "name", "我的客服");
+            SPUtil.put(mContext, msg.getFrom() + "head", "https://img01.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/120/h/80/iw/90/ih/60/t/0/ir/3?t=2&appid=200997&url=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FPr2SLX4glSdtlYbMwR0CbOwZSWvIM7MW5QicG9tSAOxhG8TTOf9XICDPvAHHb0qggMsCf4f5I3pEFDsLVwSU1Fw%2F0%3Fwx_fmt%3Djpeg&sign=941439310ef773a1c46686d4c125d998");
+
             msg.setMsgId(UUID.randomUUID().toString());
             msg.addBody(new EMTextMessageBody(content));
             // 保存邀请消息
             EMClient.getInstance().chatManager().saveMessage(msg);
-            DemoHelper.getInstance().getNotifier().notify(msg);
+//            DemoHelper.getInstance().getNotifier().notify(msg);
 
             Log.i(TAG, "sendEmmessage: ");
 
+        }
 
 //            EMMessage message = EMMessage.createTxtSendMessage(content, Constant.CUSTOMSERVICE);
 //            try {
@@ -121,7 +130,7 @@ public class CustomerActivity extends BaseTitleActivity {
 //            } catch (Exception e) {
 //                Log.i(TAG, "sendEmmessage: " + e.toString());
 //            }
-        }
+//        }
     }
 
     private EaseChatFragment.EaseChatFragmentHelper mHelper = new EaseChatFragment.EaseChatFragmentHelper() {

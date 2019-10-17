@@ -12,8 +12,6 @@ import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.ph.financa.R;
 import com.ph.financa.activity.CustomerActivity;
 
-import java.util.Map;
-
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.utils.FastUtil;
 
@@ -74,7 +72,7 @@ public class ChatListFragment extends BaseFragment {
             try {
                 Bundle bundle = new Bundle();
                 /*conversation.conversationId();*/
-                Map<String, Object> ext = conversation.getLastMessage().ext();
+//                Map<String, Object> ext = conversation.getLastMessage().ext();
 //                Log.i(TAG, "getLastMessage: " + ext);
 
 //                if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&

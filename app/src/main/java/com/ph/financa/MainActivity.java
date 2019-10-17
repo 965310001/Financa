@@ -25,6 +25,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMMultiDeviceListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.NetUtils;
@@ -170,6 +171,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+//        Bundle bundle1=new Bundle();
+//        bundle1.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
+//        bundle1.putString(FriendTable.FRIEND_NAME, "我的客服");
+//        bundle1.putString(FriendTable.FRIEND_HEAD, "客服");
+//        FastUtil.startActivity(mContext,CustomerActivity.class, bundle1);
+
         /*设置全屏并有状态栏 start */
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -373,8 +380,27 @@ public class MainActivity extends BaseActivity {
     void refreshUIWithMessage() {
         runOnUiThread(() -> {
             int count = getUnreadMsgCountTotal();
+
+            EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.USERID));
+            if (null != conversation) {
+                int unreadMsgCount = conversation.getUnreadMsgCount();
+                Log.i(TAG, "refreshUIWithMessage: " + unreadMsgCount);
+                if (unreadMsgCount > 0 && count >= unreadMsgCount) {
+                    count = count - unreadMsgCount;
+                }
+            }
+            conversation = EMClient.getInstance().chatManager().getConversation(Constant.CUSTOMSERVICE);
+            if (null != conversation) {
+                int unreadMsgCount = conversation.getUnreadMsgCount();
+                Log.i(TAG, "refreshUIWithMessage: " + unreadMsgCount);
+                if (unreadMsgCount > 0 && count >= unreadMsgCount) {
+                    count = count - unreadMsgCount;
+                }
+            }
+
             if (count > 0) {
                 Log.i(TAG, "onMessageReceived: ");
+
                 mNavigationBar.setMsgPointCount(1, count);
                 /*发送广播*/
                 Intent intent = new Intent();

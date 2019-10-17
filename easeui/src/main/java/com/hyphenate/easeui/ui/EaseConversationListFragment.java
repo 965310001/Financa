@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.utils.DateUtil;
+import com.hyphenate.easeui.utils.SPHelper;
 import com.hyphenate.easeui.widget.EaseConversationList;
 
 import java.util.ArrayList;
@@ -262,9 +264,11 @@ public class EaseConversationListFragment extends EaseBaseFragment {
         List<EMConversation> listEmcon = new ArrayList<EMConversation>();
         if (list.size() > 0) {
             for (EMConversation emConversation : list) {
-                if (!TextUtils.isEmpty(emConversation.conversationId()) && emConversation.conversationId().equals("1173549052970016768")) {
+                if (!TextUtils.isEmpty(emConversation.conversationId()) && !(emConversation.conversationId().equals("1173549052970016768")
+                        || emConversation.conversationId().equals(SPHelper.getStringSF(getContext(), "USERID")))) {
+                    listEmcon.add(emConversation);
+                    Log.i("TAG", "loadConversationList: 去掉环信客服id和userId");
                 }
-                listEmcon.add(emConversation);
             }
         }
         return listEmcon;

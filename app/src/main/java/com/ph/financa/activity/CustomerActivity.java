@@ -89,11 +89,12 @@ public class CustomerActivity extends BaseTitleActivity {
             msg.setFrom(Constant.CUSTOMSERVICE);
             msg.setUnread(true);
 
+            String head = "http://file.phscitech.com/dev/pic/banner/20191015/201910151445558570cd4633b040eca9e0d4a833bb9b4a.jpg";
             msg.setAttribute("nickName", "我的客服");
-            msg.setAttribute("UserPortrait", "https://img01.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/120/h/80/iw/90/ih/60/t/0/ir/3?t=2&appid=200997&url=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FPr2SLX4glSdtlYbMwR0CbOwZSWvIM7MW5QicG9tSAOxhG8TTOf9XICDPvAHHb0qggMsCf4f5I3pEFDsLVwSU1Fw%2F0%3Fwx_fmt%3Djpeg&sign=941439310ef773a1c46686d4c125d998");
+            msg.setAttribute("UserPortrait", head);
 
             SPUtil.put(mContext, msg.getFrom() + "name", "我的客服");
-            SPUtil.put(mContext, msg.getFrom() + "head", "https://img01.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/120/h/80/iw/90/ih/60/t/0/ir/3?t=2&appid=200997&url=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2FPr2SLX4glSdtlYbMwR0CbOwZSWvIM7MW5QicG9tSAOxhG8TTOf9XICDPvAHHb0qggMsCf4f5I3pEFDsLVwSU1Fw%2F0%3Fwx_fmt%3Djpeg&sign=941439310ef773a1c46686d4c125d998");
+            SPUtil.put(mContext, msg.getFrom() + "head", head);
 
             msg.setMsgId(UUID.randomUUID().toString());
             msg.addBody(new EMTextMessageBody(content));

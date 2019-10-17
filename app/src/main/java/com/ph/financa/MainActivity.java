@@ -389,13 +389,15 @@ public class MainActivity extends BaseActivity {
                     count = count - unreadMsgCount;
                 }
             }
-            conversation = EMClient.getInstance().chatManager().getConversation(Constant.CUSTOMSERVICE);
+            conversation = EMClient.getInstance().chatManager().getConversation(Constant.CUSTOMSERVICE);/*客服*/
             if (null != conversation) {
                 int unreadMsgCount = conversation.getUnreadMsgCount();
                 Log.i(TAG, "refreshUIWithMessage: " + unreadMsgCount);
                 if (unreadMsgCount > 0 && count >= unreadMsgCount) {
                     count = count - unreadMsgCount;
                 }
+                /*发送广播*/
+
             }
 
             if (count > 0) {

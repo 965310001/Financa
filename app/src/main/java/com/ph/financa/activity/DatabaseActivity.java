@@ -277,7 +277,7 @@ public class DatabaseActivity extends BaseTitleActivity {
                             ApiConstant.HOW_TO_UPLOAD,
                             SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
                             SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
-                    FastUtil.startActivity(mContext, WebActivity.class, bundle);
+                    FastUtil.startActivity(mContext, WebActivity.class, bundle,true);
                 });
     }
 

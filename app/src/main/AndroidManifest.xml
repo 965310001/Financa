@@ -42,6 +42,10 @@
         tools:overrideLibrary="androidx.appcompat"
         tools:replace="android:icon,android:label,android:theme,android:allowBackup">
         <activity
+            android:name=".activity.PdfActivity"
+            android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.DatabaseActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
             android:screenOrientation="portrait">

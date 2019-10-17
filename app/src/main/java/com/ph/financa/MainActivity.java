@@ -48,6 +48,8 @@ import com.ph.financa.jpush.JPushManager;
 import com.ph.financa.jpush.MessageReceiver;
 import com.ph.financa.service.BadgeIntentService;
 import com.ph.financa.utils.easeui.DemoHelper;
+import com.vise.xsnow.event.Subscribe;
+import com.vise.xsnow.event.inner.ThreadMode;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 import com.vise.xsnow.permission.OnPermissionCallback;
@@ -64,6 +66,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
+import tech.com.commoncore.event.SwitchEvent;
 import tech.com.commoncore.utils.AppStatus;
 import tech.com.commoncore.utils.AppStatusManager;
 import tech.com.commoncore.utils.FastUtil;
@@ -169,9 +172,13 @@ public class MainActivity extends BaseActivity {
         }
         super.beforeSetContentView();
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN_THREAD)
+    public void a(SwitchEvent bean) {
+        Log.i(TAG, "SwitchEvent: "+bean.position);
+    }
     @Override
     public void initView(Bundle savedInstanceState) {
+
 //        Bundle bundle1=new Bundle();
 //        bundle1.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
 //        bundle1.putString(FriendTable.FRIEND_NAME, "我的客服");

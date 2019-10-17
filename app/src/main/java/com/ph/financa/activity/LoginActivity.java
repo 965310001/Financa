@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.ph.financa.MainActivity;
 import com.ph.financa.R;
@@ -350,6 +351,11 @@ public class LoginActivity extends BaseActivity {
                             if (Integer.valueOf(code) == Emerror.USER_ALREADY_LOGIN.getCode()) {
                                 EMClient.getInstance().logout(true);
                                 loginEaseMob(id, password, code);
+                            } else if (code == EMError.USER_NOT_FOUND) {
+                                /*用户不存在*/
+                                ToastUtil.show("不存在此用户");
+//                                EMClient.getInstance().createAccount(id, "123456");//同步方法
+//                                loginEaseMob(id, "123456", code);
                             } else {
                                 ToastUtil.show(strings[1]);
                             }

@@ -70,6 +70,12 @@ public class DatabaseActivity extends BaseTitleActivity {
         mRvContent.setLayoutManager(new LinearLayoutManager(mContext));
 
         mAdapter = new DataBaseAdapter(R.layout.item_data_base);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Log.i(TAG, "onItemClick: ");
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("data", (DataBaseBean) adapter.getData().get(position));
+            FastUtil.startActivity(mContext, PdfActivity.class, bundle);
+        });
         mRvContent.setAdapter(mAdapter);
         mSmartRefreshLayout.autoRefresh();
         ArrayList<DataBaseBean> data = getData();
@@ -277,7 +283,7 @@ public class DatabaseActivity extends BaseTitleActivity {
                             ApiConstant.HOW_TO_UPLOAD,
                             SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
                             SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, "")));
-                    FastUtil.startActivity(mContext, WebActivity.class, bundle,true);
+                    FastUtil.startActivity(mContext, WebActivity.class, bundle, true);
                 });
     }
 

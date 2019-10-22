@@ -26,6 +26,7 @@ import com.just.agentweb.WebViewClient;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.AndroidObject;
 import com.ph.financa.activity.bean.BaseTResp2;
+import com.ph.financa.activity.bean.DocBean;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.view.SmartRefreshWebLayout;
 import com.ph.financa.wxapi.pay.JPayListener;
@@ -47,6 +48,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -480,6 +482,35 @@ public class WebActivity extends BaseTitleActivity {
                     finish();
                 }
             });
+        }
+
+        /*资料库*/
+        @JavascriptInterface
+        public void getDataFile(String content) throws JSONException {
+            Log.i(TAG, "getDataFile: " + content);
+            if (!TextUtils.isEmpty(content)) {
+                JSONObject jsonObject = new JSONObject(content);
+                String productId = jsonObject.getString("productId");
+                Log.i(TAG, "getDataFile: " + productId);
+
+                ViseHttp.GET("api/product/doc/list")
+                        .request(new ACallback<BaseTResp2<List<DocBean>>>() {
+
+                            @Override
+                            public void onSuccess(BaseTResp2<List<DocBean>> data) {
+                                if (data.isSuccess()) {
+                                    Log.i(TAG, "onSuccess: " + data.getData());
+                                } else {
+                                    ToastUtil.show(data.getMsg());
+                                }
+                            }
+
+                            @Override
+                            public void onFail(int errCode, String errMsg) {
+                                ToastUtil.show(errMsg);
+                            }
+                        });
+            }
         }
 
         @JavascriptInterface

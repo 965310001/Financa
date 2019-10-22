@@ -1,7 +1,10 @@
 package com.ph.financa.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import com.hyphenate.easeui.utils.DateUtil;
 import com.hyphenate.easeui.utils.GlideManager;
 import com.hyphenate.easeui.utils.SPHelper;
 import com.ph.financa.R;
+import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.DataBaseBean;
 import com.ph.financa.constant.Constant;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -27,9 +31,15 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.vise.xsnow.http.ViseHttp;
+import com.vise.xsnow.http.callback.ACallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import tech.com.commoncore.base.BaseTitleActivity;
@@ -37,6 +47,8 @@ import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.permission.Permission;
 import tech.com.commoncore.permission.UsesPermission;
 import tech.com.commoncore.utils.FastUtil;
+import tech.com.commoncore.utils.FileUtils;
+import tech.com.commoncore.utils.ToastUtil;
 import tech.com.commoncore.utils.Utils;
 
 /**
@@ -74,14 +86,14 @@ public class DatabaseActivity extends BaseTitleActivity {
             Log.i(TAG, "onItemClick: ");
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", (DataBaseBean) adapter.getData().get(position));
-            FastUtil.startActivity(mContext, PdfActivity.class, bundle);
+//            FastUtil.startActivity(mContext, PdfActivity.class, bundle);
         });
         mRvContent.setAdapter(mAdapter);
         mSmartRefreshLayout.autoRefresh();
-        ArrayList<DataBaseBean> data = getData();
-        if (null != data) {
-            mAdapter.addData(data);
-        }
+//        ArrayList<DataBaseBean> data = getData();
+//        if (null != data) {
+//            mAdapter.addData(data);
+//        }
         saveData(getIntent());
     }
 
@@ -92,6 +104,8 @@ public class DatabaseActivity extends BaseTitleActivity {
         if (null != intent && null != action) {
             DataBaseBean bean = new DataBaseBean(action, "", DateUtil.formatDate(new Date(), DateUtil.FORMAT_101));
             ArrayList<DataBaseBean> list = SPHelper.getDeviceData(mContext, Constant.DATABASE);
+
+            uploadFile(intent.getData().toString());
             if (null != bean) {
                 boolean isAdd = false;
                 if (null != list) {
@@ -119,20 +133,90 @@ public class DatabaseActivity extends BaseTitleActivity {
         mSmartRefreshLayout.autoRefresh();
     }
 
+    private void uploadFile(String action) {
+        Log.i(TAG, "uploadFile: "+action);
+//        action = action.replace("content://com.tencent.mm.external.fileprovider/external/", "");
+        Log.i(TAG, "uploadFile: "+action);
+        /*上传文件*/
+        File file = FileUtils.getFileByPath(action);
+
+        String res = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(Uri.parse(action), proj, null, null, null);
+        if(cursor.moveToFirst()){;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+
+
+
+        if (null != file) {
+            showLoading();
+            Map<String, File> map = new HashMap<>();
+            map.put("file", file);
+            Log.i(TAG, "initView: " + file.length());
+            ViseHttp.UPLOAD(ApiConstant.FILE_UPLOAD).addFiles(map).request(new ACallback<BaseTResp2<List<String>>>() {
+                @Override
+                public void onSuccess(BaseTResp2<List<String>> data) {
+                    Log.i(TAG, "onSuccess: " + data.getMsg());
+                    if (data.isSuccess()) {
+                        // TODO: 2019/10/22 更新数据
+                        loadData();
+                    } else {
+                        hideLoading();
+                        ToastUtil.show(data.getDetailMsg());
+                    }
+                }
+
+                @Override
+                public void onFail(int errCode, String errMsg) {
+                    hideLoading();
+                    Log.i(TAG, "onFail: " + errMsg + " " + errCode);
+                    ToastUtil.show(errMsg);
+                }
+            });
+        } else {
+            ToastUtil.show("文件不存在或者为空");
+        }
+    }
+
     @Override
     public void loadData() {
         super.loadData();
         mAdapter.getData().clear();
 
-        ArrayList<DataBaseBean> data = getData();
-        if (null != data) {
-            mAdapter.addData(data);
-        }
+        showLoading();
+        ViseHttp.GET(ApiConstant.DOC_LIST)
+                .request(new ACallback<BaseTResp2<List<DataBaseBean>>>() {
+
+                    @Override
+                    public void onSuccess(BaseTResp2<List<DataBaseBean>> data) {
+                        hideLoading();
+                        if (data.isSuccess()) {
+                            Log.i(TAG, "onSuccess: " + data.getData());
+                            if (null != data.getData()) {
+                                mAdapter.addData(data.getData());
+                            }
+                        } else {
+                            ToastUtil.show(data.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errCode, String errMsg) {
+                        hideLoading();
+                        ToastUtil.show(errMsg);
+                    }
+                });
+
+//        ArrayList<DataBaseBean> data = getData();
+
     }
 
-    private ArrayList<DataBaseBean> getData() {
-        return SPHelper.getDeviceData(mContext, Constant.DATABASE);
-    }
+//    private ArrayList<DataBaseBean> getData() {
+//        return SPHelper.getDeviceData(mContext, Constant.DATABASE);
+//    }
 
 
     public class DataBaseAdapter extends BaseQuickAdapter<DataBaseBean, BaseViewHolder> {

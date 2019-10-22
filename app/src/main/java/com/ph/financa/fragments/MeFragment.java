@@ -59,7 +59,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
         mIcHead = mContentView.findViewById(R.id.ic_head);
         mTvName = mContentView.findViewById(R.id.tv_name);
         mTvCompanyName = mContentView.findViewById(R.id.tv_company_name);
@@ -304,7 +303,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     /*刷新 数据*/
     public void refresh(int count) {
-        if (null==mTv2) {
+        if (null == mTv2) {
             return;
         }
         if (count > 0) {

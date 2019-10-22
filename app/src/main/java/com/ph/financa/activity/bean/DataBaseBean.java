@@ -1,10 +1,15 @@
 package com.ph.financa.activity.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class DataBaseBean implements Serializable {
+    @SerializedName("pathUrl")
     String path;
+    @SerializedName("name")
     String title;
+    @SerializedName("createTime")
     String time;
 
     public DataBaseBean() {

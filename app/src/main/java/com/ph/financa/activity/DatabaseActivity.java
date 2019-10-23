@@ -1,10 +1,8 @@
 package com.ph.financa.activity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -134,23 +132,9 @@ public class DatabaseActivity extends BaseTitleActivity {
     }
 
     private void uploadFile(String action) {
-        Log.i(TAG, "uploadFile: "+action);
-//        action = action.replace("content://com.tencent.mm.external.fileprovider/external/", "");
-        Log.i(TAG, "uploadFile: "+action);
         /*上传文件*/
-        File file = FileUtils.getFileByPath(action);
-
-        String res = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(Uri.parse(action), proj, null, null, null);
-        if(cursor.moveToFirst()){;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-
-
-
+        File file = FileUtils.getFileByUri(mContext, Uri.parse(action));
+        Log.i(TAG, "uploadFile: " + action);
         if (null != file) {
             showLoading();
             Map<String, File> map = new HashMap<>();
@@ -159,10 +143,12 @@ public class DatabaseActivity extends BaseTitleActivity {
             ViseHttp.UPLOAD(ApiConstant.FILE_UPLOAD).addFiles(map).request(new ACallback<BaseTResp2<List<String>>>() {
                 @Override
                 public void onSuccess(BaseTResp2<List<String>> data) {
-                    Log.i(TAG, "onSuccess: " + data.getMsg());
+                    Log.i(TAG, "onSuccess: " + data.getMsg() + data);
                     if (data.isSuccess()) {
+                        Log.i(TAG, "onSuccess: 上传成功");
                         // TODO: 2019/10/22 更新数据
-                        loadData();
+                        mSmartRefreshLayout.autoRefresh();
+//                        loadData();
                     } else {
                         hideLoading();
                         ToastUtil.show(data.getDetailMsg());

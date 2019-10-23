@@ -48,6 +48,7 @@
         <activity
             android:name=".activity.DatabaseActivity"
             android:configChanges="keyboardHidden|screenLayout|orientation"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.SEND" />

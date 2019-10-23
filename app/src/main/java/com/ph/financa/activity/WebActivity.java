@@ -490,6 +490,7 @@ public class WebActivity extends BaseTitleActivity {
                 JSONObject jsonObject = new JSONObject(content);
                 String productId = jsonObject.getString("productId");
                 Log.i(TAG, "getDataFile: " + productId);
+                FastUtil.startActivity(mContext, DatabaseActivity.class);
             }
         }
 

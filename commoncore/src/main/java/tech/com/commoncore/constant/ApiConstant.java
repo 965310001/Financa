@@ -7,8 +7,8 @@ package tech.com.commoncore.constant;
  */
 public interface ApiConstant {
 
-    //    String BASE_URL_ZP = "http://wealth.phscitech.com/";//生产环境
-    String BASE_URL_ZP = "http://develop.phscitech.com/";//开发环境
+        String BASE_URL_ZP = "http://wealth.phscitech.com/";//生产环境
+//    String BASE_URL_ZP = "http://develop.phscitech.com/";//开发环境
 
     String AGREEMENT = "h5/user-agreement";//隐私政策
     String PROTOCOL = "h5/privacy-policy";//用户协议

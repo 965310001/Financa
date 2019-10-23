@@ -55,7 +55,6 @@ public class VisitorsFragment extends WebFragment {
                 try {
                     JSONObject jsonObject = new JSONObject(content);
                     String readId = jsonObject.getString("readId");
-//                    String readerOpenId="";//= jsonObject.getString("readerOpenId");
                     Bundle bundle = new Bundle();
                     String url = String.format("%s%s?readId=%s&userId=%s", ApiConstant.BASE_URL_ZP, ApiConstant.VISIT_PICTURE, readId, readId);
                     bundle.putString(Constant.URL, url);

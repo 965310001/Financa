@@ -3,7 +3,6 @@ package com.ph.financa.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -13,7 +12,6 @@ import com.ph.financa.constant.Constant;
 import com.ph.financa.utils.easeui.DemoHelper;
 
 import tech.com.commoncore.base.BaseActivity;
-import tech.com.commoncore.utils.AppStatus;
 import tech.com.commoncore.utils.AppStatusManager;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
@@ -30,18 +28,16 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void beforeSetContentView() {
         if (getIntent() != null && (getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            Log.i(TAG, "beforeSetContentView: ");
             finish();
             return;
         }
         super.beforeSetContentView();
     }
 
-
     @Override
     public void initView(Bundle savedInstanceState) {
         new Handler().postDelayed(() -> {
-            AppStatusManager.getInstance().setAppStatus(AppStatus.STATUS_NORMAL);
+            AppStatusManager.getInstance().setAppStatus(AppStatusManager.STATUS_NORMAL);
             if (!getBooleanSF(Constant.ISGUIDE)) {/*过渡页*/
                 FastUtil.startActivity(mContext, WelcomeGuideActivity.class);
             } else if (getBooleanSF(Constant.ISLOGIN) && DemoHelper.getInstance().isLoggedIn()) {/*登录*/

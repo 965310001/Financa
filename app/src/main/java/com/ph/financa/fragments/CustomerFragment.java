@@ -113,25 +113,6 @@ public class CustomerFragment extends BaseFragment {
                 builder.detectFileUriExposure();
             }
 
-//            com.tencent.smtt.sdk.WebView webView = mContentView.findViewById(R.id.webview);
-//            webView.getSettings().setJavaScriptEnabled(true);
-//            webView.getSettings().setCacheMode(com.tencent.smtt.sdk.WebSettings.LOAD_CACHE_ELSE_NETWORK);
-//            webView.getSettings().setDomStorageEnabled(true);
-//            webView.getSettings().setJavaScriptEnabled(true);
-//            webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-//            webView.getSettings().setCacheMode(com.tencent.smtt.sdk.WebSettings.LOAD_NO_CACHE);
-//            webView.getSettings().setDomStorageEnabled(true);
-//            webView.getSettings().setDatabaseEnabled(true);
-//            webView.getSettings().setAppCacheEnabled(true);
-//            webView.getSettings().setAllowFileAccess(true);
-//            webView.getSettings().setSavePassword(true);
-//            webView.getSettings().setSupportZoom(true);
-//            webView.getSettings().setBuiltInZoomControls(true);
-//            webView.getSettings().setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-//            webView.getSettings().setUseWideViewPort(true);
-//            webView.loadUrl(URL);
-//            webView.addJavascriptInterface(new AndroidInterface(mAgentWeb, getContext()), "cosmetics");
-
             mAgentWeb = AgentWeb.with(mContext)
                     .setAgentWebParent(mContentView.findViewById(R.id.fl_content), new FrameLayout.LayoutParams(-1, -1))
                     .useDefaultIndicator()

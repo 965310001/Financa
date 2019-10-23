@@ -100,9 +100,7 @@ public class SendCodeActivity extends BaseTitleActivity {
 
         mdDisposable = Flowable.intervalRange(1, 61, 0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(aLong -> {
-                    mTvTime.setText(String.format("%ds", (61 - aLong)));
-                })
+                .doOnNext(aLong -> mTvTime.setText(String.format("%ds", (61 - aLong))))
                 .doOnComplete(() -> {
                     mTvSendCode.setVisibility(View.VISIBLE);
                     mTvTime.setVisibility(View.GONE);

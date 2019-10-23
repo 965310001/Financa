@@ -1,7 +1,6 @@
 package com.ph.financa.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -52,7 +51,6 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
             StatusBarUtils.immersive(getActivity(), true);
         }
         super.onVisibleChanged(isVisibleToUser);
-        Log.i(TAG, "onVisibleChanged: ");
     }
 
 

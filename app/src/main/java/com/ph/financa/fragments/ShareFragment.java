@@ -73,7 +73,6 @@ public class ShareFragment extends WebFragment {
         @JavascriptInterface
         public void toBrowsePicture(String content) throws JSONException {
             Log.i(TAG, "toBrowsePicture: " + content);
-//            Log.i(TAG, "前往访客画像: " + content);
             if (!TextUtils.isEmpty(content)) {
                 JSONObject jsonObject = new JSONObject(content);
                 String userId = jsonObject.getString("userId");

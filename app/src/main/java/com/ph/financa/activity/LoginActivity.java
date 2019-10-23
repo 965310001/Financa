@@ -22,6 +22,7 @@ import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.activity.bean.UserBean;
 import com.ph.financa.activity.bean.WXAccessTokenBean;
 import com.ph.financa.constant.Constant;
+import com.ph.financa.utils.UserUtils;
 import com.ph.financa.utils.easeui.DemoHelper;
 import com.ph.financa.wxapi.pay.JPayListener;
 import com.ph.financa.wxapi.pay.WeiXinBaoStrategy;
@@ -122,7 +123,6 @@ public class LoginActivity extends BaseActivity {
 
                         if (data.isSuccess() || data.getCode() == 40102002) {
                             loginEaseMob(String.valueOf(bean.getId()), "123456", data.getCode());
-//                            loginEaseMob("1173549052970016768", "123456", data.getCode());
                         } else {
                             Log.i(TAG, "onSuccess: " + data.getMsg());
                             ToastUtil.show(data.getMsg());
@@ -408,11 +408,13 @@ public class LoginActivity extends BaseActivity {
 
             SPHelper.setStringSF(mContext, Constant.WXOPENID, openId);
 
-            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
-            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
-            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
-            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
-            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
+            UserUtils.saveUser(data);
+
+//            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
+//            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
+//            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
+//            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
+//            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
 
             DemoHelper.getInstance().setCurrentUserName(data.getName());
         }

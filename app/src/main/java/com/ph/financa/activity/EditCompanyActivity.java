@@ -69,7 +69,6 @@ public class EditCompanyActivity extends BaseTitleActivity {
     }
 
     private void goMainActivity() {
-        /*SPHelper.setBooleanSF(mContext, Constant.ISCOMPANY, true);*/
         FastUtil.startActivity(mContext, MainActivity.class);
     }
 

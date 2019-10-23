@@ -67,7 +67,6 @@ public class DatabaseActivity extends BaseTitleActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//        mLlAddData.a();
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
         mSmartRefreshLayout.setRefreshHeader(new ClassicsHeader(mContext));//设置Header
@@ -94,7 +93,6 @@ public class DatabaseActivity extends BaseTitleActivity {
 //        }
         saveData(getIntent());
     }
-
 
     private void saveData(Intent intent) {
         String action = intent.getAction();

@@ -13,9 +13,11 @@ import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.dialog.MessageAlertDialog;
 import com.ph.financa.ease.FriendTable;
+import com.ph.financa.utils.UserUtils;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
+import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,6 +35,11 @@ import tech.com.commoncore.utils.ToastUtil;
  */
 public class SettingActivity extends BaseTitleActivity {
 
+    @BindView(R.id.tv_version)
+    TextView tvVersion;/*版本号*/
+    @BindView(R.id.tv_phone)
+    TextView tvPhone;/*手机号码*/
+
     private MessageAlertDialog messageAlertDialog;
 
     @Override
@@ -48,10 +55,6 @@ public class SettingActivity extends BaseTitleActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
-        /*版本号*/
-        TextView tvVersion = findViewById(R.id.tv_version);
-        /*手机号码*/
-        TextView tvPhone = findViewById(R.id.tv_phone);
 
         tvVersion.setText(String.format("v%s", FastUtil.getVersionName(mContext)));
 
@@ -63,7 +66,6 @@ public class SettingActivity extends BaseTitleActivity {
             case R.id.rl_feedback:
                 // TODO: 2019/9/9 反馈
                 Bundle bundle = new Bundle();
-                /*bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);*/
                 bundle.putString(FriendTable.FRIEND_NAME, "我的客服");
                 bundle.putString(FriendTable.FRIEND_HEAD, "客服");
                 FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
@@ -108,12 +110,7 @@ public class SettingActivity extends BaseTitleActivity {
     private void quitUser() {
         showLoading();
 
-//        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(SPHelper.getStringSF(mContext, Constant.USERID, ""));
-//        //获取此会话的所有消息
-//        List<EMMessage> messages = conversation.getAllMessages();
-//        EMClient.getInstance().chatManager().importMessages(messages);/*同步到数据库*/
-
-        ViseHttp.POST(String.format("%s%s", ApiConstant.BASE_URL_ZP, ApiConstant.LOGINOUT))
+        ViseHttp.POST(ApiConstant.LOGINOUT)
                 .request(new ACallback<BaseTResp2>() {
                     @Override
                     public void onSuccess(BaseTResp2 data) {
@@ -136,22 +133,6 @@ public class SettingActivity extends BaseTitleActivity {
 
     /*退出环信*/
     private void logoutEaseMob() {
-//        runOnUiThread(() -> EMClient.getInstance().logout(true, new EMCallBack() {
-//            @Override
-//            public void onSuccess() {
-//                mHandler.sendEmptyMessage(0);
-//            }
-//
-//            @Override
-//            public void onProgress(int progress, String status) {
-//            }
-//
-//            @Override
-//            public void onError(int code, String message) {
-//                mHandler.hasMessages(2, message);
-//            }
-//        }));
-
         Observable.create(subscriber -> EMClient.getInstance().logout(true, new EMCallBack() {
             @Override
             public void onSuccess() {
@@ -176,10 +157,7 @@ public class SettingActivity extends BaseTitleActivity {
             @Override
             public void onNext(Object obj) {
                 if (obj instanceof Integer) {
-                    SPHelper.clearShareprefrence(mContext);
-
-                    SPHelper.setBooleanSF(mContext, Constant.ISGUIDE, true);
-                    SPHelper.setBooleanSF(mContext, Constant.ISLOGIN, false);
+                    UserUtils.logout();
                     FastUtil.startActivity(mContext, LoginActivity.class);
                     finish();
                 } else if (obj instanceof String) {
@@ -198,23 +176,4 @@ public class SettingActivity extends BaseTitleActivity {
             }
         });
     }
-
-//    private Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            hideLoading();
-//            switch (msg.what) {
-//                case 0:
-//                    SPHelper.clearShareprefrence(mContext);
-//                    FastUtil.startActivity(mContext, LoginActivity.class);
-//                    finish();
-//                    break;
-//                case 2:
-//                    ToastUtil.show(msg.obj.toString());
-//                    break;
-//            }
-//        }
-//    };
-
 }

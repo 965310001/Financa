@@ -47,6 +47,7 @@ import com.ph.financa.fragments.SeeFragment;
 import com.ph.financa.jpush.JPushManager;
 import com.ph.financa.jpush.MessageReceiver;
 import com.ph.financa.service.BadgeIntentService;
+import com.ph.financa.utils.UserUtils;
 import com.ph.financa.utils.easeui.DemoHelper;
 import com.vise.xsnow.event.Subscribe;
 import com.vise.xsnow.event.inner.ThreadMode;
@@ -58,6 +59,7 @@ import com.vise.xsnow.permission.PermissionManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindArray;
 import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -67,7 +69,6 @@ import io.reactivex.schedulers.Schedulers;
 import tech.com.commoncore.base.BaseActivity;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.event.SwitchEvent;
-import tech.com.commoncore.utils.AppStatus;
 import tech.com.commoncore.utils.AppStatusManager;
 import tech.com.commoncore.utils.FastUtil;
 import tech.com.commoncore.utils.SPHelper;
@@ -80,14 +81,14 @@ import tech.com.commoncore.utils.Utils;
  */
 public class MainActivity extends BaseActivity {
 
-
     /*极光*/
     public static boolean isForeground = false;
     private MessageReceiver mMessageReceiver;
 
     private EasyNavigationBar mNavigationBar;
 
-    private String[] tabText = {"首页", "谁看了我", "", "客户", "我的"};
+    @BindArray(R.array.home_tab_text)
+    String[] tabText;
 
     //未选中icon
     private int[] normalIcon = {R.mipmap.ic_home_normal, R.mipmap.ic_see_normal, R.mipmap.ic_add_image, R.mipmap.ic_customer_normal, R.mipmap.ic_me_normal};
@@ -127,7 +128,7 @@ public class MainActivity extends BaseActivity {
         sdkHelper.popActivity(this);
     }
 
-    EMClientListener clientListener = success -> {
+    private EMClientListener clientListener = success -> {
         Toast.makeText(MainActivity.this, "onUpgradeFrom 2.x to 3.x " + (success ? "success" : "fail"), Toast.LENGTH_LONG).show();
         if (success) {
             Log.i(TAG, "onMigrate2x: ");
@@ -163,7 +164,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void beforeSetContentView() {
-        if (AppStatusManager.getInstance().getAppStatus() == AppStatus.STATUS_RECYVLE) {
+        if (AppStatusManager.getInstance().getAppStatus() == AppStatusManager.STATUS_RECYVLE) {
             //跳到闪屏页
             Log.i(TAG, "beforeSetContentView: ");
             FastUtil.startActivity(mContext, SplashActivity.class);
@@ -172,27 +173,14 @@ public class MainActivity extends BaseActivity {
         }
         super.beforeSetContentView();
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN_THREAD)
     public void a(SwitchEvent bean) {
-        Log.i(TAG, "SwitchEvent: "+bean.position);
+        Log.i(TAG, "SwitchEvent: " + bean.position);
     }
+
     @Override
     public void initView(Bundle savedInstanceState) {
-
-//        Bundle bundle1=new Bundle();
-//        bundle1.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
-//        bundle1.putString(FriendTable.FRIEND_NAME, "我的客服");
-//        bundle1.putString(FriendTable.FRIEND_HEAD, "客服");
-//        FastUtil.startActivity(mContext,CustomerActivity.class, bundle1);
-
-        /*设置全屏并有状态栏 start */
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-//        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-//        getWindow().setAttributes(attrs);
-        /* 设置全屏并有状态栏 end   */
-
         registerMessageReceiver();  // used for receive msg
         init();
         /*测试*/
@@ -296,23 +284,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 updateUnreadLabel();
-//                updateUnreadAddressLable();
-//                if (currentTabIndex == 0) {
-//                    // refresh conversation list
-//                    if (conversationListFragment != null) {
-//                        conversationListFragment.refresh();
-//                    }
-//                } else if (currentTabIndex == 1) {
-//                    if (contactListFragment != null) {
-//                        contactListFragment.refresh();
-//                    }
-//                }
-//                String action = intent.getAction();
-//                if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
-//                    if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
-//                        GroupsActivity.instance.onResume();
-//                    }
-//                }
             }
         };
         broadcastManager.registerReceiver(broadcastReceiver, intentFilter);
@@ -322,11 +293,6 @@ public class MainActivity extends BaseActivity {
         int count = getUnreadMsgCountTotal();
         startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
     }
-
-//    public int getUnreadMsgCountTotal() {
-//        return EMClient.getInstance().chatManager().getUnreadMessageCount();
-//    }
-
 
     private void getUnreadMsgCount() {
         /*用户*/
@@ -339,15 +305,6 @@ public class MainActivity extends BaseActivity {
             for (EMMessage message : messages) {
                 DemoHelper.getInstance().getNotifier().vibrateAndPlayTone(message);
                 try {
-                    /*是自己*/
-//                    if (message.direct() == EMMessage.Direct.SEND && !message.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
-////                        SPHelper.setStringSF(mContext,message.conversationId(),);
-////                    }
-//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserNickName"));
-//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("otherUserPortrait"));
-//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("nickName"));
-//                    Log.i(TAG, "onMessageReceived: " + message.getStringAttribute("UserPortrait"));
-
                     SPUtil.put(Utils.getContext(), message.getFrom() + "name", message.getStringAttribute("nickName"));
                     SPUtil.put(Utils.getContext(), message.getFrom() + "head", message.getStringAttribute("UserPortrait"));
 
@@ -406,7 +363,7 @@ public class MainActivity extends BaseActivity {
                     count = count - unreadMsgCount;
                 }
                 /*发送广播*/
-                if (unreadMsgCount>0){
+                if (unreadMsgCount > 0) {
                     mNavigationBar.setMsgPointCount(4, unreadMsgCount);
                 }
                 mMeFragment.refresh(unreadMsgCount);
@@ -530,7 +487,8 @@ public class MainActivity extends BaseActivity {
                     public void onSuccess(BaseTResp2<UserBean> data) {
                         UserBean bean = data.data;
                         if (null != bean) {
-                            saveUser(bean);
+//                            saveUser(bean);
+                            UserUtils.saveUser(bean);
                             loginEaseMob(String.valueOf(bean.getId()), "123456");
                         }
                     }
@@ -543,17 +501,17 @@ public class MainActivity extends BaseActivity {
     }
 
     /*保存用户信息*/
-    private void saveUser(UserBean data) {
-        if (null != data) {
-            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
-            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
-            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
-            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
-            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
-
-            SPHelper.setIntergerSF(mContext, Constant.ISVIP, data.getUserType());
-        }
-    }
+//    private void saveUser(UserBean data) {
+//        if (null != data) {
+//            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
+//            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
+//            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
+//            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
+//            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
+//
+//            SPHelper.setIntergerSF(mContext, Constant.ISVIP, data.getUserType());
+//        }
+//    }
 
     //实现ConnectionListener接口
     private class ConnectionListener implements EMConnectionListener {
@@ -642,46 +600,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-//        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
-//            case 0:
-//                if (!mHomeFragment.back()){
-//                }
-//                break;
-//        }
-
-//        ShortcutBadger.applyCount(mContext, 2); //for 1.1.3
-
-
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
-
-
-        /*设置聊天条数*/
-//        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
-        /*删除图标条数*/
-//        ShortcutBadger.removeCount(mContext);
-
-
     }
-
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        switch (mNavigationBar.getmViewPager().getCurrentItem()) {
-//            case 0:
-//                if (!mHomeFragment.back()){
-//                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-//                        Intent home = new Intent(Intent.ACTION_MAIN);
-//                        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        home.addCategory(Intent.CATEGORY_HOME);
-//                        startActivity(home);
-//                        return true;
-//                    }
-//                }
-//                break;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
-
 }

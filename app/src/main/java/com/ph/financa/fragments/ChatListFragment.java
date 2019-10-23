@@ -49,17 +49,10 @@ public class ChatListFragment extends BaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//        Log.i(TAG, "initView: ");
         mContainer = mContentView.findViewById(R.id.container);
         mLlBlank = mContentView.findViewById(R.id.ll_blank);
 
         getLastMessage();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        /*getLastMessage();*/
     }
 
     private void getLastMessage() {
@@ -71,54 +64,6 @@ public class ChatListFragment extends BaseFragment {
         mFragment.setConversationListItemClickListener(conversation -> {
             try {
                 Bundle bundle = new Bundle();
-                /*conversation.conversationId();*/
-//                Map<String, Object> ext = conversation.getLastMessage().ext();
-//                Log.i(TAG, "getLastMessage: " + ext);
-
-//                if (conversation.getLastMessage().direct() == EMMessage.Direct.SEND &&
-//                        conversation.conversationId().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
-//                    if (null != ext.get("otherUserNickName")) {
-//                        Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
-//                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
-//                    } else {
-//                        bundle.putString(FriendTable.FRIEND_NAME, "");
-//                    }
-//                    if (null != ext.get("otherUserPortrait")) {
-//                        Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*她*/
-//
-//                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
-//                    } else {
-//                        bundle.putString(FriendTable.FRIEND_HEAD, "");
-//                    }
-//
-//                } else {
-//                    Log.i(TAG, "getLastMessage: 22");
-//                    if (null != ext.get("nickName")) {
-//                        bundle.putString(FriendTable.FRIEND_NAME, ext.get("nickName").toString());
-//                        Log.i(TAG, "getLastMessage: " + ext.get("nickName").toString());/*我*/
-//                    } else {
-//                        bundle.putString(FriendTable.FRIEND_NAME, "");
-//                    }
-//                    if (null != ext.get("UserPortrait")) {
-//                        Log.i(TAG, "getLastMessage: " + ext.get("UserPortrait").toString());/*我*/
-//                        bundle.putString(FriendTable.FRIEND_HEAD, ext.get("UserPortrait").toString());
-//                    } else {
-//                        bundle.putString(FriendTable.FRIEND_HEAD, "");
-//                    }
-//                }
-//                if (null != ext.get("otherUserNickName")) {
-//                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserNickName").toString());/*她*/
-//                    bundle.putString(FriendTable.FRIEND_NAME, ext.get("otherUserNickName").toString());
-//                } else {
-//                    bundle.putString(FriendTable.FRIEND_NAME, "");
-//                }
-//                if (null != ext.get("otherUserPortrait")) {
-//                    Log.i(TAG, "getLastMessage: " + ext.get("otherUserPortrait").toString());/*她*/
-//                    bundle.putString(FriendTable.FRIEND_HEAD, ext.get("otherUserPortrait").toString());
-//                } else {
-//                    bundle.putString(FriendTable.FRIEND_HEAD, "");
-//                }
-
                 bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
                 FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
             } catch (Exception e) {

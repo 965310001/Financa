@@ -19,9 +19,12 @@ import com.ph.financa.activity.bean.UserBean;
 import com.ph.financa.constant.Constant;
 import com.ph.financa.ease.FriendTable;
 import com.ph.financa.utils.StatusBarUtils;
+import com.ph.financa.utils.UserUtils;
 import com.vise.xsnow.http.ViseHttp;
 import com.vise.xsnow.http.callback.ACallback;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import tech.com.commoncore.base.BaseFragment;
 import tech.com.commoncore.constant.ApiConstant;
 import tech.com.commoncore.manager.GlideManager;
@@ -35,18 +38,32 @@ import tech.com.commoncore.widget.CircleImageView;
  * 我的
  */
 
-public class MeFragment extends BaseFragment implements View.OnClickListener {
+public class MeFragment extends BaseFragment {
 
-    private TextView mTvCompanyName;//公司名字
-    private TextView mTvName;//姓名
-    private CircleImageView mIcHead;//头像
-    private TextView mTvCollection;//收藏
-    private TextView mTvProducts;//产品
-    private TextView mTvShare;//分享
-    private TextView mTvMessage;//消息
+    @BindView(R.id.tv_company_name)
+    TextView mTvCompanyName;//公司名字
 
+    @BindView(R.id.tv_name)
+    TextView mTvName;//姓名
 
-    private TextView mTv1, mTv2, mTv3;
+    @BindView(R.id.ic_head)
+    CircleImageView mIcHead;//头像
+
+//    private TextView mTvCollection;//收藏
+//    private TextView mTvProducts;//产品
+//    private TextView mTvShare;//分享
+
+    @BindView(R.id.tv_message)
+    TextView mTvMessage;//消息
+
+    @BindView(R.id.tv_msg_count1)
+    TextView mTv1;
+
+    @BindView(R.id.tv_msg_count2)
+    TextView mTv2;
+
+    @BindView(R.id.tv_msg_count3)
+    TextView mTv3;
 
     @Override
     protected void onVisibleChanged(boolean isVisibleToUser) {
@@ -59,42 +76,34 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        mIcHead = mContentView.findViewById(R.id.ic_head);
-        mTvName = mContentView.findViewById(R.id.tv_name);
-        mTvCompanyName = mContentView.findViewById(R.id.tv_company_name);
+//        mIcHead = mContentView.findViewById(R.id.ic_head);
+//        mTvName = mContentView.findViewById(R.id.tv_name);
+//        mTvCompanyName = mContentView.findViewById(R.id.tv_company_name);
+//        mContentView.findViewById(R.id.tv_rights).setOnClickListener(this);
+//        mContentView.findViewById(R.id.tv_receive).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ic_open).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ic_crown_open).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_card).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ic_head).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_collection).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_products).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_share).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_message).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_service).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_setting).setOnClickListener(this);
+//        mTvCollection = mContentView.findViewById(R.id.tv_collection);
+//        mTvProducts = mContentView.findViewById(R.id.tv_products);
+//        mTvShare = mContentView.findViewById(R.id.tv_share);
+//        mTvMessage = mContentView.findViewById(R.id.tv_message);
+//        mTv1 = mContentView.findViewById(R.id.tv_msg_count1);
+//        mTv2 = mContentView.findViewById(R.id.tv_msg_count2);
+//        mTv3 = mContentView.findViewById(R.id.tv_msg_count3);
 
-        mContentView.findViewById(R.id.tv_rights).setOnClickListener(this);
-        mContentView.findViewById(R.id.tv_receive).setOnClickListener(this);
-        mContentView.findViewById(R.id.ic_open).setOnClickListener(this);
-        mContentView.findViewById(R.id.ic_crown_open).setOnClickListener(this);
-
-        mContentView.findViewById(R.id.ll_card).setOnClickListener(this);
-        mContentView.findViewById(R.id.ic_head).setOnClickListener(this);
-        mContentView.findViewById(R.id.ll_collection).setOnClickListener(this);
-        mContentView.findViewById(R.id.ll_products).setOnClickListener(this);
-        mContentView.findViewById(R.id.ll_share).setOnClickListener(this);
-        mContentView.findViewById(R.id.ll_message).setOnClickListener(this);
-        mContentView.findViewById(R.id.ll_service).setOnClickListener(this);
-        mContentView.findViewById(R.id.ll_setting).setOnClickListener(this);
-
-        mTvCollection = mContentView.findViewById(R.id.tv_collection);
-        mTvProducts = mContentView.findViewById(R.id.tv_products);
-        mTvShare = mContentView.findViewById(R.id.tv_share);
-        mTvMessage = mContentView.findViewById(R.id.tv_message);
-
-        Log.i(TAG, "loadData: " + SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
-        setData(SPHelper.getStringSF(mContext, Constant.USERNAME, "")
-                , SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, ""),
-                SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
-
-        mTv1 = mContentView.findViewById(R.id.tv_msg_count1);
-        mTv2 = mContentView.findViewById(R.id.tv_msg_count2);
-        mTv3 = mContentView.findViewById(R.id.tv_msg_count3);
+        setData();
 
         getUnreadMsgCount();
 
         getMessagePull();
-        /*getMessageCount();*/
     }
 
     /*用户拉取信息*/
@@ -160,7 +169,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private void setData(String name, String companyName, String head) {
+    private void setData() {
+        String name = SPHelper.getStringSF(mContext, Constant.USERNAME, "");
+        String companyName = SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, "");
+        String head = SPHelper.getStringSF(mContext, Constant.USERHEAD, "");
+
         if (!TextUtils.isEmpty(name)) {
             mTvName.setText(name);
         } else {
@@ -169,8 +182,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
         if (!TextUtils.isEmpty(companyName)) {
             mTvCompanyName.setText(companyName);
-        } else {
-//            mTvCompanyName.setText("公司名字");
         }
 
         if (!TextUtils.isEmpty(head)) {
@@ -212,24 +223,30 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     /*保存用户信息*/
     private void saveUser(UserBean data) {
         if (null != data) {
-            SPHelper.setStringSF(mContext, Constant.USERNAME, data.getName());
-            SPHelper.setStringSF(mContext, Constant.USERCOMPANYNAME, data.getCompanyName());
-            SPHelper.setStringSF(mContext, Constant.USERHEAD, data.getHeadImgUrl());
-            SPHelper.setStringSF(mContext, Constant.USERID, String.valueOf(data.getId()));
-            SPHelper.setStringSF(mContext, Constant.USERPHONE, data.getTelephone());
+            UserUtils.saveUser(data);
 
-            SPHelper.setIntergerSF(mContext, Constant.ISVIP, data.getUserType());
-
-
-            setData(SPHelper.getStringSF(mContext, Constant.USERNAME, "")
-                    , SPHelper.getStringSF(mContext, Constant.USERCOMPANYNAME, ""),
-                    SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
+            setData();
 
         }
     }
 
 
-    @Override
+//       mContentView.findViewById(R.id.tv_rights).setOnClickListener(this);
+//        mContentView.findViewById(R.id.tv_receive).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ic_open).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ic_crown_open).setOnClickListener(this);
+
+//        mContentView.findViewById(R.id.ll_card).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ic_head).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_collection).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_products).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_share).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_message).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_service).setOnClickListener(this);
+//        mContentView.findViewById(R.id.ll_setting).setOnClickListener(this);
+
+    @OnClick({R.id.tv_rights, R.id.tv_receive, R.id.ic_open, R.id.ic_crown_open, R.id.ll_card, R.id.ic_head,
+            R.id.ll_collection, R.id.ll_products, R.id.ll_share, R.id.ll_message, R.id.ll_service, R.id.ll_setting})
     public void onClick(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
@@ -313,5 +330,4 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             mTv2.setVisibility(View.GONE);
         }
     }
-
 }

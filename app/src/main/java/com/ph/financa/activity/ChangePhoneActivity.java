@@ -40,6 +40,7 @@ public class ChangePhoneActivity extends BaseTitleActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
+
         mTvSendCode = findViewById(R.id.tv_send_code);
         mEtPhone = findViewById(R.id.et_phone);
         mEtCode = findViewById(R.id.et_code);
@@ -53,22 +54,11 @@ public class ChangePhoneActivity extends BaseTitleActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_send_code:/*发送验证码*/
-//                if (!checkPhone()) {
-//                    return;
-//                }
-//                sendCode();
                 Observable.just(checkPhone()).takeWhile(aBoolean -> aBoolean).subscribe(aBoolean -> sendCode());
                 break;
 
             case R.id.btn_next:/*下一步*/
                 Observable.just(checkPhone() && checkCode()).takeWhile(aBoolean -> aBoolean).subscribe(aBoolean -> doGet());
-//                if (!checkPhone()) {
-//                    return;
-//                }
-//                if (!checkCode()) {
-//                    return;
-//                }
-//                doGet();
                 break;
         }
     }

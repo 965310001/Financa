@@ -101,9 +101,7 @@ public class MessageFragment extends BaseFragment {
 //        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
 //        Log.i(TAG, "initView:聊天记录 " + conversations.size());
 
-
         registerReceiver();
-
 
         /**************消息监听 start *********/
         ContactSyncListener contactSyncListener = new ContactSyncListener();

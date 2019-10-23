@@ -3,7 +3,6 @@ package com.ph.financa.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.aries.ui.view.title.TitleBarView;
@@ -40,14 +39,8 @@ public class CustomerActivity extends BaseTitleActivity {
 
         SoftKeyboardFixerForFullscreen.assistActivity(this);
 //        AndroidBottomSoftBar.assistActivity(mContentView, this);
-//
 
         Intent intent = getIntent();
-//        if (intent.hasExtra(FriendTable.FRIEND_NAME)) {
-////            mTitleBar.setTitleMainText(intent.getStringExtra(FriendTable.FRIEND_NAME));
-//        } else {
-//            mTitleBar.setTitleMainText("我的客服");
-//        }
 
         /*聊天*/
         EaseChatFragment chatFragment = new EaseChatFragment();
@@ -65,17 +58,11 @@ public class CustomerActivity extends BaseTitleActivity {
                 }
             }
         }
-//        else {
-//            sendEmmessage();
-//            args.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
-//        }
         args.putString(Constant.USERID, SPHelper.getStringSF(mContext, Constant.USERID));
         chatFragment.setArguments(args);
         chatFragment.hideTitleBar();
         chatFragment.setChatFragmentHelper(mHelper);
         getSupportFragmentManager().beginTransaction().add(R.id.container, chatFragment).commit();
-
-
     }
 
     /*判断是否有客服信息*/
@@ -102,48 +89,13 @@ public class CustomerActivity extends BaseTitleActivity {
             EMClient.getInstance().chatManager().saveMessage(msg);
 //            DemoHelper.getInstance().getNotifier().notify(msg);
 
-            Log.i(TAG, "sendEmmessage: ");
-
+//            Log.i(TAG, "sendEmmessage: ");
         }
-
-//            EMMessage message = EMMessage.createTxtSendMessage(content, Constant.CUSTOMSERVICE);
-//            try {
-//                JSONObject weichat = new JSONObject();
-//                message.setDirection(EMMessage.Direct.RECEIVE);
-//                message.setAttribute("otherUserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD));
-//                message.setAttribute("otherUserNickName", SPHelper.getStringSF(mContext, Constant.USERNAME));
-//
-//                message.setAttribute("nickName", "我的客服");
-//                message.setAttribute("UserPortrait", "https://img01.sogoucdn.com/net/a/04/link?url=https%3A%2F%2Fi04piccdn.sogoucdn.com%2Ff658e707bfde45c5&appid=122");
-//
-//                JSONObject visitor = new JSONObject();
-//                visitor.put("userNickname", "aa");
-//                visitor.put("trueName", "aa");
-//                visitor.put("phone", "15949629525");
-//                visitor.put("description", "15949629525");
-//                visitor.put("email", "15949629525");
-//                weichat.put("visitor", visitor);
-//                weichat.put("queueName", "15949629525");
-////                    message.setAttribute("visitor",visitor);
-//                message.setAttribute("weichat", weichat);
-//                Log.i(TAG, "sendEmmessage: ");
-//                EMClient.getInstance().chatManager().sendMessage(message);
-//            } catch (Exception e) {
-//                Log.i(TAG, "sendEmmessage: " + e.toString());
-//            }
-//        }
     }
 
     private EaseChatFragment.EaseChatFragmentHelper mHelper = new EaseChatFragment.EaseChatFragmentHelper() {
         @Override
         public void onSetMessageAttributes(EMMessage message) {
-//            message.getFrom();
-//            message.getTo();
-//            Log.i(TAG, "onSetMessageAttributes: " + message.getFrom() + " " + message.getTo());/*获取消息发送者的用户名   接受者*/
-
-//            if (message.getFrom().equals(SPHelper.getStringSF(mContext, Constant.USERID))) {
-//            }
-
             message.setAttribute("UserPortrait", SPHelper.getStringSF(mContext, Constant.USERHEAD, ""));
             message.setAttribute("nickName", SPHelper.getStringSF(mContext, Constant.USERNAME, ""));
 

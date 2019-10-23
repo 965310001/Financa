@@ -55,13 +55,13 @@ public class WriteArticleActivity extends BaseTitleActivity {
         super.onPause();
     }
 
-//    @Override
-//    public void onResume() {
-//        if (null != mAgentWeb) {
-//            mAgentWeb.getWebLifeCycle().onResume();
-//        }
-//        super.onResume();
-//    }
+    @Override
+    public void onResume() {
+        if (null != mAgentWeb) {
+            mAgentWeb.getWebLifeCycle().onResume();
+        }
+        super.onResume();
+    }
 
     @Override
     public void setTitleBar(TitleBarView titleBar) {
@@ -72,5 +72,4 @@ public class WriteArticleActivity extends BaseTitleActivity {
     public int getContentLayout() {
         return R.layout.activity_write_article;
     }
-
 }

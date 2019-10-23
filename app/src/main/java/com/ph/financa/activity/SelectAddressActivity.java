@@ -92,33 +92,12 @@ public class SelectAddressActivity extends BaseTitleActivity {
             }
         }));
 
-//        mSearchEditText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                show();
-//            }
-//        });
-
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             ContactModel item = (ContactModel) adapter.getItem(position);
             item.setCheck(!item.isCheck());
             adapter.notifyItemChanged(position);
         });
     }
-
-//    private void show() {
-//        View view = View.inflate(mContext, R.layout.dialog_select_list, null);
-//        PopupWindow popupWindow = new PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
-//        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
-//        /*popupWindow.setOnDismissListener(new poponDismissListener());*/
-//        ColorDrawable dw = new ColorDrawable(0x30000000);
-//        popupWindow.setBackgroundDrawable(dw);
-//        /*popupWindow.setOnDismissListener(new popupDismissListener());*/
-//        /*backgroundAlpha(0.5f);*/
-//        // 设置好参数之后再show
-////        popupWindow.showAsDropDown(mSearchEditText);
-//        popupWindow.showAtLocation(mSearchEditText, 0, 0, 0);
-//    }
 
     /*从通讯录导入*/
     private void insertContact(List<ContactModel> beans) {

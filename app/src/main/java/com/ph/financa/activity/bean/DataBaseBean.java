@@ -44,6 +44,4 @@ public class DataBaseBean implements Serializable {
     public void setTime(String time) {
         this.time = time;
     }
-
-
 }

@@ -43,16 +43,6 @@ public class SettingActivity extends BaseTitleActivity {
     private MessageAlertDialog messageAlertDialog;
 
     @Override
-    public void setTitleBar(TitleBarView titleBar) {
-        titleBar.setTitleMainText("设置");
-    }
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.activity_setting;
-    }
-
-    @Override
     public void initView(Bundle savedInstanceState) {
         StatusBarCompat.setStatusBarColor(mContext, getResources().getColor(R.color.white));
 
@@ -128,7 +118,6 @@ public class SettingActivity extends BaseTitleActivity {
                         ToastUtil.show(errMsg);
                     }
                 });
-
     }
 
     /*退出环信*/
@@ -175,5 +164,15 @@ public class SettingActivity extends BaseTitleActivity {
 
             }
         });
+    }
+
+    @Override
+    public void setTitleBar(TitleBarView titleBar) {
+        titleBar.setTitleMainText("设置");
+    }
+
+    @Override
+    public int getContentLayout() {
+        return R.layout.activity_setting;
     }
 }

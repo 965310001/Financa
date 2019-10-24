@@ -21,6 +21,7 @@ public class WXAccessTokenBean implements Serializable {
     private String unionid;
     private int errcode;
     private String errmsg;
+
     /**
      * nickname : 迷了鹿
      * sex : 1
@@ -39,8 +40,6 @@ public class WXAccessTokenBean implements Serializable {
     private String province;
     private String country;
     private String headimgurl;
-//        private List<?> privilege;
-
 
     public String getAccess_token() {
         return access_token;
@@ -161,12 +160,4 @@ public class WXAccessTokenBean implements Serializable {
     public void setHeadimgurl(String headimgurl) {
         this.headimgurl = headimgurl;
     }
-
-//        public List<?> getPrivilege() {
-//            return privilege;
-//        }
-//
-//        public void setPrivilege(List<?> privilege) {
-//            this.privilege = privilege;
-//        }
 }

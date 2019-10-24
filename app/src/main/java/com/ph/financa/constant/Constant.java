@@ -57,7 +57,7 @@ public interface Constant {
     /**
      * 当前 DEMO 应用的 APP_KEY，第三方应用应该使用自己的 APP_KEY 替换该 APP_KEY
      */
-    String APP_KEY = "2045436852";
+    String APP_KEY = "4283008091";
     /**
      * 当前 DEMO 应用的回调页，第三方应用可以使用自己的回调页。
      * 建议使用默认回调页：https://api.weibo.com/oauth2/default.html

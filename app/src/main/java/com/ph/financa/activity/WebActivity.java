@@ -763,7 +763,7 @@ public class WebActivity extends BaseTitleActivity {
     private void initWBSDK() {
         WbSdk.install(mContext, new AuthInfo(mContext, Constant.APP_KEY, Constant.REDIRECT_URL, Constant.SCOPE));
         mShareHandler = new WbShareHandler(mContext);
-        mShareHandler.registerApp();
+        Log.i(TAG, "initWBSDK: "+ mShareHandler.registerApp());
     }
 
     private final JPayListener listener = new JPayListener() {

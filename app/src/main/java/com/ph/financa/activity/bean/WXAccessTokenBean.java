@@ -21,7 +21,6 @@ public class WXAccessTokenBean implements Serializable {
     private String unionid;
     private int errcode;
     private String errmsg;
-
     /**
      * nickname : 迷了鹿
      * sex : 1

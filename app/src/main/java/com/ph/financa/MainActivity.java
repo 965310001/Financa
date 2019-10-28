@@ -90,6 +90,7 @@ public class MainActivity extends BaseActivity {
     @BindArray(R.array.home_tab_text)
     String[] tabText;
 
+
     //未选中icon
     private int[] normalIcon = {R.mipmap.ic_home_normal, R.mipmap.ic_see_normal, R.mipmap.ic_add_image, R.mipmap.ic_customer_normal, R.mipmap.ic_me_normal};
     //选中时icon

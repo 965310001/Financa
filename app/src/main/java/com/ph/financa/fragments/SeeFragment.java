@@ -37,6 +37,7 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
     private int[] mIconSelectIds = {
             R.mipmap.ic_home_selected};
     private ArrayList<CustomTabEntity> mTabEntities;
+    private View tvVip;
 
     @Override
     public int getContentLayout() {
@@ -51,12 +52,37 @@ public class SeeFragment extends BaseFragment implements View.OnClickListener {
             StatusBarUtils.immersive(getActivity(), true);
         }
         super.onVisibleChanged(isVisibleToUser);
+
+        if (null!=tvVip) {
+            switch (SPHelper.getIntergerSF(mContext, Constant.ISVIP, 0)) {
+                case 0:
+                    tvVip.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    tvVip.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (null!=tvVip) {
+            switch (SPHelper.getIntergerSF(mContext, Constant.ISVIP, 0)) {
+                case 0:
+                    tvVip.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    tvVip.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    }
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        View tvVip = mContentView.findViewById(R.id.tv_vip);
+        tvVip = mContentView.findViewById(R.id.tv_vip);
         tvVip.setOnClickListener(this);
 
         switch (SPHelper.getIntergerSF(mContext, Constant.ISVIP, 0)) {

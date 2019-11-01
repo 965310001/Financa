@@ -48,6 +48,15 @@ public class ShareFragment extends WebFragment {
         }
 
         @JavascriptInterface
+        public void toViperPage(String content) {
+            Bundle bundle = new Bundle();
+//            bundle.putString("url", getUrl(ApiConstant.PAYMENT));
+            /*FastUtil(mContext, VipActivity.class, bundle);*/
+            bundle.putString("url", getUrl(ApiConstant.PAYMENT));
+            FastUtil.startActivity(mContext, WebActivity.class, bundle);
+        }
+
+        @JavascriptInterface
         public void toShareDetail(String content) {
             if (!TextUtils.isEmpty(content)) {
                 Log.i(TAG, "前往分享详情页面: " + content);
@@ -86,6 +95,12 @@ public class ShareFragment extends WebFragment {
                 ToastUtil.show("内容为空");
             }
         }
+    }
+
+    private String getUrl(String url) {
+        return String.format("%s%s?userId=%s&openId=%s", ApiConstant.BASE_URL_ZP, url,
+                SPHelper.getStringSF(Utils.getContext(), Constant.USERID, ""),
+                SPHelper.getStringSF(Utils.getContext(), Constant.WXOPENID, ""));
     }
 
 }

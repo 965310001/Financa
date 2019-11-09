@@ -21,6 +21,7 @@ import com.ph.financa.constant.Constant;
 import com.ph.financa.jpush.JPushManager;
 import com.ph.financa.utils.easeui.DemoHelper;
 import com.ph.financa.utils.easeui.HMSPushHelper;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.vise.log.ViseLog;
 import com.vise.log.inner.LogcatTree;
 import com.vise.xsnow.http.ViseHttp;
@@ -108,6 +109,9 @@ public class MyApplication extends BaseApplication {
                 }
             });
         }
+
+        /*初始化*/
+        CrashReport.initCrashReport(getApplicationContext(), "031b721e36", false);
     }
 
     /*极光*/

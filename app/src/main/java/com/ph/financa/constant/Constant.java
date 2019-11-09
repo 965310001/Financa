@@ -34,7 +34,7 @@ public interface Constant {
     String WEIXINCODE = "WEIXINCODE";
 
     String WECHATAPPKEY = "wx7faa69a8d98bfb10";
-    String WECHATAPPSECRET = "912a872b037cf863b9cf12371538d73f";
+    String WECHATAPPSECRET = "233c503b2172300a3d2589eed571f447";
     /*String WEIXIN_APP_ID = WECHATAPPKEY;*/
 
     int GET_TOKEN = 1;

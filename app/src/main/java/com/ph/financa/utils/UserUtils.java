@@ -20,7 +20,13 @@ public class UserUtils {
             SPHelper.setStringSF(Utils.getContext(), Constant.USERID, String.valueOf(data.getId()));
             SPHelper.setStringSF(Utils.getContext(), Constant.USERPHONE, data.getTelephone());
 
-            SPHelper.setIntergerSF(Utils.getContext(), Constant.ISVIP, data.getUserType());
+            if (null != data.getUserType()) {
+                try {
+                    SPHelper.setIntergerSF(Utils.getContext(), Constant.ISVIP, data.getUserType());
+                }catch (Exception e){
+                    e.toString();
+                }
+            }
         }
     }
 

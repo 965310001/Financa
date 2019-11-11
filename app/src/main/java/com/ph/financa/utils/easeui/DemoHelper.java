@@ -1305,7 +1305,10 @@ public class DemoHelper {
             }
             return userInfo;
         }
-        user = getContactList().get(username);
+        Map<String, EaseUser> contactList = getContactList();
+        if (null != contactList) {
+            user = contactList.get(username);
+        }
         if (user == null && getRobotList() != null) {
             user = getRobotList().get(username);
         }
@@ -1355,7 +1358,7 @@ public class DemoHelper {
 //        }
 
         /*获取头像开始*/
-        if (contactList != null && contactList.containsKey(username)) {
+        if (this.contactList != null && this.contactList.containsKey(username)) {
 
         } else { // 如果内存中没有，则将本地数据库中的取出到内存中。
             getContactList();
@@ -1364,7 +1367,7 @@ public class DemoHelper {
         // if (user == null && getRobotList() != null) {
         // user = getRobotList().get(hxId);
         // }
-        user = contactList.get(username);
+        user = this.contactList.get(username);
         if (user == null) {
             user = new EaseUser(username);
         } else {
@@ -1377,8 +1380,8 @@ public class DemoHelper {
             user.setNickname(SPUtil.get(Utils.getContext(), username + "name", TextUtils.isEmpty(username) ? user.getUsername() : username).toString());
             user.setAvatar(SPUtil.get(Utils.getContext(), username + "head", "").toString());
 
-            Log.i(TAG, "getUserInfo: " + SPUtil.get(Utils.getContext(), username + "name", TextUtils.isEmpty(username) ? user.getUsername() : username).toString());
-            Log.i(TAG, "getUserInfo: " + SPUtil.get(Utils.getContext(), username + "head", "").toString());
+//            Log.i(TAG, "getUserInfo: " + SPUtil.get(Utils.getContext(), username + "name", TextUtils.isEmpty(username) ? user.getUsername() : username).toString());
+//            Log.i(TAG, "getUserInfo: " + SPUtil.get(Utils.getContext(), username + "head", "").toString());
 
 
         } catch (Exception e) {

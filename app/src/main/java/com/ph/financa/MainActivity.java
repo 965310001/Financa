@@ -46,7 +46,6 @@ import com.ph.financa.fragments.MeFragment;
 import com.ph.financa.fragments.SeeFragment;
 import com.ph.financa.jpush.JPushManager;
 import com.ph.financa.jpush.MessageReceiver;
-import com.ph.financa.service.BadgeIntentService;
 import com.ph.financa.utils.UserUtils;
 import com.ph.financa.utils.easeui.DemoHelper;
 import com.vise.xsnow.event.Subscribe;
@@ -291,8 +290,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updateUnreadLabel() {
-        int count = getUnreadMsgCountTotal();
-        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
+//        int count = getUnreadMsgCountTotal();
+//        startService(new Intent(mContext, BadgeIntentService.class).putExtra("badgeCount", 11));
     }
 
     private void getUnreadMsgCount() {

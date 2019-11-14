@@ -400,7 +400,8 @@
 
         <service
             android:name=".service.BadgeIntentService"
-            android:exported="false" /> <!-- VIVO推送配置 start -->
+            android:exported="false" />
+        <!-- VIVO推送配置 start -->
         <service
             android:name="com.vivo.push.sdk.service.CommandClientService"
             android:exported="true" />

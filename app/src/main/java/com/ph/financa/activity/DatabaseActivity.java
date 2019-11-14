@@ -101,29 +101,35 @@ public class DatabaseActivity extends BaseTitleActivity {
             DataBaseBean bean = new DataBaseBean(action, "", DateUtil.formatDate(new Date(), DateUtil.FORMAT_101));
             ArrayList<DataBaseBean> list = SPHelper.getDeviceData(mContext, Constant.DATABASE);
 
-            uploadFile(intent.getData().toString());
-            if (null != bean) {
-                boolean isAdd = false;
-                if (null != list) {
-                    if (list.size() > 0) {
-                        for (DataBaseBean baseBean : list) {
-                            if (baseBean.getPath().equals(bean.getPath()) && baseBean.getTitle().equals(bean.getTitle())) {
-                                isAdd = true;
-                                break;
+            if (null != intent.getData()) {
+                try {
+                    uploadFile(intent.getData().toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (null != bean) {
+                    boolean isAdd = false;
+                    if (null != list) {
+                        if (list.size() > 0) {
+                            for (DataBaseBean baseBean : list) {
+                                if (baseBean.getPath().equals(bean.getPath()) && baseBean.getTitle().equals(bean.getTitle())) {
+                                    isAdd = true;
+                                    break;
+                                }
                             }
-                        }
-                    } else if (list.size() == 0) {
+                        } else if (list.size() == 0) {
 //                        for (int i = 0; i < 5; i++) {
 //                            list.add(new DataBaseBean("", "产品使用说明.pdf", "2019-07-25 14:58:54"));
 //                        }
+                        }
+                    } else if (list == null) {
+                        list = new ArrayList<>();
                     }
-                } else if (list == null) {
-                    list = new ArrayList<>();
+                    if (!isAdd) {
+                        list.add(bean);
+                    }
+                    SPHelper.saveDeviceData(mContext, Constant.DATABASE, list);
                 }
-                if (!isAdd) {
-                    list.add(bean);
-                }
-                SPHelper.saveDeviceData(mContext, Constant.DATABASE, list);
             }
         }
         mSmartRefreshLayout.autoRefresh();

@@ -194,6 +194,8 @@ public class LoginActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(code)) {
                     getAccessToken(code);
                     SPHelper.setStringSF(mContext, Constant.WEIXINCODE, "");
+                } else {
+                    ToastUtil.show("数据为空，请退出在登录！");
                 }
             }
 

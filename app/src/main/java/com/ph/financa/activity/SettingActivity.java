@@ -8,6 +8,7 @@ import com.aries.ui.view.title.TitleBarView;
 import com.githang.statusbar.StatusBarCompat;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseConstant;
 import com.ph.financa.R;
 import com.ph.financa.activity.bean.BaseTResp2;
 import com.ph.financa.constant.Constant;
@@ -56,6 +57,7 @@ public class SettingActivity extends BaseTitleActivity {
             case R.id.rl_feedback:
                 // TODO: 2019/9/9 反馈
                 Bundle bundle = new Bundle();
+                bundle.putString(EaseConstant.EXTRA_USER_ID, Constant.CUSTOMSERVICE);
                 bundle.putString(FriendTable.FRIEND_NAME, "我的客服");
                 bundle.putString(FriendTable.FRIEND_HEAD, "客服");
                 FastUtil.startActivity(mContext, CustomerActivity.class, bundle);
